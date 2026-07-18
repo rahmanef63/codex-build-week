@@ -15,11 +15,13 @@ function authorize(request: Request) {
 function safeError(error: unknown) {
   if (error instanceof ConvexError && typeof error.data === "object" && error.data) {
     const data = error.data as { code?: string; message?: string; fields?: string[] };
-    const status = data.code === "ORDER_NOT_FOUND" || data.code === "PRODUCT_NOT_FOUND"
-      ? 404
-      : data.code === "INSUFFICIENT_STOCK" || data.code === "PRODUCT_AMBIGUOUS" || data.code === "IDEMPOTENCY_CONFLICT"
-        ? 409
-        : 400;
+    const status = data.code === "DASHBOARD_URL_MISSING"
+      ? 503
+      : data.code === "ORDER_NOT_FOUND" || data.code === "PRODUCT_NOT_FOUND"
+        ? 404
+        : data.code === "INSUFFICIENT_STOCK" || data.code === "PRODUCT_AMBIGUOUS" || data.code === "IDEMPOTENCY_CONFLICT"
+          ? 409
+          : 400;
     return json({ error: { code: data.code ?? "BAD_REQUEST", message: data.message ?? "Permintaan tidak valid.", ...(data.fields ? { fields: data.fields } : {}) } }, status);
   }
   console.error(error);
@@ -106,6 +108,62 @@ http.route({
   path: "/api/summary/today",
   method: "GET",
   handler: secured(async (ctx) => json(await ctx.runQuery(internal.business.summaryToday, {}))),
+});
+
+http.route({
+  path: "/api/dashboard-card",
+  method: "GET",
+  handler: secured(async (_ctx, request) => {
+    const view = new URL(request.url).searchParams.get("view") ?? "today";
+    if (!["today", "orders", "activity"].includes(view)) {
+      throw new ConvexError({
+        code: "VALIDATION_ERROR",
+        message: "view harus today, orders, atau activity.",
+        fields: ["view"],
+      });
+    }
+    const publicUrl = process.env.DASHBOARD_PUBLIC_URL?.trim();
+    let imageUrl: URL;
+    try {
+      if (!publicUrl) throw new Error();
+      const origin = new URL(publicUrl);
+      const originInput = publicUrl.endsWith("/") ? publicUrl.slice(0, -1) : publicUrl;
+      if (
+        originInput !== origin.origin ||
+        origin.protocol !== "https:" ||
+        origin.username ||
+        origin.password ||
+        origin.pathname !== "/" ||
+        origin.search ||
+        origin.hash ||
+        publicUrl.includes("?") ||
+        publicUrl.includes("#")
+      ) {
+        throw new Error();
+      }
+      imageUrl = new URL("/api/dashboard-card-image", origin.origin);
+    } catch {
+      throw new ConvexError({
+        code: "DASHBOARD_URL_MISSING",
+        message: "Dashboard publik belum dikonfigurasi.",
+      });
+    }
+    const generatedAt = new Date().toISOString();
+    imageUrl.searchParams.set("view", view);
+    imageUrl.searchParams.set("generatedAt", generatedAt);
+    const imageUrlString = imageUrl.toString();
+    const altText = {
+      today: "Kartu ringkasan operasional Warung Nasi Bu Sari hari ini.",
+      orders: "Kartu pesanan Warung Nasi Bu Sari.",
+      activity: "Kartu aktivitas AI Warung Nasi Bu Sari.",
+    }[view]!;
+    return json({
+      view,
+      imageUrl: imageUrlString,
+      altText,
+      generatedAt,
+    });
+  }),
 });
 
 export default http;
