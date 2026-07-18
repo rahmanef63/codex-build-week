@@ -12,6 +12,7 @@ const slides = [
 const deploymentBaseUrl = "https://codex-build-week.vercel.app";
 const deployedDemoUrl = new URL("/demo", deploymentBaseUrl).href;
 const deployedRealUrl = new URL("/real", deploymentBaseUrl).href;
+const gptUrl = "https://chatgpt.com/g/g-6a5b0a5ef31c819181f8a68b5536d33e-temanusaha-ai-warung-bu-sari";
 
 const current = Math.max(0, Math.min(slides.length - 1, Number(document.body.dataset.slide || 0)));
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -21,11 +22,17 @@ document.querySelectorAll("[data-total]").forEach((node) => node.textContent = S
 document.querySelectorAll("[data-progress]").forEach((node) => node.style.setProperty("--progress", `${((current + 1) / slides.length) * 100}%`));
 
 const qrCard = document.querySelector("[data-qr-card]");
+const gptCard = document.querySelector("[data-gpt-card]");
 document.querySelectorAll("[data-demo-link]").forEach((link) => link.href = deployedDemoUrl);
 document.querySelectorAll("[data-real-link]").forEach((link) => link.href = deployedRealUrl);
+document.querySelectorAll("[data-gpt-link]").forEach((link) => link.href = gptUrl);
 if (qrCard) {
   qrCard.hidden = false;
   qrCard.querySelector("[data-qr-domain]").textContent = new URL(deploymentBaseUrl).host;
+}
+if (gptCard) {
+  gptCard.hidden = false;
+  gptCard.querySelector("[data-gpt-domain]").textContent = new URL(gptUrl).host;
 }
 
 const qrDialog = document.querySelector("[data-qr-dialog]");
@@ -33,6 +40,13 @@ document.querySelector("[data-qr-open]")?.addEventListener("click", () => qrDial
 document.querySelector("[data-qr-close]")?.addEventListener("click", () => qrDialog.close());
 qrDialog?.addEventListener("click", (event) => {
   if (event.target === qrDialog) qrDialog.close();
+});
+
+const gptDialog = document.querySelector("[data-gpt-dialog]");
+document.querySelector("[data-gpt-open]")?.addEventListener("click", () => gptDialog.showModal());
+document.querySelector("[data-gpt-close]")?.addEventListener("click", () => gptDialog.close());
+gptDialog?.addEventListener("click", (event) => {
+  if (event.target === gptDialog) gptDialog.close();
 });
 
 function setNav(selector, target) {

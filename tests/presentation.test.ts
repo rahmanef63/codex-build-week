@@ -4,6 +4,7 @@ import { join } from "node:path";
 import test from "node:test";
 
 const root = join(process.cwd(), "public", "presentation");
+const gptUrl = "https://chatgpt.com/g/g-6a5b0a5ef31c819181f8a68b5536d33e-temanusaha-ai-warung-bu-sari";
 const slides = [
   "index.html",
   "01-masalah.html",
@@ -46,6 +47,8 @@ test("deck presentation is complete and locally linked", () => {
   assert.match(script, /const deploymentBaseUrl = "https:\/\/codex-build-week\.vercel\.app"/);
   assert.match(script, /const deployedDemoUrl = new URL\("\/demo", deploymentBaseUrl\)\.href/);
   assert.match(script, /const deployedRealUrl = new URL\("\/real", deploymentBaseUrl\)\.href/);
+  assert.ok(script.includes(`const gptUrl = "${gptUrl}";`));
+  assert.match(script, /querySelectorAll\("\[data-gpt-link\]"\).*link\.href = gptUrl/);
   assert.doesNotMatch(script, /api\.qrserver\.com/);
   assert.doesNotMatch(deck, /Lima Action|5 GPT Actions/i);
   assert.match(deck, /get_dashboard_card_image/);
@@ -55,6 +58,12 @@ test("deck presentation is complete and locally linked", () => {
   assert.match(qr, /width="407" height="407"/);
   assert.match(qr, /<rect[^>]+width="407" height="407"/);
   assert.match(qr, /<g id="elements" transform="translate\(44 44\)"/);
+  const gptQr = readFileSync(join(root, "chatgpt-gpt-qr.svg"), "utf8");
+  assert.ok(gptQr.includes(`<desc>${gptUrl}</desc>`));
+  assert.match(gptQr, /width="675" height="675"/);
+  assert.match(gptQr, /<rect[^>]+width="675" height="675"/);
+  assert.match(gptQr, /d="M 60,60 l 15,0/);
+  assert.match(gptQr, /M 600,600 l 15,0/);
   const styles = readFileSync(join(root, "deck.css"), "utf8");
   assert.match(styles, /@media \(max-width: 720px\)/);
   assert.match(styles, /@media \(max-width: 390px\)/);
@@ -65,8 +74,14 @@ test("deck presentation is complete and locally linked", () => {
   assert.doesNotMatch(deck, /(?:70|30)%/);
   assert.match(opening, /data-qr-open/);
   assert.match(opening, /<dialog[^>]+data-qr-dialog/);
+  assert.match(opening, /src="chatgpt-gpt-qr\.svg"/);
+  assert.match(opening, /data-gpt-open/);
+  assert.match(opening, /<dialog[^>]+data-gpt-dialog/);
   assert.match(script, /qrDialog\.showModal\(\)/);
   assert.match(script, /qrDialog\.close\(\)/);
+  assert.match(script, /gptDialog\.showModal\(\)/);
+  assert.match(script, /gptDialog\.close\(\)/);
+  assert.match(readFileSync(join(root, "08-penutup.html"), "utf8"), /data-gpt-link/);
   const onboarding = readFileSync(join(root, "07-build.html"), "utf8");
   assert.match(onboarding, /data-real-link/);
   assert.match(onboarding, /Mode Real[^<]+belum terhubung/);
