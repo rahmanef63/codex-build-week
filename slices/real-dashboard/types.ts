@@ -1,2 +1,1 @@
-// No local types needed while Real stays advisory-only (see components/dashboard-app.tsx).
-export {};
+export type StarterProduct = { name: string; price: string; stock: string };

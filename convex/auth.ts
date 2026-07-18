@@ -1,10 +1,8 @@
 import { Password } from "@convex-dev/auth/providers/Password";
 import { convexAuth } from "@convex-dev/auth/server";
 
-// Baseline @convex-dev/auth wiring (rr STACK baseline requirement). Dormant:
-// no UI currently signs in through this — Mode Real stays advisory/"not
-// connected" per AGENTS.md P0 mode boundary until a genuine human sign-off
-// (recorded outside any agent's own commit trail) approves connecting it.
+// @convex-dev/auth Password provider for Mode Real sign-up/sign-in (rr STACK
+// baseline). Live per owner sign-off 2026-07-18 — see AGENTS.md mode boundary.
 export const { auth, signIn, signOut, store, isAuthenticated } = convexAuth({
   providers: [Password],
 });

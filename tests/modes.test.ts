@@ -2,7 +2,7 @@ import { expect, test } from "vitest";
 // @ts-expect-error tsc needs allowImportingTsExtensions for the .ts extension import; vitest resolves it directly.
 import { read } from "../shared/testing/read-file.ts";
 
-test("Demo owns synthetic business wiring while Real stays disconnected/advisory (AGENTS.md P0 mode boundary)", () => {
+test("Demo owns synthetic business wiring while Real runs its own live connected app (owner sign-off 2026-07-18)", () => {
   const root = read("app", "(public)", "page.tsx");
   const demo = read("app", "(public)", "demo", "page.tsx");
   const gptPackage = read("GPTs", "alfa.md");
@@ -16,7 +16,7 @@ test("Demo owns synthetic business wiring while Real stays disconnected/advisory
   expect(root).toMatch(/href="\/dashboard"/);
   expect(root).toMatch(/Pilihan Mode Demo dan Mode Real/);
   expect(root).toMatch(/Demo · Data sintetis/);
-  expect(root).toMatch(/Real · Belum terhubung/);
+  expect(root).toMatch(/Real · Terhubung langsung/);
   expect(root).not.toMatch(/Bu Sari|ConvexClientProvider|Dashboard/);
   expect(globalError).not.toMatch(/Bu Sari|Convex|Dashboard/);
   expect(globalSocialCard).not.toMatch(/Bu Sari|Warung Nasi/);
@@ -26,11 +26,11 @@ test("Demo owns synthetic business wiring while Real stays disconnected/advisory
   expect(demo).toMatch(/<Dashboard \/>/);
 
   expect(real).toMatch(/redirect\("\/dashboard"\)/);
-  expect(dashboard).not.toMatch(/ConvexClientProvider/);
-  expect(dashboard).toMatch(/Belum terhubung/);
+  expect(dashboard).toMatch(/ConvexClientProvider/);
+  expect(dashboard).toMatch(/Terhubung langsung/);
   expect(dashboardApp).not.toMatch(/Bu Sari/);
-  expect(dashboardApp).not.toMatch(/useConvexAuth|useAuthActions|api\.real/);
-  expect(dashboardApp).toMatch(/belum terhubung/i);
+  expect(dashboardApp).toMatch(/useConvexAuth/);
+  expect(dashboardApp).toMatch(/api\.real\.dashboard/);
 
   expect(gptPackage).toMatch(/## Name\s+```text\s+TemanUsaha AI\s+```/);
   const description = gptPackage.match(/## Description\s+```text\s+([\s\S]*?)```/);
@@ -39,5 +39,5 @@ test("Demo owns synthetic business wiring while Real stays disconnected/advisory
   expect(descriptionText).toMatch(/\S/);
   expect(descriptionText).toMatch(/Mode Demo/);
   expect(descriptionText).toMatch(/Mode Real/);
-  expect(descriptionText).not.toMatch(/kini live/);
+  expect(descriptionText).toMatch(/kini live/);
 });

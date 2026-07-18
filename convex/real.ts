@@ -7,14 +7,8 @@ import { readDashboard } from "./business";
 
 // Mode Real: setiap user memiliki satu usaha; businessId = userId sehingga
 // data user terpisah total dari data demo Bu Sari.
-//
-// Dormant by design (AGENTS.md P0 mode boundary): no UI currently calls
-// these functions. slices/real-dashboard renders advisory/"not connected"
-// copy only. Do not wire this up to the frontend without a genuine human
-// sign-off recorded outside any agent's own commit trail — a prior "Approved
-// pivot" note self-authored by the same session that shipped the code was
-// reverted for exactly this reason. Kept here, tested, as baseline
-// @convex-dev/auth infra per the rr STACK baseline requirement.
+// Live per owner sign-off 2026-07-18 (recorded in AGENTS.md, given directly
+// by the owner in an interactive session, outside any agent commit trail).
 export const dashboard = query({
   args: {},
   handler: async (ctx) => {

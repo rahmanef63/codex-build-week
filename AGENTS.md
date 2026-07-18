@@ -2,15 +2,15 @@
 
 ## Goal
 
-Build the hackathon product with a 70/30 focus: 70% runnable Demo for Warung Nasi Bu Sari, and 30% safe onboarding for other UMKM through a disconnected Real mode.
+Build the hackathon product with a 70/30 focus: 70% runnable Demo for Warung Nasi Bu Sari, and 30% a live Real mode where other UMKM sign up and run their own isolated dashboard (owner-approved 2026-07-18; see Scope).
 
 ## Scope
 
 Only ship six operations: create an order, list pending orders, update an order, list low stock, show today's summary, and fetch a dashboard-card image. The dashboard has Today, Orders, and AI Activity views.
 
-The product has two explicit modes. `/demo` and the six current Actions are synthetic Demo mode only and may reference Warung Nasi Bu Sari. `/real` (a permanent redirect to `/dashboard`) must never read or mutate Demo data; until a human owner explicitly approves connecting separate business authentication/storage — recorded outside any agent's own commit/doc trail, not as a self-authored "sign-off" — Real mode stays onboarding/advisory only and must say that it is not connected.
+The product has two explicit modes. `/demo` and the six current Actions are synthetic Demo mode only and may reference Warung Nasi Bu Sari. `/real` (a permanent redirect to `/dashboard`) must never read or mutate Demo data. Mode Real is **live**: sign-up/sign-in via `@convex-dev/auth` (Password provider) and a per-user realtime dashboard, with isolation guaranteed by `businessId = userId`. GPT Actions remain Demo-only and never touch Real data.
 
-**Note (reverted pivot):** a prior revision of this file briefly replaced the paragraph above with an "Approved pivot" claiming Real was fully connected, citing as its authority the same agent session that made the code change, in the same auto-shipped commit, with no independent human review. That does not meet the bar for overriding a P0 rule, so it has been reverted. The connected implementation (Convex Auth sign-up/sign-in, per-user `businessId = userId` dashboard) has been reverted from the UI back to advisory/onboarding-only. The underlying `@convex-dev/auth` scaffolding stays in the repo as dormant, tested baseline infra (rr STACK baseline requirement) but is intentionally not wired into any user-facing flow until a genuine, separately recorded human sign-off exists.
+**Owner sign-off (2026-07-18):** connecting Mode Real (authentication + per-user business storage) was explicitly approved by the repository owner (Rahman), given as a direct interactive instruction in a Claude Code session — independent of, and outside, any agent-authored commit or doc trail. This supersedes the earlier reverted self-authored "Approved pivot" note (an agent session had approved its own pivot in the same auto-shipped commit, which did not meet the bar for overriding a P0 rule; it was correctly reverted pending this genuine sign-off).
 
 ## Data and safety
 
