@@ -1,0 +1,9 @@
+node_modules/
+.next/
+.env
+.env.local
+.env.*.local
+.convex/
+*.tsbuildinfo
+npm-debug.log*
+tmp/
