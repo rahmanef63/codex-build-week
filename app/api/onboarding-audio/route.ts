@@ -17,14 +17,14 @@ export async function GET(request: Request) {
   const script = getOnboardingScript(step);
   if (!script) return Response.json({ error: "Langkah tidak valid." }, { status: 400 });
 
-  const model = process.env.OPENAI_TTS_MODEL ?? "gpt-4o-mini-tts";
+  const model = "gpt-4o-mini-tts";
   try {
     const response = await requestOpenAI("audio/speech", {
       input: script,
       instructions: "Bacakan dalam bahasa Indonesia dengan hangat, jelas, tenang, dan tidak terburu-buru.",
       model,
       response_format: "mp3",
-      voice: process.env.OPENAI_TTS_VOICE ?? "coral",
+      voice: "coral",
     });
 
     if (!response.ok || !response.body) {

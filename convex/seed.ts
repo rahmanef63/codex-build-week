@@ -1,4 +1,4 @@
-import { mutationGeneric } from "convex/server";
+import { internalMutationGeneric } from "convex/server";
 import { ConvexError, v } from "convex/values";
 import { BUSINESS_ID, jakartaDay } from "./domain";
 
@@ -10,7 +10,7 @@ const PRODUCTS = [
   ["sambal-extra", "Sambal Extra", 3_000, 6, 10],
 ] as const;
 
-export const reset = mutationGeneric({
+export const reset = internalMutationGeneric({
   args: { resetKey: v.string() },
   handler: async (ctx, { resetKey }) => {
     const expected = process.env.DEMO_RESET_KEY;

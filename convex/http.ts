@@ -122,35 +122,11 @@ http.route({
         fields: ["view"],
       });
     }
-    const publicUrl = process.env.DASHBOARD_PUBLIC_URL?.trim();
-    let imageUrl: URL;
-    try {
-      if (!publicUrl) throw new Error();
-      const origin = new URL(publicUrl);
-      const originInput = publicUrl.endsWith("/") ? publicUrl.slice(0, -1) : publicUrl;
-      if (
-        originInput !== origin.origin ||
-        origin.protocol !== "https:" ||
-        origin.username ||
-        origin.password ||
-        origin.pathname !== "/" ||
-        origin.search ||
-        origin.hash ||
-        publicUrl.includes("?") ||
-        publicUrl.includes("#")
-      ) {
-        throw new Error();
-      }
-      imageUrl = new URL("/api/dashboard-card-image", origin.origin);
-    } catch {
-      throw new ConvexError({
-        code: "DASHBOARD_URL_MISSING",
-        message: "Dashboard publik belum dikonfigurasi.",
-      });
-    }
-    const generatedAt = new Date().toISOString();
+    const publicUrl = process.env.DASHBOARD_PUBLIC_URL;
+    if (!publicUrl) throw new ConvexError({ code: "DASHBOARD_URL_MISSING", message: "Dashboard publik belum dikonfigurasi." });
+    const imageUrl = new URL("/api/dashboard-card-image", publicUrl);
     imageUrl.searchParams.set("view", view);
-    imageUrl.searchParams.set("generatedAt", generatedAt);
+    const generatedAt = new Date().toISOString();
     const imageUrlString = imageUrl.toString();
     const altText = {
       today: "Kartu ringkasan operasional Warung Nasi Bu Sari hari ini.",

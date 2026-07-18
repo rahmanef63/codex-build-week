@@ -3,6 +3,7 @@ import { ImageResponse } from "next/og";
 
 import { api } from "@/convex/_generated/api";
 import type { Doc } from "@/convex/_generated/dataModel";
+import { formatRupiah } from "@/lib/format";
 import {
   dashboardError,
   dashboardImageOptions,
@@ -32,24 +33,7 @@ export async function GET(request: Request) {
   const convexUrl = process.env.NEXT_PUBLIC_CONVEX_URL;
   if (!convexUrl) return dashboardError(503);
 
-  let client: ConvexHttpClient;
-  try {
-    const url = new URL(convexUrl);
-    if (
-      url.protocol !== "https:" ||
-      url.username ||
-      url.password ||
-      url.pathname !== "/" ||
-      url.search ||
-      url.hash
-    ) {
-      throw new Error();
-    }
-    client = new ConvexHttpClient(url.origin);
-  } catch {
-    console.error("dashboard-card-invalid-url");
-    return dashboardError(503);
-  }
+  const client = new ConvexHttpClient(convexUrl);
 
   let data: DashboardData;
   try {
@@ -141,7 +125,7 @@ function TodayView({
 }) {
   const metrics = [
     ["Pesanan", summary.orderCount],
-    ["Omzet tercatat", rupiah(summary.recordedRevenue)],
+    ["Omzet tercatat", formatRupiah(summary.recordedRevenue)],
     ["Belum selesai", summary.pendingOrderCount],
     ["Belum dibayar", summary.unpaidOrderCount],
   ];
@@ -222,7 +206,7 @@ function OrdersView({ orders }: { orders: DashboardData["orders"] }) {
               .map((item) => item.quantity + " x " + item.productName)
               .join(", ")}
           </span>
-          <span style={{ fontSize: 20, fontWeight: 800 }}>{rupiah(order.total)}</span>
+          <span style={{ fontSize: 20, fontWeight: 800 }}>{formatRupiah(order.total)}</span>
         </div>
       ))}
       {!orders.length && <EmptyLine text="Belum ada pesanan." />}
@@ -304,14 +288,6 @@ function EmptyLine({ text }: { text: string }) {
       {text}
     </div>
   );
-}
-
-function rupiah(value: number) {
-  return new Intl.NumberFormat("id-ID", {
-    currency: "IDR",
-    maximumFractionDigits: 0,
-    style: "currency",
-  }).format(value);
 }
 
 function actionLabel(value: string) {

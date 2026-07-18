@@ -16,9 +16,6 @@ export function combineResolvedItems<T extends string>(
 ) {
   const combined = new Map<T, ResolvedItem<T>>();
   for (const item of items) {
-    if (!Number.isInteger(item.quantity) || item.quantity <= 0) {
-      throw new Error("Quantity must be a positive integer");
-    }
     const current = combined.get(item.productId);
     if (current) current.quantity += item.quantity;
     else combined.set(item.productId, { ...item });

@@ -60,20 +60,6 @@ export const createOrder = internalMutationGeneric({
   handler: async (ctx, args) => {
     const requestId = args.requestId.trim();
     const customerName = args.customerName.trim();
-    if (!requestId) fail("VALIDATION_ERROR", "requestId wajib diisi.", ["requestId"]);
-    if (!customerName) fail("VALIDATION_ERROR", "Nama pelanggan wajib diisi.", ["customerName"]);
-    if (!args.items.length) fail("VALIDATION_ERROR", "Minimal satu item wajib diisi.", ["items"]);
-    if (
-      Number.isNaN(Date.parse(args.pickupTime)) ||
-      args.items.some(
-        (item) =>
-          !item.product.trim() ||
-          !Number.isInteger(item.quantity) ||
-          item.quantity <= 0,
-      )
-    ) {
-      fail("VALIDATION_ERROR", "Waktu ambil atau item tidak valid.", ["pickupTime", "items"]);
-    }
     const requestFingerprint = orderFingerprint({ ...args, customerName });
 
     const existing = await ctx.db
@@ -101,9 +87,6 @@ export const createOrder = internalMutationGeneric({
     // ponytail: linear scan fits five demo products; add a normalized-name index if the catalog grows.
     const resolved = args.items.map((item) => {
       const key = item.product.trim().toLocaleLowerCase("id-ID");
-      if (!key || !Number.isInteger(item.quantity) || item.quantity <= 0) {
-        fail("VALIDATION_ERROR", "Produk dan jumlah item tidak valid.", ["items"]);
-      }
       const matches = products.filter(
         (product: any) =>
           product.slug.toLocaleLowerCase("id-ID") === key ||

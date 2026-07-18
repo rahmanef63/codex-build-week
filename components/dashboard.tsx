@@ -1,6 +1,6 @@
 "use client";
 
-import { useRef, useState, type KeyboardEvent } from "react";
+import { useState } from "react";
 import { useQuery } from "convex/react";
 import Image from "next/image";
 
@@ -61,23 +61,9 @@ type Tab = (typeof tabs)[number]["id"];
 export function Dashboard() {
   const data = useQuery(api.business.dashboard) as DashboardData | null | undefined;
   const [activeTab, setActiveTab] = useState<Tab>("today");
-  const tabRefs = useRef<Array<HTMLButtonElement | null>>([]);
 
   if (data === undefined) return <LoadingDashboard />;
   if (data === null || data.business === null) return <UnseededDashboard />;
-
-  function handleTabKeyDown(event: KeyboardEvent<HTMLButtonElement>, index: number) {
-    let nextIndex: number;
-    if (event.key === "ArrowRight") nextIndex = (index + 1) % tabs.length;
-    else if (event.key === "ArrowLeft") nextIndex = (index - 1 + tabs.length) % tabs.length;
-    else if (event.key === "Home") nextIndex = 0;
-    else if (event.key === "End") nextIndex = tabs.length - 1;
-    else return;
-
-    event.preventDefault();
-    setActiveTab(tabs[nextIndex].id);
-    tabRefs.current[nextIndex]?.focus();
-  }
 
   return (
     <main className="dashboard-shell">
@@ -113,25 +99,15 @@ export function Dashboard() {
         </div>
       </header>
 
-      <nav
-        aria-label="Bagian dashboard"
-        aria-orientation="horizontal"
-        className="tabs"
-        role="tablist"
-      >
-        {tabs.map((tab, index) => (
+      <nav aria-label="Bagian dashboard" className="tabs" role="tablist">
+        {tabs.map((tab) => (
           <button
             aria-controls={"panel-" + tab.id}
             aria-selected={activeTab === tab.id}
             id={"tab-" + tab.id}
             key={tab.id}
             onClick={() => setActiveTab(tab.id)}
-            onKeyDown={(event) => handleTabKeyDown(event, index)}
-            ref={(node) => {
-              tabRefs.current[index] = node;
-            }}
             role="tab"
-            tabIndex={activeTab === tab.id ? 0 : -1}
             type="button"
           >
             {tab.label}

@@ -1,9 +1,9 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 import test from "node:test";
 // @ts-expect-error Node's strip-types runner requires the source extension.
 import { dashboardError, dashboardImageOptions, parseDashboardView } from "../app/api/dashboard-card-image/view.ts";
+// @ts-expect-error Node's strip-types runner requires the source extension.
+import { read } from "./helpers.ts";
 
 test("dashboard card accepts only its three public views", () => {
   assert.equal(parseDashboardView(null), "today");
@@ -19,7 +19,7 @@ test("dashboard card keeps safe image and error contracts", async () => {
   assert.deepEqual(dashboardImageOptions, {
     width: 1200,
     height: 630,
-    headers: { "Cache-Control": "no-store" },
+    headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" },
   });
   const upstreamError = dashboardError(502);
   assert.equal(upstreamError.status, 502);
@@ -31,14 +31,11 @@ test("dashboard card keeps safe image and error contracts", async () => {
     },
   });
 
-  const route = readFileSync(
-    join(process.cwd(), "app", "api", "dashboard-card-image", "route.tsx"),
-    "utf8",
-  );
+  const route = read("app", "api", "dashboard-card-image", "route.tsx");
   assert.match(route, /ImageResponse/);
   assert.match(route, /api\.business\.dashboard/);
   assert.match(route, /dashboardImageOptions/);
-  assert.match(route, /new ConvexHttpClient\(url\.origin\)/);
+  assert.match(route, /new ConvexHttpClient\(convexUrl\)/);
   assert.match(route, /dashboard-card-query-failed/);
   assert.match(route, /dashboard-card-render-failed/);
   assert.doesNotMatch(route, /\b(?:customerName|inputSummary|outputSummary)\b/);
