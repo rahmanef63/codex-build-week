@@ -78,5 +78,6 @@ Contract source: `AGENTS.md`. Only one active writer may own a file scope. Alpha
 | Blocked | Fill remaining Devpost submission fields; requires video, `/feedback` ID, country, submitter type, repo access choice, and explicit attach/submit authority | Submission + Alpha | GPT-5 Codex |
 | Done | Update standalone Devpost description from five to six operations and attach the existing thumbnail | Submission + Alpha | GPT-5 Codex |
 | Done | Add local GPT QR/link beside the website demo CTA, test it, and redeploy the presentation | Presentation + Alpha | Thread model not reported / GPT-5 Codex |
+| Done | Make Mode Real live: Convex Auth (Password), per-user business onboarding, realtime dashboard with businessId = userId isolation; narrative updated across selector, deck, GPTs, README; E2E smoke passed on the live deployment | Claude (this session) | Opus 4.8 / Fable 5 |
 
 Status values: `Todo`, `In progress`, `Blocked`, `Done`.
