@@ -1,11 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQuery } from "convex/react";
+import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
 
 import { api } from "@/convex/_generated/api";
 import type { DashboardData } from "@/shared/types/dashboard";
+import type { DashboardView } from "../api/view";
 import { type Tab, tabs } from "../types";
 import { ActivityPanel } from "./activity-panel";
 import { LoadingDashboard } from "./loading-dashboard";
@@ -13,12 +15,29 @@ import { OrdersPanel } from "./orders-panel";
 import { TodayPanel } from "./today-panel";
 import { UnseededDashboard } from "./unseeded-dashboard";
 
-export function Dashboard() {
+export function Dashboard({ initialView = "today" }: { initialView?: DashboardView }) {
   const data = useQuery(api.business.dashboard) as DashboardData | null | undefined;
-  const [activeTab, setActiveTab] = useState<Tab>("today");
+  const [activeTab, setActiveTab] = useState<Tab>(initialView);
+  const router = useRouter();
+  const params = useParams<{ view?: string }>();
+  const paramView = params?.view;
+
+  // Keeps activeTab in sync with the URL for /demo/[view] back/forward nav —
+  // router.replace below updates the URL without a full navigation, so a
+  // browser back/forward press needs this effect to pick the new param up.
+  useEffect(() => {
+    if (paramView && tabs.some((tab) => tab.id === paramView)) {
+      setActiveTab(paramView as Tab);
+    }
+  }, [paramView]);
 
   if (data === undefined) return <LoadingDashboard />;
   if (data === null || data.business === null) return <UnseededDashboard />;
+
+  function selectTab(tab: Tab) {
+    setActiveTab(tab);
+    router.replace(`/demo/${tab}`);
+  }
 
   return (
     <main className="dashboard-shell">
@@ -61,7 +80,7 @@ export function Dashboard() {
             aria-selected={activeTab === tab.id}
             id={"tab-" + tab.id}
             key={tab.id}
-            onClick={() => setActiveTab(tab.id)}
+            onClick={() => selectTab(tab.id)}
             role="tab"
             type="button"
           >

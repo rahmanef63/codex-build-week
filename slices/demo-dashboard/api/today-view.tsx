@@ -1,5 +1,6 @@
 import type { Doc } from "@/convex/_generated/dataModel";
 import { formatRupiah } from "@/shared/lib/format";
+import { ogColors } from "./colors";
 
 export function TodayView({
   lowStock,
@@ -26,8 +27,8 @@ export function TodayView({
           <div
             key={label}
             style={{
-              background: "#ffffff",
-              border: "2px solid #dfe6df",
+              background: ogColors.surface,
+              border: `2px solid ${ogColors.line}`,
               borderRadius: 18,
               display: "flex",
               flex: 1,
@@ -35,7 +36,7 @@ export function TodayView({
               padding: "22px",
             }}
           >
-            <span style={{ color: "#657168", fontSize: 17 }}>{label}</span>
+            <span style={{ color: ogColors.muted, fontSize: 17 }}>{label}</span>
             <span style={{ fontSize: 31, fontWeight: 800, marginTop: 14 }}>{value}</span>
           </div>
         ))}
@@ -43,8 +44,8 @@ export function TodayView({
       <div
         style={{
           alignItems: "center",
-          background: "#ffffff",
-          border: "2px solid #dfe6df",
+          background: ogColors.surface,
+          border: `2px solid ${ogColors.line}`,
           borderRadius: 18,
           display: "flex",
           marginTop: 18,
@@ -57,9 +58,9 @@ export function TodayView({
             <span
               key={product._id}
               style={{
-                background: "#fff0cf",
+                background: ogColors.amberSoft,
                 borderRadius: 10,
-                color: "#9a5b08",
+                color: ogColors.amber,
                 fontSize: 17,
                 fontWeight: 700,
                 padding: "10px 14px",
@@ -68,7 +69,7 @@ export function TodayView({
               {product.name}: {product.stock}
             </span>
           ))}
-          {!lowStock.length && <span style={{ color: "#176b43", fontSize: 18 }}>Semua stok aman</span>}
+          {!lowStock.length && <span style={{ color: ogColors.green, fontSize: 18 }}>Semua stok aman</span>}
         </div>
       </div>
     </div>

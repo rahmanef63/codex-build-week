@@ -1,30 +1,29 @@
-import assert from "node:assert/strict";
-import test from "node:test";
-// @ts-expect-error Node's strip-types runner requires the source extension.
+import { expect, test } from "vitest";
+// @ts-expect-error tsc needs allowImportingTsExtensions for the .ts extension import; vitest resolves it directly.
 import { dashboardError, dashboardImageOptions, parseDashboardView } from "../api/view.ts";
-// @ts-expect-error Node's strip-types runner requires the source extension.
+// @ts-expect-error tsc needs allowImportingTsExtensions for the .ts extension import; vitest resolves it directly.
 import { read } from "../../../shared/testing/read-file.ts";
 
 test("dashboard card accepts only its three public views", () => {
-  assert.equal(parseDashboardView(null), "today");
-  assert.equal(parseDashboardView("today"), "today");
-  assert.equal(parseDashboardView("orders"), "orders");
-  assert.equal(parseDashboardView("activity"), "activity");
-  assert.equal(parseDashboardView("secret"), null);
-  assert.equal(parseDashboardView(""), null);
-  assert.equal(parseDashboardView("TODAY"), null);
+  expect(parseDashboardView(null)).toBe("today");
+  expect(parseDashboardView("today")).toBe("today");
+  expect(parseDashboardView("orders")).toBe("orders");
+  expect(parseDashboardView("activity")).toBe("activity");
+  expect(parseDashboardView("secret")).toBe(null);
+  expect(parseDashboardView("")).toBe(null);
+  expect(parseDashboardView("TODAY")).toBe(null);
 });
 
 test("dashboard card keeps safe image and error contracts", async () => {
-  assert.deepEqual(dashboardImageOptions, {
+  expect(dashboardImageOptions).toEqual({
     width: 1200,
     height: 630,
     headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" },
   });
   const upstreamError = dashboardError(502);
-  assert.equal(upstreamError.status, 502);
-  assert.equal(upstreamError.headers.get("cache-control"), "no-store");
-  assert.deepEqual(await upstreamError.json(), {
+  expect(upstreamError.status).toBe(502);
+  expect(upstreamError.headers.get("cache-control")).toBe("no-store");
+  expect(await upstreamError.json()).toEqual({
     error: {
       code: "DASHBOARD_UPSTREAM_FAILED",
       message: "Dashboard image sementara tidak tersedia.",
@@ -32,14 +31,14 @@ test("dashboard card keeps safe image and error contracts", async () => {
   });
 
   const route = read("app", "api", "dashboard-card-image", "route.tsx");
-  assert.match(route, /ImageResponse/);
-  assert.match(route, /api\.business\.dashboard/);
-  assert.match(route, /dashboardImageOptions/);
-  assert.match(route, /new ConvexHttpClient\(convexUrl\)/);
-  assert.match(route, /dashboard-card-query-failed/);
-  assert.match(route, /dashboard-card-render-failed/);
-  assert.doesNotMatch(route, /\b(?:customerName|inputSummary|outputSummary)\b/);
-  assert.doesNotMatch(route, /(?:ACTION_API_KEY|DEMO_RESET_KEY|OPENAI_API_KEY|SECRET)/);
+  expect(route).toMatch(/ImageResponse/);
+  expect(route).toMatch(/api\.business\.dashboard/);
+  expect(route).toMatch(/dashboardImageOptions/);
+  expect(route).toMatch(/new ConvexHttpClient\(convexUrl\)/);
+  expect(route).toMatch(/dashboard-card-query-failed/);
+  expect(route).toMatch(/dashboard-card-render-failed/);
+  expect(route).not.toMatch(/\b(?:customerName|inputSummary|outputSummary)\b/);
+  expect(route).not.toMatch(/(?:ACTION_API_KEY|DEMO_RESET_KEY|OPENAI_API_KEY|SECRET)/);
 
   // The rendering logic that used to live in route.tsx now lives in the
   // slice's api/ views — keep the same PII-absence guarantees there.
@@ -52,7 +51,7 @@ test("dashboard card keeps safe image and error contracts", async () => {
     ["slices", "demo-dashboard", "api", "view.ts"],
   ] as const) {
     const source = read(...file);
-    assert.doesNotMatch(source, /\b(?:customerName|inputSummary|outputSummary)\b/);
-    assert.doesNotMatch(source, /(?:ACTION_API_KEY|DEMO_RESET_KEY|OPENAI_API_KEY|SECRET)/);
+    expect(source).not.toMatch(/\b(?:customerName|inputSummary|outputSummary)\b/);
+    expect(source).not.toMatch(/(?:ACTION_API_KEY|DEMO_RESET_KEY|OPENAI_API_KEY|SECRET)/);
   }
 });

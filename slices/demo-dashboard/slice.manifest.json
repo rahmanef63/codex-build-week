@@ -21,7 +21,8 @@
       "api/today-view.tsx",
       "api/orders-view.tsx",
       "api/activity-view.tsx",
-      "api/empty-states.tsx"
+      "api/empty-states.tsx",
+      "api/colors.ts"
     ],
     "tests": ["__tests__/dashboard-card.test.ts"]
   }

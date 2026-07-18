@@ -1,50 +1,19 @@
-import { httpActionGeneric, httpRouter } from "convex/server";
+import { httpRouter } from "convex/server";
 import { ConvexError } from "convex/values";
 import { internal } from "./_generated/api";
 import { auth } from "./auth";
+import { body, json, secured as securedRoute, timingSafeEqualString } from "./_shared/http";
 
 const http = httpRouter();
 auth.addHttpRoutes(http);
-const headers = { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" };
-const json = (body: unknown, status = 200) =>
-  new Response(JSON.stringify(body), { status, headers });
 
 function authorize(request: Request) {
   const expected = process.env.ACTION_API_KEY;
-  return Boolean(expected && request.headers.get("X-Action-API-Key") === expected);
-}
-
-function safeError(error: unknown) {
-  if (error instanceof ConvexError && typeof error.data === "object" && error.data) {
-    const data = error.data as { code?: string; message?: string; fields?: string[] };
-    const status = data.code === "DASHBOARD_URL_MISSING"
-      ? 503
-      : data.code === "ORDER_NOT_FOUND" || data.code === "PRODUCT_NOT_FOUND"
-        ? 404
-        : data.code === "INSUFFICIENT_STOCK" || data.code === "PRODUCT_AMBIGUOUS" || data.code === "IDEMPOTENCY_CONFLICT"
-          ? 409
-          : 400;
-    return json({ error: { code: data.code ?? "BAD_REQUEST", message: data.message ?? "Permintaan tidak valid.", ...(data.fields ? { fields: data.fields } : {}) } }, status);
-  }
-  console.error("[http:safeError]", error);
-  return json({ error: { code: "INTERNAL_ERROR", message: "Terjadi kesalahan internal." } }, 500);
-}
-
-async function body(request: Request) {
-  try {
-    const value = await request.json();
-    if (!value || typeof value !== "object" || Array.isArray(value)) throw new Error();
-    return value as Record<string, unknown>;
-  } catch {
-    throw new ConvexError({ code: "INVALID_JSON", message: "Body harus berupa JSON object." });
-  }
+  return Boolean(expected && timingSafeEqualString(request.headers.get("X-Action-API-Key") ?? "", expected));
 }
 
 const secured = (handler: (ctx: any, request: Request) => Promise<Response>) =>
-  httpActionGeneric(async (ctx, request) => {
-    if (!authorize(request)) return json({ error: { code: "UNAUTHORIZED", message: "API key tidak valid." } }, 401);
-    try { return await handler(ctx, request); } catch (error) { return safeError(error); }
-  });
+  securedRoute(authorize, handler);
 
 http.route({
   path: "/api/orders",

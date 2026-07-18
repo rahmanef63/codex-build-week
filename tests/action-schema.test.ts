@@ -1,11 +1,11 @@
-import assert from "node:assert/strict";
-import test from "node:test";
+import { expect, test } from "vitest";
 
-// @ts-expect-error Node's strip-types runner requires the source extension.
+// @ts-expect-error tsc needs allowImportingTsExtensions for the .ts extension import; vitest resolves it directly.
 import { read } from "../shared/testing/read-file.ts";
 
 const jsonText = () => read("GPTs", "action-schema.json");
 const yamlText = () => read("GPTs", "temanusaha-actions.yaml");
+const httpText = () => read("convex", "http.ts");
 
 type Operation = { method: string; operationId: string; consequential: unknown };
 
@@ -27,11 +27,27 @@ const collectOperations = (spec: any): Operation[] => {
   return ops;
 };
 
+// Top-level `paths:` keys are exactly the 2-space-indented `/foo:` lines.
+const collectYamlPaths = (yaml: string): string[] =>
+  [...yaml.matchAll(/^ {2}(\/\S+):$/gm)].map((match) => match[1]).sort();
+
+// http.ts registers routes with either an exact `path: "..."` or a
+// `pathPrefix: "..."` (used for the /api/orders/:id PATCH route); normalize
+// prefixes to the same `{id}` placeholder shape the YAML spec uses so the
+// two sets line up 1:1.
+const collectHttpPaths = (source: string): string[] => {
+  const exact = [...source.matchAll(/\bpath:\s*"([^"]+)"/g)].map((match) => match[1]);
+  const prefixed = [...source.matchAll(/\bpathPrefix:\s*"([^"]+)"/g)].map(
+    (match) => `${match[1].replace(/\/$/, "")}/{id}`,
+  );
+  return [...new Set([...exact, ...prefixed])].sort();
+};
+
 test("action-schema.json parses as JSON", () => {
-  assert.doesNotThrow(() => JSON.parse(jsonText()));
+  expect(() => JSON.parse(jsonText())).not.toThrow();
   const spec = JSON.parse(jsonText());
-  assert.equal(spec.openapi, "3.1.0");
-  assert.ok(spec.paths, "spec must declare paths");
+  expect(spec.openapi).toBe("3.1.0");
+  expect(spec.paths).toBeTruthy();
 });
 
 test("operationIds match temanusaha-actions.yaml exactly", () => {
@@ -42,26 +58,18 @@ test("operationIds match temanusaha-actions.yaml exactly", () => {
   const yamlIds = [...yamlText().matchAll(/operationId:\s*(\w+)/g)]
     .map((match) => match[1])
     .sort();
-  assert.ok(yamlIds.length > 0, "YAML must contain operationIds");
-  assert.deepEqual(jsonIds, yamlIds);
-  assert.equal(new Set(jsonIds).size, jsonIds.length, "operationIds must be unique");
+  expect(yamlIds.length).toBeGreaterThan(0);
+  expect(jsonIds).toEqual(yamlIds);
+  expect(new Set(jsonIds).size).toBe(jsonIds.length);
 });
 
 test("every mutating operation is marked consequential, reads are not", () => {
   const spec = JSON.parse(jsonText());
   for (const op of collectOperations(spec)) {
     if (op.method === "post" || op.method === "patch") {
-      assert.equal(
-        op.consequential,
-        true,
-        `${op.method.toUpperCase()} ${op.operationId} must set x-openai-isConsequential: true`,
-      );
+      expect(op.consequential, `${op.method.toUpperCase()} ${op.operationId} must set x-openai-isConsequential: true`).toBe(true);
     } else {
-      assert.equal(
-        op.consequential,
-        false,
-        `${op.method.toUpperCase()} ${op.operationId} must set x-openai-isConsequential: false`,
-      );
+      expect(op.consequential, `${op.method.toUpperCase()} ${op.operationId} must set x-openai-isConsequential: false`).toBe(false);
     }
   }
 });
@@ -69,6 +77,13 @@ test("every mutating operation is marked consequential, reads are not", () => {
 test("servers URL matches temanusaha-actions.yaml", () => {
   const spec = JSON.parse(jsonText());
   const yamlUrlMatch = yamlText().match(/url:\s*(\S+)/);
-  assert.ok(yamlUrlMatch, "YAML must declare a servers url");
-  assert.equal(spec.servers?.[0]?.url, yamlUrlMatch[1]);
+  expect(yamlUrlMatch).toBeTruthy();
+  expect(spec.servers?.[0]?.url).toBe(yamlUrlMatch?.[1]);
+});
+
+test("convex/http.ts routes match temanusaha-actions.yaml paths exactly", () => {
+  const httpPaths = collectHttpPaths(httpText());
+  const yamlPaths = collectYamlPaths(yamlText());
+  expect(yamlPaths.length).toBeGreaterThan(0);
+  expect(httpPaths).toEqual(yamlPaths);
 });

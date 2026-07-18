@@ -19,7 +19,8 @@ export default function Home() {
           <h1 id="mode-title">Pilih cara kerja yang tepat.</h1>
           <p>
             Mode Demo menyajikan simulasi penuh dengan data sintetis, sedangkan
-            Mode Real terhubung langsung ke usaha Anda sendiri.
+            Mode Real masih onboarding/advisory — belum terhubung ke data usaha
+            Anda.
           </p>
         </div>
       </section>
@@ -43,22 +44,22 @@ export default function Home() {
         <article className="mode-card mode-card-real">
           <div className="mode-card-top">
             <span className="mode-label">Mode Real</span>
-            <span className="mode-status mode-status-muted">Real · Terhubung langsung</span>
+            <span className="mode-status mode-status-muted">Real · Belum terhubung</span>
           </div>
-          <h2>Kelola usaha Anda</h2>
+          <h2>Persiapan koneksi aman</h2>
           <p>
-            Daftar akun, kenalkan usaha Anda, lalu pantau pesanan, stok, dan
-            omzet secara realtime di dashboard milik sendiri.
+            Lihat langkah kesiapan onboarding untuk usaha Anda. Belum ada akun,
+            data, atau koneksi yang dibaca maupun diubah di sini.
           </p>
           <Link className="mode-cta mode-cta-secondary" href="/dashboard">
-            Masuk mode Real <span aria-hidden="true">→</span>
+            Lihat mode Real <span aria-hidden="true">→</span>
           </Link>
         </article>
       </section>
 
       <p className="mode-footnote">
-        Data Demo dan Mode Real tersimpan terpisah; akun Anda hanya membaca data
-        usaha Anda sendiri.
+        Mode Demo memakai data sintetis; Mode Real belum terhubung ke data usaha
+        nyata mana pun.
       </p>
     </main>
   );

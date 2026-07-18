@@ -1,5 +1,6 @@
 import type { Doc } from "@/convex/_generated/dataModel";
 import { formatAction } from "@/shared/lib/format";
+import { ogColors } from "./colors";
 import { EmptyLine } from "./empty-states";
 
 export function ActivityView({ activity }: { activity: Array<Doc<"aiActionLogs">> }) {
@@ -9,8 +10,8 @@ export function ActivityView({ activity }: { activity: Array<Doc<"aiActionLogs">
         <div
           key={item._id}
           style={{
-            background: "#ffffff",
-            border: "2px solid #dfe6df",
+            background: ogColors.surface,
+            border: `2px solid ${ogColors.line}`,
             borderRadius: 16,
             display: "flex",
             flexDirection: "column",
@@ -21,7 +22,7 @@ export function ActivityView({ activity }: { activity: Array<Doc<"aiActionLogs">
             <span style={{ fontSize: 21, fontWeight: 800 }}>{formatAction(item.action)}</span>
             <span
               style={{
-                color: item.requiresVerification ? "#9b382e" : "#176b43",
+                color: item.requiresVerification ? ogColors.red : ogColors.green,
                 fontSize: 16,
                 fontWeight: 700,
               }}

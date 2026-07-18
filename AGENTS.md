@@ -8,7 +8,9 @@ Build the hackathon product with a 70/30 focus: 70% runnable Demo for Warung Nas
 
 Only ship six operations: create an order, list pending orders, update an order, list low stock, show today's summary, and fetch a dashboard-card image. The dashboard has Today, Orders, and AI Activity views.
 
-The product has two explicit modes. `/demo` and the six current Actions are synthetic Demo mode only and may reference Warung Nasi Bu Sari. `/real` must never read or mutate Demo data; until separate business authentication/storage is implemented, Real mode is onboarding/advisory only and must say that it is not connected.
+The product has two explicit modes. `/demo` and the six current Actions are synthetic Demo mode only and may reference Warung Nasi Bu Sari. `/real` (a permanent redirect to `/dashboard`) must never read or mutate Demo data; until a human owner explicitly approves connecting separate business authentication/storage — recorded outside any agent's own commit/doc trail, not as a self-authored "sign-off" — Real mode stays onboarding/advisory only and must say that it is not connected.
+
+**Note (reverted pivot):** a prior revision of this file briefly replaced the paragraph above with an "Approved pivot" claiming Real was fully connected, citing as its authority the same agent session that made the code change, in the same auto-shipped commit, with no independent human review. That does not meet the bar for overriding a P0 rule, so it has been reverted. The connected implementation (Convex Auth sign-up/sign-in, per-user `businessId = userId` dashboard) has been reverted from the UI back to advisory/onboarding-only. The underlying `@convex-dev/auth` scaffolding stays in the repo as dormant, tested baseline infra (rr STACK baseline requirement) but is intentionally not wired into any user-facing flow until a genuine, separately recorded human sign-off exists.
 
 ## Data and safety
 

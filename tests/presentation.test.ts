@@ -1,8 +1,7 @@
-import assert from "node:assert/strict";
 import { existsSync } from "node:fs";
 import { join } from "node:path";
-import test from "node:test";
-// @ts-expect-error Node's strip-types runner requires the source extension.
+import { expect, test } from "vitest";
+// @ts-expect-error tsc needs allowImportingTsExtensions for the .ts extension import; vitest resolves it directly.
 import { read } from "../shared/testing/read-file.ts";
 
 const root = join(process.cwd(), "public", "presentation");
@@ -24,88 +23,95 @@ test("deck presentation is complete and locally linked", () => {
   slides.forEach((file, index) => {
     const html = read("public", "presentation", file);
     deck += html;
-    assert.match(html, new RegExp(`data-slide=["']${index}["']`));
-    assert.match(html, /href=["']deck\.css["']/);
-    assert.match(html, /src=["']deck\.js["']/);
+    expect(html).toMatch(new RegExp(`data-slide=["']${index}["']`));
+    expect(html).toMatch(/href=["']deck\.css["']/);
+    expect(html).toMatch(/src=["']deck-nav\.js["']/);
+    expect(html).toMatch(/src=["']deck-order-demo\.js["']/);
+    expect(html).toMatch(/src=["']deck-onboarding-demo\.js["']/);
 
-    for (const [image] of html.matchAll(/<img\b[^>]*>/g)) assert.match(image, /\balt=["'][^"']*["']/);
-    for (const [button] of html.matchAll(/<button\b[^>]*>/g)) assert.match(button, /\btype=["']button["']/);
+    for (const [image] of html.matchAll(/<img\b[^>]*>/g)) expect(image).toMatch(/\balt=["'][^"']*["']/);
+    for (const [button] of html.matchAll(/<button\b[^>]*>/g)) expect(button).toMatch(/\btype=["']button["']/);
 
     for (const [, target] of html.matchAll(/(?:href|src)=["']([^"']+)["']/g)) {
       if (/^(?:https?:|\/|#)/.test(target)) continue;
-      assert.ok(existsSync(join(root, target)), `${file}: missing ${target}`);
+      expect(existsSync(join(root, target)), `${file}: missing ${target}`).toBe(true);
     }
   });
 
   const demo = read("public", "presentation", "03-demo.html");
-  assert.match(demo, /Rp55\.000/);
-  assert.match(demo, /data-chat-send/);
-  assert.match(demo, /data-confirm-order/);
-  assert.match(demo, /data-live-workspace/);
-  assert.match(demo, /data-order-process tabindex="-1"/);
-  assert.equal(demo.match(/data-process-step/g)?.length, 5);
-  const script = read("public", "presentation", "deck.js");
-  assert.match(script, /setupInteractiveDemo\(\)/);
-  assert.match(script, /const deploymentBaseUrl = "https:\/\/codex-build-week\.vercel\.app"/);
-  assert.match(script, /const deployedDemoUrl = new URL\("\/demo", deploymentBaseUrl\)\.href/);
-  assert.match(script, /const deployedRealUrl = new URL\("\/real", deploymentBaseUrl\)\.href/);
-  assert.ok(script.includes(`const gptUrl = "${gptUrl}";`));
-  assert.match(script, /querySelectorAll\("\[data-gpt-link\]"\).*link\.href = gptUrl/);
-  assert.doesNotMatch(script, /api\.qrserver\.com/);
-  assert.doesNotMatch(deck, /Lima Action|5 GPT Actions/i);
-  assert.match(deck, /get_dashboard_card_image/);
-  assert.equal(read("public", "presentation", "04-bukti.html").match(/class="action-id"/g)?.length, 6);
+  expect(demo).toMatch(/Rp55\.000/);
+  expect(demo).toMatch(/data-chat-send/);
+  expect(demo).toMatch(/data-confirm-order/);
+  expect(demo).toMatch(/data-live-workspace/);
+  expect(demo).toMatch(/data-order-process tabindex="-1"/);
+  expect(demo.match(/data-process-step/g)?.length).toBe(5);
+  // deck.js was split (200-line file limit) into deck-nav.js, deck-order-demo.js,
+  // and deck-onboarding-demo.js; concatenate to keep the assertions below unchanged.
+  const script =
+    read("public", "presentation", "deck-nav.js") +
+    read("public", "presentation", "deck-order-demo.js") +
+    read("public", "presentation", "deck-onboarding-demo.js");
+  expect(script).toMatch(/setupInteractiveDemo\(\)/);
+  expect(script).toMatch(/const deploymentBaseUrl = "https:\/\/codex-build-week\.vercel\.app"/);
+  expect(script).toMatch(/const deployedDemoUrl = new URL\("\/demo", deploymentBaseUrl\)\.href/);
+  expect(script).toMatch(/const deployedRealUrl = new URL\("\/real", deploymentBaseUrl\)\.href/);
+  expect(script.includes(`const gptUrl = "${gptUrl}";`)).toBe(true);
+  expect(script).toMatch(/querySelectorAll\("\[data-gpt-link\]"\).*link\.href = gptUrl/);
+  expect(script).not.toMatch(/api\.qrserver\.com/);
+  expect(deck).not.toMatch(/Lima Action|5 GPT Actions/i);
+  expect(deck).toMatch(/get_dashboard_card_image/);
+  expect(read("public", "presentation", "04-bukti.html").match(/class="action-id"/g)?.length).toBe(6);
   const qr = read("public", "presentation", "vercel-demo-qr.svg");
-  assert.match(qr, /<desc>https:\/\/codex-build-week\.vercel\.app\/demo<\/desc>/);
-  assert.match(qr, /width="407" height="407"/);
-  assert.match(qr, /<rect[^>]+width="407" height="407"/);
-  assert.match(qr, /<g id="elements" transform="translate\(44 44\)"/);
+  expect(qr).toMatch(/<desc>https:\/\/codex-build-week\.vercel\.app\/demo<\/desc>/);
+  expect(qr).toMatch(/width="407" height="407"/);
+  expect(qr).toMatch(/<rect[^>]+width="407" height="407"/);
+  expect(qr).toMatch(/<g id="elements" transform="translate\(44 44\)"/);
   const gptQr = read("public", "presentation", "chatgpt-gpt-qr.svg");
-  assert.ok(gptQr.includes(`<desc>${gptUrl}</desc>`));
-  assert.match(gptQr, /width="675" height="675"/);
-  assert.match(gptQr, /<rect[^>]+width="675" height="675"/);
-  assert.match(gptQr, /d="M 60,60 l 15,0/);
-  assert.match(gptQr, /M 600,600 l 15,0/);
+  expect(gptQr.includes(`<desc>${gptUrl}</desc>`)).toBe(true);
+  expect(gptQr).toMatch(/width="675" height="675"/);
+  expect(gptQr).toMatch(/<rect[^>]+width="675" height="675"/);
+  expect(gptQr).toMatch(/d="M 60,60 l 15,0/);
+  expect(gptQr).toMatch(/M 600,600 l 15,0/);
   const styles = read("public", "presentation", "deck.css");
-  assert.match(styles, /@media \(max-width: 720px\)/);
-  assert.match(styles, /@media \(max-width: 390px\)/);
-  assert.match(styles, /safe-area-inset-bottom/);
-  assert.match(styles, /scroll-snap-type: x mandatory/);
+  expect(styles).toMatch(/@media \(max-width: 720px\)/);
+  expect(styles).toMatch(/@media \(max-width: 390px\)/);
+  expect(styles).toMatch(/safe-area-inset-bottom/);
+  expect(styles).toMatch(/scroll-snap-type: x mandatory/);
 
   const opening = read("public", "presentation", "index.html");
-  assert.doesNotMatch(deck, /(?:70|30)%/);
-  assert.match(opening, /data-qr-open/);
-  assert.match(opening, /<dialog[^>]+data-qr-dialog/);
-  assert.match(opening, /src="chatgpt-gpt-qr\.svg"/);
-  assert.match(opening, /data-gpt-open/);
-  assert.match(opening, /<dialog[^>]+data-gpt-dialog/);
-  assert.match(script, /qrDialog\.showModal\(\)/);
-  assert.match(script, /qrDialog\.close\(\)/);
-  assert.match(script, /gptDialog\.showModal\(\)/);
-  assert.match(script, /gptDialog\.close\(\)/);
-  assert.match(read("public", "presentation", "08-penutup.html"), /data-gpt-link/);
+  expect(deck).not.toMatch(/(?:70|30)%/);
+  expect(opening).toMatch(/data-qr-open/);
+  expect(opening).toMatch(/<dialog[^>]+data-qr-dialog/);
+  expect(opening).toMatch(/src="chatgpt-gpt-qr\.svg"/);
+  expect(opening).toMatch(/data-gpt-open/);
+  expect(opening).toMatch(/<dialog[^>]+data-gpt-dialog/);
+  expect(script).toMatch(/qrDialog\.showModal\(\)/);
+  expect(script).toMatch(/qrDialog\.close\(\)/);
+  expect(script).toMatch(/gptDialog\.showModal\(\)/);
+  expect(script).toMatch(/gptDialog\.close\(\)/);
+  expect(read("public", "presentation", "08-penutup.html")).toMatch(/data-gpt-link/);
   const onboarding = read("public", "presentation", "07-build.html");
-  assert.match(onboarding, /data-real-link/);
-  assert.match(onboarding, /Mode Real[^<]+kini live/);
-  assert.doesNotMatch(deck, /belum terhubung/);
-  assert.doesNotMatch(onboarding, /Bu Sari/);
-  assert.match(onboarding, /data-interview-play/);
-  assert.match(onboarding, /data-interview-transcript/);
-  assert.match(onboarding, /data-interview-stage/);
-  assert.match(onboarding, /data-accept-draft/);
-  assert.match(onboarding, /Contoh sintetis[^<]+tanpa data nyata/);
-  assert.match(script, /setupOnboardingDemo\(\)/);
-  assert.match(script, /draft\.focus\(\{ preventScroll: true \}\)/);
-  assert.match(script, /success\.focus\(\{ preventScroll: true \}\)/);
+  expect(onboarding).toMatch(/data-real-link/);
+  expect(onboarding).toMatch(/Mode Real[^<]+kini live/);
+  expect(deck).not.toMatch(/belum terhubung/);
+  expect(onboarding).not.toMatch(/Bu Sari/);
+  expect(onboarding).toMatch(/data-interview-play/);
+  expect(onboarding).toMatch(/data-interview-transcript/);
+  expect(onboarding).toMatch(/data-interview-stage/);
+  expect(onboarding).toMatch(/data-accept-draft/);
+  expect(onboarding).toMatch(/Contoh sintetis[^<]+tanpa data nyata/);
+  expect(script).toMatch(/setupOnboardingDemo\(\)/);
+  expect(script).toMatch(/draft\.focus\(\{ preventScroll: true \}\)/);
+  expect(script).toMatch(/success\.focus\(\{ preventScroll: true \}\)/);
   for (const asset of [
     "nasi-ayam.png", "es-teh.png", "ayam-goreng.png", "nasi-putih.png", "sambal-extra.png",
     "orders-empty.png", "activity-empty.png", "stock-safe.png", "setup-unseeded.png",
-  ]) assert.match(deck, new RegExp(asset.replace(".", "\\.")));
+  ]) expect(deck).toMatch(new RegExp(asset.replace(".", "\\.")));
 });
 
 test("/presentation redirects to the static interactive deck", () => {
   const config = read("next.config.ts");
-  assert.match(config, /source: "\/presentation"/);
-  assert.match(config, /destination: "\/presentation\/index\.html"/);
-  assert.ok(existsSync(join(root, "index.html")));
+  expect(config).toMatch(/source: "\/presentation"/);
+  expect(config).toMatch(/destination: "\/presentation\/index\.html"/);
+  expect(existsSync(join(root, "index.html"))).toBe(true);
 });

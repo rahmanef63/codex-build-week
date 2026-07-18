@@ -1,3 +1,4 @@
+// domain-specific validation — generic cross-cutting helpers live in convex/_shared/
 import { v } from "convex/values";
 
 export const paymentStatus = v.union(

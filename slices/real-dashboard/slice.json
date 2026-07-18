@@ -1,12 +1,12 @@
 {
   "slug": "real-dashboard",
   "version": "1.0.0",
-  "description": "Mode Real dashboard — authenticated, per-owner business data via @convex-dev/auth. Renders the /dashboard auth, onboarding, and connected dashboard UI.",
+  "description": "Mode Real dashboard — advisory/onboarding-only per AGENTS.md P0 mode boundary. Renders the /dashboard readiness page and states explicitly that no business account or data is connected. Does not read or write any Convex data.",
   "owner": "frontend",
   "contract": {
-    "reads": ["api.real.dashboard"],
-    "writes": ["api.real.createBusiness"],
-    "auth": "@convex-dev/auth (email/password)",
+    "reads": [],
+    "writes": [],
+    "auth": "none (advisory-only; @convex-dev/auth wiring stays dormant in convex/real.ts + convex/auth.ts until explicit human sign-off)",
     "externalApis": [],
     "routes": ["/dashboard"]
   }

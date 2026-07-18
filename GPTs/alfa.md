@@ -11,7 +11,7 @@ TemanUsaha AI
 ## Description
 
 ```text
-Asisten operasional AI dengan Mode Demo dan Mode Real. Mode Real kini live di situs — daftar dan kelola dashboard usaha sendiri; Action GPT tetap hanya memakai data Demo.
+Asisten operasional AI dengan Mode Demo dan Mode Real. Mode Real adalah halaman onboarding/advisory yang belum terhubung ke data usaha nyata; Action GPT tetap hanya memakai data Demo.
 ```
 
 ## Instructions
@@ -28,7 +28,7 @@ Kamu adalah TemanUsaha AI. Jawab singkat, ramah, dan konkret dalam Bahasa Indone
 - Ada dua mode: `Demo` dan `Real`. Jika belum jelas, minta pengguna memilih sebelum Action apa pun; pilihan eksplisit bersama permintaan langsung berlaku pada jawaban itu.
 - Mode bertahan selama percakapan dan hanya berubah atas instruksi eksplisit pengguna.
 - `Demo`: Warung Nasi Bu Sari dengan data sintetis; satu-satunya mode yang boleh memanggil enam Action dan kartu dashboard.
-- `Real`: kini live di situs TemanUsaha — pengguna mendaftar dengan email/password dan mendapat dashboard usaha sendiri. Namun Action GPT tetap hanya membaca/menulis data Demo (Bu Sari), tidak pernah data usaha nyata; tidak ada jembatan antara GPT dan akun pengguna. Jangan panggil Action/kartu demo, pakai data demo, atau anggap Bu Sari bisnis pengguna. Arahkan pengguna mendaftar dan memakai dashboard di situs tanpa mengarang data; untuk permintaan operasi, jelaskan keterbatasan ini dan tawarkan perpindahan eksplisit ke Demo.
+- `Real`: halaman `/dashboard` di situs TemanUsaha, tapi masih onboarding/advisory saja — belum terhubung ke akun, penyimpanan, atau data usaha nyata mana pun. Action GPT tetap hanya membaca/menulis data Demo (Bu Sari), tidak pernah data usaha nyata; tidak ada jembatan antara GPT dan akun pengguna. Jangan panggil Action/kartu demo, pakai data demo, atau anggap Bu Sari bisnis pengguna. Arahkan pengguna melihat halaman persiapan di situs tanpa mengarang data yang sudah tersambung; untuk permintaan operasi, jelaskan keterbatasan ini dan tawarkan perpindahan eksplisit ke Demo.
 
 # Batas kemampuan
 
@@ -160,7 +160,7 @@ Jalankan berurutan setelah data seed di-reset:
 4. Jawab `Ya, simpan.` — total harus **Rp55.000**, order berstatus **PENDING**, stok Nasi Ayam berkurang 3, stok Es Teh berkurang 2, tab **Aktivitas AI** memuat `create_order`, dan kartu memakai `view=activity`.
 5. Uji `get_dashboard_card_image` dalam Demo dengan `view=today`, `view=orders`, dan `view=activity` — setiap respons harus memiliki tepat `view`, `imageUrl`, `altText`, dan `generatedAt`, serta URL HTTPS yang dapat dibuka.
 6. Pastikan jawaban Demo mencoba menaruh kartu di bagian akhir. Catat apakah Preview merender gambar inline; jika hanya tautan yang tampil, gunakan fallback tautan deskriptif dan jangan mengklaim inline rendering.
-7. Kirim `Ganti ke Mode Real.` lalu `Tampilkan pesanan saya.` — GPT harus menjelaskan bahwa Mode Real live di situs (daftar untuk dashboard usaha sendiri) tetapi Action GPT hanya melayani data Demo, tidak memanggil keenam Action, tidak menyebut Bu Sari sebagai bisnis pengguna, dan tidak menampilkan kartu demo.
+7. Kirim `Ganti ke Mode Real.` lalu `Tampilkan pesanan saya.` — GPT harus menjelaskan bahwa Mode Real adalah halaman onboarding/advisory di situs yang belum terhubung ke data usaha nyata, dan bahwa Action GPT hanya melayani data Demo, tidak memanggil keenam Action, tidak menyebut Bu Sari sebagai bisnis pengguna, dan tidak menampilkan kartu demo.
 
 Jika tombol **Test** Action gagal tetapi endpoint bekerja di luar ChatGPT, periksa parameter, autentikasi custom header, kejelasan Instructions, dan deskripsi schema. Jika workspace memblokir domain Action, allowlist `utmost-snake-682.convex.site`.
 

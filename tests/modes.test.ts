@@ -1,39 +1,43 @@
-import assert from "node:assert/strict";
-import test from "node:test";
-// @ts-expect-error Node's strip-types runner requires the source extension.
+import { expect, test } from "vitest";
+// @ts-expect-error tsc needs allowImportingTsExtensions for the .ts extension import; vitest resolves it directly.
 import { read } from "../shared/testing/read-file.ts";
 
-test("Demo owns synthetic business wiring while Real runs its own live connected app", () => {
-  const root = read("app", "page.tsx");
-  const demo = read("app", "demo", "page.tsx");
+test("Demo owns synthetic business wiring while Real stays disconnected/advisory (AGENTS.md P0 mode boundary)", () => {
+  const root = read("app", "(public)", "page.tsx");
+  const demo = read("app", "(public)", "demo", "page.tsx");
   const gptPackage = read("GPTs", "alfa.md");
   const globalError = read("app", "error.tsx");
   const globalSocialCard = read("app", "opengraph-image.tsx");
-  const real = read("app", "real", "page.tsx");
-  const dashboard = read("app", "dashboard", "page.tsx");
+  const real = read("app", "(workspace)", "real", "page.tsx");
+  const dashboard = read("app", "(workspace)", "dashboard", "page.tsx");
   const dashboardApp = read("slices", "real-dashboard", "components", "dashboard-app.tsx");
 
-  assert.match(root, /href="\/demo"/);
-  assert.match(root, /href="\/dashboard"/);
-  assert.match(root, /Pilihan Mode Demo dan Mode Real/);
-  assert.match(root, /Demo · Data sintetis/);
-  assert.match(root, /Real · Terhubung langsung/);
-  assert.doesNotMatch(root, /Bu Sari|ConvexClientProvider|Dashboard/);
-  assert.doesNotMatch(globalError, /Bu Sari|Convex|Dashboard/);
-  assert.doesNotMatch(globalSocialCard, /Bu Sari|Warung Nasi/);
+  expect(root).toMatch(/href="\/demo"/);
+  expect(root).toMatch(/href="\/dashboard"/);
+  expect(root).toMatch(/Pilihan Mode Demo dan Mode Real/);
+  expect(root).toMatch(/Demo · Data sintetis/);
+  expect(root).toMatch(/Real · Belum terhubung/);
+  expect(root).not.toMatch(/Bu Sari|ConvexClientProvider|Dashboard/);
+  expect(globalError).not.toMatch(/Bu Sari|Convex|Dashboard/);
+  expect(globalSocialCard).not.toMatch(/Bu Sari|Warung Nasi/);
 
-  assert.match(demo, /Warung Nasi Bu Sari/);
-  assert.match(demo, /ConvexClientProvider/);
-  assert.match(demo, /<Dashboard \/>/);
+  expect(demo).toMatch(/Warung Nasi Bu Sari/);
+  expect(demo).toMatch(/ConvexClientProvider/);
+  expect(demo).toMatch(/<Dashboard \/>/);
 
-  assert.match(real, /redirect\("\/dashboard"\)/);
-  assert.match(dashboard, /ConvexClientProvider/);
-  assert.doesNotMatch(dashboardApp, /Bu Sari/);
+  expect(real).toMatch(/redirect\("\/dashboard"\)/);
+  expect(dashboard).not.toMatch(/ConvexClientProvider/);
+  expect(dashboard).toMatch(/Belum terhubung/);
+  expect(dashboardApp).not.toMatch(/Bu Sari/);
+  expect(dashboardApp).not.toMatch(/useConvexAuth|useAuthActions|api\.real/);
+  expect(dashboardApp).toMatch(/belum terhubung/i);
 
-  assert.match(gptPackage, /## Name\s+```text\s+TemanUsaha AI\s+```/);
+  expect(gptPackage).toMatch(/## Name\s+```text\s+TemanUsaha AI\s+```/);
   const description = gptPackage.match(/## Description\s+```text\s+([\s\S]*?)```/);
-  assert.ok(description, "GPTs/alfa.md must keep a ## Description text block");
-  assert.match(description[1], /\S/);
-  assert.match(description[1], /Mode Demo/);
-  assert.match(description[1], /Mode Real/);
+  expect(description, "GPTs/alfa.md must keep a ## Description text block").toBeTruthy();
+  const descriptionText = description?.[1] ?? "";
+  expect(descriptionText).toMatch(/\S/);
+  expect(descriptionText).toMatch(/Mode Demo/);
+  expect(descriptionText).toMatch(/Mode Real/);
+  expect(descriptionText).not.toMatch(/kini live/);
 });

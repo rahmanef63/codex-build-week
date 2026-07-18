@@ -1,5 +1,6 @@
 import type { Doc } from "@/convex/_generated/dataModel";
 import { ActivityView } from "./activity-view";
+import { ogColors } from "./colors";
 import { EmptySeed } from "./empty-states";
 import { OrdersView } from "./orders-view";
 import { TodayView } from "./today-view";
@@ -23,8 +24,8 @@ export function renderDashboardCard(data: DashboardCardData, view: DashboardView
   return (
     <div
       style={{
-        background: "#f4f7f3",
-        color: "#17211b",
+        background: ogColors.canvas,
+        color: ogColors.ink,
         display: "flex",
         flexDirection: "column",
         fontFamily: "Arial, sans-serif",
@@ -35,16 +36,16 @@ export function renderDashboardCard(data: DashboardCardData, view: DashboardView
     >
       <div style={{ alignItems: "center", display: "flex", justifyContent: "space-between" }}>
         <div style={{ display: "flex", flexDirection: "column" }}>
-          <span style={{ color: "#176b43", fontSize: 18, fontWeight: 700, letterSpacing: 2 }}>
+          <span style={{ color: ogColors.green, fontSize: 18, fontWeight: 700, letterSpacing: 2 }}>
             TEMANUSAHA AI
           </span>
           <span style={{ fontSize: 38, fontWeight: 800, marginTop: 8 }}>{businessName}</span>
         </div>
         <span
           style={{
-            background: "#e3f2e9",
+            background: ogColors.greenSoft,
             borderRadius: 999,
-            color: "#176b43",
+            color: ogColors.green,
             fontSize: 18,
             fontWeight: 700,
             padding: "12px 20px",
@@ -58,8 +59,8 @@ export function renderDashboardCard(data: DashboardCardData, view: DashboardView
       </div>
       <div
         style={{
-          borderTop: "2px solid #dfe6df",
-          color: "#657168",
+          borderTop: `2px solid ${ogColors.line}`,
+          color: ogColors.muted,
           display: "flex",
           fontSize: 17,
           justifyContent: "space-between",

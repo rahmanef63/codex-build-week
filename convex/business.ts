@@ -1,4 +1,4 @@
-import { internalQueryGeneric, queryGeneric } from "convex/server";
+import { internalQuery, query, type QueryCtx } from "./_generated/server";
 import type { Doc } from "./_generated/dataModel";
 import {
   buildTodaySummary,
@@ -7,27 +7,28 @@ import {
   MAX_PRODUCTS_PER_BUSINESS,
   selectLowStock,
 } from "./domain";
+import { logError } from "./_shared/log";
 
-export async function readDashboard(ctx: any, businessId: string = BUSINESS_ID) {
+export async function readDashboard(ctx: QueryCtx, businessId: string = BUSINESS_ID) {
   const now = Date.now();
   const day = jakartaDay(now);
   const [business, products, orders, todayOrders, activity] = await Promise.all([
     ctx.db
       .query("businesses")
-      .withIndex("by_business_id", (q: any) => q.eq("businessId", businessId))
+      .withIndex("by_business_id", (q) => q.eq("businessId", businessId))
       .unique(),
     ctx.db
       .query("products")
-      .withIndex("by_business_id", (q: any) => q.eq("businessId", businessId))
+      .withIndex("by_business_id", (q) => q.eq("businessId", businessId))
       .take(MAX_PRODUCTS_PER_BUSINESS) as Promise<Doc<"products">[]>,
     ctx.db
       .query("orders")
-      .withIndex("by_business_created", (q: any) => q.eq("businessId", businessId))
+      .withIndex("by_business_created", (q) => q.eq("businessId", businessId))
       .order("desc")
       .take(50),
     ctx.db
       .query("orders")
-      .withIndex("by_business_created", (q: any) =>
+      .withIndex("by_business_created", (q) =>
         q
           .eq("businessId", businessId)
           .gte("createdAt", day.start)
@@ -36,7 +37,7 @@ export async function readDashboard(ctx: any, businessId: string = BUSINESS_ID) 
       .take(2000),
     ctx.db
       .query("aiActionLogs")
-      .withIndex("by_business_created", (q: any) => q.eq("businessId", businessId))
+      .withIndex("by_business_created", (q) => q.eq("businessId", businessId))
       .order("desc")
       .take(20),
   ]);
@@ -50,12 +51,19 @@ export async function readDashboard(ctx: any, businessId: string = BUSINESS_ID) 
   };
 }
 
-export const dashboard = queryGeneric({
+export const dashboard = query({
   args: {},
-  handler: async (ctx) => readDashboard(ctx),
+  handler: async (ctx) => {
+    try {
+      return await readDashboard(ctx);
+    } catch (error) {
+      logError("business:dashboard", error);
+      throw error;
+    }
+  },
 });
 
-export const summaryToday = internalQueryGeneric({
+export const summaryToday = internalQuery({
   args: {},
   handler: async (ctx) => (await readDashboard(ctx)).summary,
 });

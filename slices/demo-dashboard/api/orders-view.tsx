@@ -1,5 +1,6 @@
 import type { Doc } from "@/convex/_generated/dataModel";
 import { formatRupiah } from "@/shared/lib/format";
+import { ogColors } from "./colors";
 import { EmptyLine } from "./empty-states";
 
 export function OrdersView({ orders }: { orders: Array<Doc<"orders">> }) {
@@ -10,15 +11,15 @@ export function OrdersView({ orders }: { orders: Array<Doc<"orders">> }) {
           key={order._id}
           style={{
             alignItems: "center",
-            background: "#ffffff",
-            border: "2px solid #dfe6df",
+            background: ogColors.surface,
+            border: `2px solid ${ogColors.line}`,
             borderRadius: 16,
             display: "flex",
             padding: "18px 22px",
           }}
         >
           <span style={{ flex: 1, fontSize: 22, fontWeight: 800 }}>Pesanan {index + 1}</span>
-          <span style={{ color: "#657168", flex: 2, fontSize: 17 }}>
+          <span style={{ color: ogColors.muted, flex: 2, fontSize: 17 }}>
             {order.items
               .map((item) => item.quantity + " x " + item.productName)
               .join(", ")}

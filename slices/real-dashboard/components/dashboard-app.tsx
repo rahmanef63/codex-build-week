@@ -1,26 +1,56 @@
-"use client";
+import { ThemeToggle } from "./theme-toggle";
 
-import { useAuthActions } from "@convex-dev/auth/react";
-import { useConvexAuth, useQuery } from "convex/react";
-
-import { api } from "@/convex/_generated/api";
-import type { DashboardData } from "@/shared/types/dashboard";
-import { AuthCard } from "./auth-card";
-import { ConnectedDashboard } from "./connected-dashboard";
-import { DashboardSkeleton } from "./dashboard-skeleton";
-import { OnboardingCard } from "./onboarding-card";
+// Mode Real P0 (AGENTS.md "mode boundary"): stays onboarding/advisory only
+// and must say it is not connected. A prior revision wired this up to a
+// sign-up/sign-in flow and a live per-user dashboard behind a self-authored
+// "approved pivot" note with no independent human sign-off — reverted. Do
+// not reconnect this to the dormant Convex auth/business backend without a
+// genuine approval recorded outside this agent's own commit trail.
+const readinessSteps = [
+  {
+    title: "Kenali usaha Anda",
+    description: "Buat identitas usaha dan akun pemilik yang terverifikasi.",
+  },
+  {
+    title: "Pisahkan penyimpanan",
+    description: "Sediakan ruang data khusus yang tidak bercampur dengan data sintetis.",
+  },
+  {
+    title: "Atur izin tindakan",
+    description: "Tentukan tindakan AI yang boleh dibaca, diusulkan, atau dikonfirmasi.",
+  },
+];
 
 export function DashboardApp() {
-  const { isAuthenticated, isLoading } = useConvexAuth();
-  const { signOut } = useAuthActions();
-  const data = useQuery(api.real.dashboard, isAuthenticated ? {} : "skip") as
-    | DashboardData
-    | null
-    | undefined;
-
-  if (isLoading || (isAuthenticated && data === undefined)) return <DashboardSkeleton />;
-  if (!isAuthenticated) return <AuthCard />;
-  if (!data || data.business === null) return <OnboardingCard />;
-
-  return <ConnectedDashboard data={data} onSignOut={() => void signOut()} />;
+  return (
+    <div className="dash-center">
+      <section aria-labelledby="dash-advisory-title" className="dash-card dash-onboarding">
+        <div style={{ display: "flex", justifyContent: "flex-end", width: "100%" }}>
+          <ThemeToggle />
+        </div>
+        <span className="dash-eyebrow">Mode Real · Belum terhubung</span>
+        <h1 id="dash-advisory-title">Bisnis Anda belum terhubung.</h1>
+        <p className="dash-muted">
+          TemanUsaha AI belum memiliki akses ke data usaha Anda. Tidak ada pesanan,
+          stok, omzet, atau data pelanggan yang dibaca maupun diubah dari halaman ini.
+        </p>
+        <ol className="dash-list">
+          {readinessSteps.map((step, index) => (
+            <li key={step.title}>
+              <div className="dash-item-copy">
+                <strong>
+                  {index + 1}. {step.title}
+                </strong>
+                <span className="dash-muted dash-small">{step.description}</span>
+              </div>
+            </li>
+          ))}
+        </ol>
+        <p className="dash-muted dash-small">
+          Gunakan halaman ini sebagai panduan persiapan. Koneksi data dan tindakan
+          operasional belum diaktifkan.
+        </p>
+      </section>
+    </div>
+  );
 }

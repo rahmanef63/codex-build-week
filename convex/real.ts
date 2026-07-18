@@ -1,18 +1,33 @@
-import { getAuthUserId } from "@convex-dev/auth/server";
-import { mutationGeneric, queryGeneric } from "convex/server";
-import { ConvexError, v } from "convex/values";
+import { v } from "convex/values";
+import { optionalUserId, requireUserId } from "./_shared/auth";
+import { fail } from "./_shared/errors";
+import { logError } from "./_shared/log";
+import { mutation, query } from "./_generated/server";
 import { readDashboard } from "./business";
 
 // Mode Real: setiap user memiliki satu usaha; businessId = userId sehingga
 // data user terpisah total dari data demo Bu Sari.
-export const dashboard = queryGeneric({
+//
+// Dormant by design (AGENTS.md P0 mode boundary): no UI currently calls
+// these functions. slices/real-dashboard renders advisory/"not connected"
+// copy only. Do not wire this up to the frontend without a genuine human
+// sign-off recorded outside any agent's own commit trail — a prior "Approved
+// pivot" note self-authored by the same session that shipped the code was
+// reverted for exactly this reason. Kept here, tested, as baseline
+// @convex-dev/auth infra per the rr STACK baseline requirement.
+export const dashboard = query({
   args: {},
-  handler: async (ctx: any) => {
-    const userId = await getAuthUserId(ctx);
-    if (!userId) return null;
-    const data = await readDashboard(ctx, userId);
-    if (!data.business) return { business: null };
-    return data;
+  handler: async (ctx) => {
+    try {
+      const userId = await optionalUserId(ctx);
+      if (!userId) return null;
+      const data = await readDashboard(ctx, userId);
+      if (!data.business) return { business: null };
+      return data;
+    } catch (error) {
+      logError("real:dashboard", error);
+      throw error;
+    }
   },
 });
 
@@ -23,7 +38,7 @@ const slugify = (name: string) =>
     .replace(/^-+|-+$/g, "")
     .slice(0, 40) || "produk";
 
-export const createBusiness = mutationGeneric({
+export const createBusiness = mutation({
   args: {
     name: v.string(),
     products: v.array(
@@ -34,49 +49,51 @@ export const createBusiness = mutationGeneric({
       }),
     ),
   },
-  handler: async (ctx: any, args: { name: string; products: Array<{ name: string; price: number; stock: number }> }) => {
-    const userId = await getAuthUserId(ctx);
-    if (!userId) {
-      throw new ConvexError({ code: "UNAUTHENTICATED", message: "Masuk terlebih dahulu." });
-    }
-    if (args.products.length > 50) {
-      throw new ConvexError({ code: "TOO_MANY_PRODUCTS", message: "Maksimal 50 produk saat pendaftaran." });
-    }
-    const name = args.name.trim();
-    if (!name) {
-      throw new ConvexError({ code: "INVALID_NAME", message: "Nama usaha wajib diisi." });
-    }
-    const existing = await ctx.db
-      .query("businesses")
-      .withIndex("by_business_id", (q: any) => q.eq("businessId", userId))
-      .unique();
-    if (existing) {
-      throw new ConvexError({ code: "BUSINESS_EXISTS", message: "Usaha Anda sudah terdaftar." });
-    }
-    await ctx.db.insert("businesses", {
-      businessId: userId,
-      name,
-      currency: "IDR",
-      timezone: "Asia/Jakarta",
-    });
-    const slugs = new Set<string>();
-    let sortOrder = 0;
-    for (const product of args.products) {
-      const productName = product.name.trim();
-      if (!productName || !Number.isFinite(product.price) || product.price < 0) continue;
-      let slug = slugify(productName);
-      while (slugs.has(slug)) slug = `${slug}-${sortOrder}`;
-      slugs.add(slug);
-      await ctx.db.insert("products", {
+  handler: async (ctx, args) => {
+    try {
+      const userId = await requireUserId(ctx);
+      if (args.products.length > 50) {
+        fail("TOO_MANY_PRODUCTS", "Maksimal 50 produk saat pendaftaran.");
+      }
+      const name = args.name.trim();
+      if (!name) {
+        fail("INVALID_NAME", "Nama usaha wajib diisi.");
+      }
+      const existing = await ctx.db
+        .query("businesses")
+        .withIndex("by_business_id", (q) => q.eq("businessId", userId))
+        .unique();
+      if (existing) {
+        fail("BUSINESS_EXISTS", "Usaha Anda sudah terdaftar.");
+      }
+      await ctx.db.insert("businesses", {
         businessId: userId,
-        slug,
-        name: productName,
-        price: Math.round(product.price),
-        stock: Math.max(0, Math.round(product.stock)),
-        lowStockThreshold: 5,
-        sortOrder: sortOrder++,
+        name,
+        currency: "IDR",
+        timezone: "Asia/Jakarta",
       });
+      const slugs = new Set<string>();
+      let sortOrder = 0;
+      for (const product of args.products) {
+        const productName = product.name.trim();
+        if (!productName || !Number.isFinite(product.price) || product.price < 0) continue;
+        let slug = slugify(productName);
+        while (slugs.has(slug)) slug = `${slug}-${sortOrder}`;
+        slugs.add(slug);
+        await ctx.db.insert("products", {
+          businessId: userId,
+          slug,
+          name: productName,
+          price: Math.round(product.price),
+          stock: Math.max(0, Math.round(product.stock)),
+          lowStockThreshold: 5,
+          sortOrder: sortOrder++,
+        });
+      }
+      return { ok: true };
+    } catch (error) {
+      logError("real:createBusiness", error);
+      throw error;
     }
-    return { ok: true };
   },
 });

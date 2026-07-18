@@ -6,13 +6,10 @@
     "types": "types.ts",
     "components": [
       "components/dashboard-app.tsx",
-      "components/auth-card.tsx",
-      "components/onboarding-card.tsx",
-      "components/connected-dashboard.tsx",
-      "components/dashboard-skeleton.tsx",
-      "components/status-badge.tsx"
+      "components/theme-provider.tsx",
+      "components/theme-toggle.tsx"
     ],
-    "lib": ["lib/theme.ts"],
+    "lib": [],
     "tests": []
   }
 }

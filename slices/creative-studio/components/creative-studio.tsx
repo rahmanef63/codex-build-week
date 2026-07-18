@@ -2,9 +2,15 @@
 
 import { useEffect, useState } from "react";
 
+import { useToast } from "@/shared/components/toast";
+import { httpErrorMessage } from "@/shared/lib/http-errors";
+
 import type { CreativeKind } from "../types";
 
+const GENERATION_FAILURE_MESSAGE = "Hasil belum berhasil dibuat. Coba lagi.";
+
 export function CreativeStudio({ enabled }: Readonly<{ enabled: boolean }>) {
+  const toast = useToast();
   const [brief, setBrief] = useState("");
   const [imageUrl, setImageUrl] = useState<string>();
   const [kind, setKind] = useState<CreativeKind>("logo");
@@ -36,13 +42,19 @@ export function CreativeStudio({ enabled }: Readonly<{ enabled: boolean }>) {
         headers: { "Content-Type": "application/json" },
         method: "POST",
       });
-      if (!response.ok) throw new Error();
+      if (!response.ok) {
+        const failureMessage = await httpErrorMessage(response, GENERATION_FAILURE_MESSAGE);
+        setMessage(failureMessage);
+        toast(failureMessage, { variant: "error" });
+        return;
+      }
 
       const nextImageUrl = URL.createObjectURL(await response.blob());
       setImageUrl(nextImageUrl);
       setMessage(`${nextKind === "logo" ? "Logo" : "Poster"} siap diperiksa.`);
     } catch {
-      setMessage("Hasil belum berhasil dibuat. Periksa konfigurasi API lalu coba lagi.");
+      setMessage(GENERATION_FAILURE_MESSAGE);
+      toast(GENERATION_FAILURE_MESSAGE, { variant: "error" });
     } finally {
       setPending(false);
     }
