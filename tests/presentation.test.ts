@@ -86,7 +86,8 @@ test("deck presentation is complete and locally linked", () => {
   assert.match(read("public", "presentation", "08-penutup.html"), /data-gpt-link/);
   const onboarding = read("public", "presentation", "07-build.html");
   assert.match(onboarding, /data-real-link/);
-  assert.match(onboarding, /Mode Real[^<]+belum terhubung/);
+  assert.match(onboarding, /Mode Real[^<]+kini live/);
+  assert.doesNotMatch(deck, /belum terhubung/);
   assert.doesNotMatch(onboarding, /Bu Sari/);
   assert.match(onboarding, /data-interview-play/);
   assert.match(onboarding, /data-interview-transcript/);
