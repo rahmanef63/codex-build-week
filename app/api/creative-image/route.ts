@@ -17,8 +17,9 @@ export async function POST(request: Request) {
     return Response.json({ error: "Content-Type harus application/json." }, { status: 415 });
   }
 
-  const contentLength = Number(request.headers.get("content-length"));
-  if (Number.isFinite(contentLength) && contentLength > 2_048) {
+  const contentLengthHeader = request.headers.get("content-length");
+  const contentLength = contentLengthHeader?.trim() ? Number(contentLengthHeader) : Number.NaN;
+  if (!Number.isFinite(contentLength) || contentLength > 2_048) {
     return Response.json({ error: "Permintaan terlalu besar." }, { status: 413 });
   }
 
@@ -34,7 +35,7 @@ export async function POST(request: Request) {
     return Response.json({ error: "Pilih logo atau poster dan isi brief maksimal 500 karakter." }, { status: 400 });
   }
 
-  const model = process.env.OPENAI_IMAGE_MODEL ?? "gpt-image-2";
+  const model = "gpt-image-2";
   try {
     const response = await requestOpenAI("images/generations", {
       model,

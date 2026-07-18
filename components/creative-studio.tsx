@@ -39,10 +39,7 @@ export function CreativeStudio({ enabled }: Readonly<{ enabled: boolean }>) {
       if (!response.ok) throw new Error();
 
       const nextImageUrl = URL.createObjectURL(await response.blob());
-      setImageUrl((current) => {
-        if (current) URL.revokeObjectURL(current);
-        return nextImageUrl;
-      });
+      setImageUrl(nextImageUrl);
       setMessage(`${nextKind === "logo" ? "Logo" : "Poster"} siap diperiksa.`);
     } catch {
       setMessage("Hasil belum berhasil dibuat. Periksa konfigurasi API lalu coba lagi.");

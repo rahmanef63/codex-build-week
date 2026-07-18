@@ -5,7 +5,7 @@ export type DashboardView = (typeof dashboardViews)[number];
 export const dashboardImageOptions = {
   width: 1200,
   height: 630,
-  headers: { "Cache-Control": "no-store" },
+  headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" },
 } as const;
 
 export function parseDashboardView(value: string | null): DashboardView | null {
@@ -22,6 +22,6 @@ const publicErrors = {
 export function dashboardError(status: keyof typeof publicErrors) {
   return Response.json(
     { error: publicErrors[status] },
-    { status, headers: dashboardImageOptions.headers },
+    { status, headers: { "Cache-Control": "no-store" } },
   );
 }

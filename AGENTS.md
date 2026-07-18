@@ -10,8 +10,6 @@ Only ship six operations: create an order, list pending orders, update an order,
 
 The product has two explicit modes. `/demo` and the six current Actions are synthetic Demo mode only and may reference Warung Nasi Bu Sari. `/real` must never read or mutate Demo data; until separate business authentication/storage is implemented, Real mode is onboarding/advisory only and must say that it is not connected.
 
-Skip WhatsApp, real payments, accounting, OCR, marketplace, payroll, RAG, forecasting, complex auth, and multi-tenant administration unless explicitly requested.
-
 ## Data and safety
 
 - Convex is the single source of truth.
@@ -28,12 +26,7 @@ Skip WhatsApp, real payments, accounting, OCR, marketplace, payroll, RAG, foreca
 
 ## Stable Action IDs
 
-- `create_order`
-- `list_pending_orders`
-- `update_order`
-- `get_low_stock_items`
-- `get_daily_summary`
-- `get_dashboard_card_image`
+The six operation IDs and the MVP exclusions live in `README.md` (GPT Actions table and "Batas MVP").
 
 ## Verify
 
@@ -50,10 +43,10 @@ For the sixth Action, deploy Next.js to public HTTPS with `NEXT_PUBLIC_CONVEX_UR
 | Role | Primary write scope |
 | --- | --- |
 | Alpha | Orchestration, `AGENTS.md`, `TASKS.md`, `README.md`, root config, Git, cloud/deploy state, final integration |
-| Beta | `convex/**`, `openapi/**`, backend checks |
+| Beta | `convex/**`, `GPTs/temanusaha-actions.yaml`, backend checks |
 | Gamma | `app/**` except generated icons/social images, `components/**`, `lib/**`, frontend checks |
 | Presentation, when assigned | `public/presentation/**`, `tests/presentation.test.ts` |
-| Delta, when assigned | `prompts/assets/**`, `public/assets/**`, `app/icon*`, `app/apple-icon*`, `app/favicon*`, `app/opengraph-image*` |
+| Delta, when assigned | `public/assets/**`, `app/icon*`, `app/apple-icon*`, `app/favicon*`, `app/opengraph-image*` |
 | GPTs, when assigned | `GPTs/**` and GPT Builder configuration/testing; dashboard source is read-only |
 | Infrastructure, when assigned | A separate Git worktree/branch only; never the shared checkout; Git/deploy action must be the single explicit registry objective |
 | Submission, when assigned | Devpost copy and submission operations explicitly listed by Alpha |
