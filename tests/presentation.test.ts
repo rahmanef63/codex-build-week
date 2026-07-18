@@ -17,8 +17,10 @@ const slides = [
 ];
 
 test("deck presentation is complete and locally linked", () => {
+  let deck = "";
   slides.forEach((file, index) => {
     const html = readFileSync(join(root, file), "utf8");
+    deck += html;
     assert.match(html, new RegExp(`data-slide=["']${index}["']`));
     assert.match(html, /href=["']deck\.css["']/);
     assert.match(html, /src=["']deck\.js["']/);
@@ -29,5 +31,15 @@ test("deck presentation is complete and locally linked", () => {
     }
   });
 
-  assert.match(readFileSync(join(root, "03-demo.html"), "utf8"), /Rp55\.000/);
+  const demo = readFileSync(join(root, "03-demo.html"), "utf8");
+  assert.match(demo, /Rp55\.000/);
+  assert.match(demo, /data-chat-send/);
+  assert.match(demo, /data-confirm-order/);
+  assert.match(demo, /data-live-workspace/);
+  assert.equal(demo.match(/data-process-step/g)?.length, 5);
+  assert.match(readFileSync(join(root, "deck.js"), "utf8"), /setupInteractiveDemo\(\)/);
+  for (const asset of [
+    "nasi-ayam.png", "es-teh.png", "ayam-goreng.png", "nasi-putih.png", "sambal-extra.png",
+    "orders-empty.png", "activity-empty.png", "stock-safe.png", "setup-unseeded.png",
+  ]) assert.match(deck, new RegExp(asset.replace(".", "\\.")));
 });

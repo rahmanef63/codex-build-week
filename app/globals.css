@@ -20,6 +20,7 @@ body {
   margin: 0;
   color: var(--ink);
   background:
+    url('/assets/brand/temanusaha-pattern.png') center top / 1200px auto repeat-y,
     radial-gradient(circle at 100% 0, rgba(185, 222, 194, .42), transparent 30rem),
     var(--canvas);
   font-family: Arial, Helvetica, sans-serif;
@@ -197,9 +198,24 @@ button { font: inherit; }
 .stock-list,
 .activity-list { margin: 18px 0 0; padding: 0; list-style: none; }
 .stock-list li { display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 15px 0; border-top: 1px solid var(--line); }
-.stock-list li div { display: grid; gap: 4px; }
+.stock-product { display: flex; align-items: center; gap: 13px; }
+.stock-copy { display: grid; gap: 4px; }
 .stock-list li span { color: var(--muted); font-size: .84rem; }
 .stock-list .stock-value { color: var(--amber); font-weight: 800; white-space: nowrap; }
+
+.product-image {
+  flex: 0 0 auto;
+  width: 46px;
+  height: 46px;
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  object-fit: cover;
+  background: var(--canvas);
+}
+
+.order-items { display: grid; gap: 8px; min-width: 180px; margin: 0; padding: 0; list-style: none; }
+.order-items li { display: flex; align-items: center; gap: 9px; }
+.order-items .product-image { width: 38px; height: 38px; border-radius: 10px; }
 
 .table-card { overflow: hidden; }
 .table-scroll { overflow-x: auto; }
@@ -236,15 +252,34 @@ tbody tr:last-child > * { border-bottom: 0; }
 .activity-card dt { color: var(--muted); font-size: .74rem; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; }
 .activity-card dd { margin: 0; line-height: 1.5; }
 .verify-badge { padding: 6px 9px; color: var(--red); background: var(--red-soft); }
-.empty-state { margin: 0; padding: 30px 18px; color: var(--muted); text-align: center; }
+.empty-state { display: grid; justify-items: center; gap: 8px; padding: 20px 18px 28px; color: var(--muted); text-align: center; }
+.empty-state img { width: 150px; height: 150px; border-radius: 24px; object-fit: cover; }
+.empty-state p { margin: 0; }
 
 .setup-shell { min-height: 100vh; display: grid; place-items: center; padding: 24px; }
 .setup-card { width: min(560px, 100%); padding: clamp(24px, 6vw, 42px); border: 1px solid var(--line); border-radius: 22px; background: var(--surface); box-shadow: 0 24px 70px rgba(35, 60, 44, .11); }
+.setup-logo { display: block; width: 240px; height: auto; margin-bottom: 22px; }
+.setup-illustration { float: right; width: 180px; height: 180px; margin: -12px -8px 12px 20px; border-radius: 28px; object-fit: cover; }
 .setup-card h1 { margin: 10px 0 14px; letter-spacing: -.04em; }
 .setup-card p { color: var(--muted); line-height: 1.65; }
 .setup-card code { padding: 3px 6px; border-radius: 5px; color: var(--ink); background: #edf2ed; }
 .setup-note { font-size: .84rem; }
 .primary-button { margin-top: 8px; padding: 10px 15px; border: 0; border-radius: 9px; color: white; background: var(--green); cursor: pointer; font-weight: 800; }
+
+.dashboard-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  margin-top: 38px;
+  padding: 20px 24px;
+  border-radius: 18px;
+  color: rgba(255, 255, 255, .75);
+  background: var(--green);
+}
+
+.dashboard-footer img { width: 210px; height: auto; }
+.dashboard-footer p { margin: 0; font-size: .84rem; }
 
 .loading-line,
 .loading-card {
@@ -290,6 +325,8 @@ tbody tr:last-child > * { border-bottom: 0; }
   .metric-card { min-height: 112px; padding: 15px; }
   .content-card { padding: 17px; }
   .activity-meta { align-items: flex-start; flex-direction: column; gap: 6px; }
+  .dashboard-footer { align-items: flex-start; flex-direction: column; }
+  .setup-illustration { float: none; display: block; width: 160px; height: 160px; margin: 0 auto 18px; }
 }
 
 @media (prefers-reduced-motion: reduce) {

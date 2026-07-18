@@ -78,37 +78,132 @@ if (!reduceMotion && matchMedia("(pointer: fine)").matches) {
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, reduceMotion ? 20 : ms));
 
-async function runDemo(button) {
-  const hidden = [...document.querySelectorAll("[data-demo-stage]")];
-  const metrics = [...document.querySelectorAll("[data-after]")];
-  hidden.forEach((node) => node.classList.remove("is-visible"));
-  metrics.forEach((node) => {
-    node.textContent = node.dataset.before;
-    node.closest(".metric, .stock-row")?.classList.remove("is-updated");
+function setupInteractiveDemo() {
+  const shell = document.querySelector("[data-demo-shell]");
+  if (!shell) return;
+
+  const send = shell.querySelector("[data-chat-send]");
+  const typing = shell.querySelector("[data-ai-typing]");
+  const confirmCard = shell.querySelector("[data-confirm-card]");
+  const confirm = shell.querySelector("[data-confirm-order]");
+  const confirmBubble = shell.querySelector("[data-confirm-bubble]");
+  const successCard = shell.querySelector("[data-success-card]");
+  const liveWorkspace = shell.querySelector("[data-live-workspace]");
+  const recentOrder = shell.querySelector("[data-recent-order]");
+  const activityLog = shell.querySelector("[data-activity-log]");
+  const process = shell.querySelector("[data-order-process]");
+  const processState = shell.querySelector("[data-process-state]");
+  const processBar = shell.querySelector("[data-process-bar]");
+  const steps = [...shell.querySelectorAll("[data-process-step]")];
+  const dashboardMetrics = [...shell.querySelectorAll(".metric [data-after]")];
+  const stockValues = [...shell.querySelectorAll(".stock-row [data-after]")];
+  const stockBars = [...shell.querySelectorAll("[data-stock-bar]")];
+  let run = 0;
+
+  const show = (node, visible = true) => node?.classList.toggle("is-visible", visible);
+
+  function reset() {
+    run++;
+    shell.classList.remove("is-split");
+    liveWorkspace.setAttribute("aria-hidden", "true");
+    send.disabled = false;
+    send.classList.remove("is-sent");
+    confirm.disabled = false;
+    [typing, confirmCard, confirmBubble, successCard, recentOrder, activityLog].forEach((node) => show(node, false));
+    [...dashboardMetrics, ...stockValues].forEach((node) => {
+      node.textContent = node.dataset.before;
+      node.closest(".metric, .stock-row")?.classList.remove("is-updated");
+    });
+    stockBars.forEach((bar, index) => bar.style.setProperty("--stock", index ? "90%" : "80%"));
+    steps.forEach((step, index) => {
+      step.classList.remove("is-running", "is-done");
+      step.querySelector(".process-dot").textContent = String(index + 1);
+      step.querySelector("em").textContent = "Menunggu";
+    });
+    processState.textContent = "Menunggu konfirmasi";
+    processState.classList.remove("is-running", "is-done");
+    processBar.style.width = "0";
+  }
+
+  send.addEventListener("click", async () => {
+    const token = ++run;
+    send.disabled = true;
+    send.classList.add("is-sent");
+    show(typing);
+    await wait(520);
+    if (token !== run) return;
+    show(typing, false);
+    show(confirmCard);
+    confirm.focus();
   });
-  button.disabled = true;
-  button.textContent = "Memahami pesanan…";
-  await wait(450);
-  hidden.filter((node) => node.dataset.demoStage === "1").forEach((node) => node.classList.add("is-visible"));
-  button.textContent = "Menunggu konfirmasi…";
-  await wait(900);
-  hidden.filter((node) => node.dataset.demoStage === "2").forEach((node) => node.classList.add("is-visible"));
-  button.textContent = "Menjalankan GPT Action…";
-  await wait(850);
-  metrics.forEach((node) => {
-    node.textContent = node.dataset.after;
-    node.closest(".metric, .stock-row")?.classList.add("is-updated");
+
+  shell.querySelector("[data-cancel-order]").addEventListener("click", () => {
+    reset();
+    send.focus();
   });
-  document.querySelectorAll("[data-demo-typing]").forEach((node) => node.classList.remove("is-visible"));
-  hidden.filter((node) => node.dataset.demoStage === "3").forEach((node) => node.classList.add("is-visible"));
-  button.textContent = "Order tercatat ✓";
-  await wait(650);
-  hidden.filter((node) => node.dataset.demoStage === "4").forEach((node) => node.classList.add("is-visible"));
-  button.disabled = false;
-  button.textContent = "Ulangi demo";
+
+  confirm.addEventListener("click", async () => {
+    const token = ++run;
+    confirm.disabled = true;
+    show(confirmCard, false);
+    show(confirmBubble);
+    show(typing);
+    shell.classList.add("is-split");
+    liveWorkspace.setAttribute("aria-hidden", "false");
+    processState.textContent = "Memproses order";
+    processState.classList.add("is-running");
+
+    for (const [index, step] of steps.entries()) {
+      if (token !== run) return;
+      step.classList.add("is-running");
+      step.querySelector("em").textContent = "Diproses";
+      processBar.style.width = `${(index / steps.length) * 100}%`;
+      await wait(430);
+      if (token !== run) return;
+      step.classList.remove("is-running");
+      step.classList.add("is-done");
+      step.querySelector(".process-dot").textContent = "✓";
+      step.querySelector("em").textContent = "Selesai";
+      processBar.style.width = `${((index + 1) / steps.length) * 100}%`;
+
+      if (index === 2) {
+        show(recentOrder);
+        dashboardMetrics.forEach((node) => {
+          node.textContent = node.dataset.after;
+          node.closest(".metric")?.classList.add("is-updated");
+        });
+      } else if (index === 3) {
+        stockValues.forEach((node) => {
+          node.textContent = node.dataset.after;
+          node.closest(".stock-row")?.classList.add("is-updated");
+        });
+        stockBars.forEach((bar, barIndex) => bar.style.setProperty("--stock", barIndex ? "80%" : "60%"));
+      } else if (index === 4) {
+        show(activityLog);
+      }
+    }
+
+    show(typing, false);
+    show(successCard);
+    processState.textContent = "Pesanan tercatat ✓";
+    processState.classList.remove("is-running");
+    processState.classList.add("is-done");
+  });
+
+  shell.querySelector("[data-show-activity]").addEventListener("click", () => {
+    process.classList.remove("is-highlighted");
+    requestAnimationFrame(() => process.classList.add("is-highlighted"));
+    process.focus();
+  });
+  shell.querySelector("[data-reset-demo]").addEventListener("click", () => {
+    reset();
+    send.focus();
+  });
+
+  reset();
 }
 
-document.querySelectorAll("[data-demo-run]").forEach((button) => button.addEventListener("click", () => runDemo(button)));
+setupInteractiveDemo();
 
 const archDetail = document.querySelector("[data-arch-detail]");
 document.querySelectorAll("[data-arch]").forEach((node) => {
