@@ -48,6 +48,14 @@ const tabs = [
   { id: "activity", label: "Aktivitas AI" },
 ] as const;
 
+const productImages: Record<string, string> = {
+  "Nasi Ayam": "/assets/products/nasi-ayam.png",
+  "Es Teh": "/assets/products/es-teh.png",
+  "Ayam Goreng": "/assets/products/ayam-goreng.png",
+  "Nasi Putih": "/assets/products/nasi-putih.png",
+  "Sambal Extra": "/assets/products/sambal-extra.png",
+};
+
 type Tab = (typeof tabs)[number]["id"];
 
 export function Dashboard() {
@@ -134,6 +142,15 @@ export function Dashboard() {
       <TodayPanel data={data} hidden={activeTab !== "today"} />
       <OrdersPanel hidden={activeTab !== "orders"} orders={data.orders} />
       <ActivityPanel activity={data.activity} hidden={activeTab !== "activity"} />
+      <footer className="dashboard-footer">
+        <Image
+          alt="TemanUsaha AI"
+          height={49}
+          src="/assets/brand/temanusaha-logo-horizontal-white.png"
+          width={210}
+        />
+        <p>Dashboard verifikasi untuk setiap tindakan AI.</p>
+      </footer>
     </main>
   );
 }
@@ -182,16 +199,19 @@ function TodayPanel({ data, hidden }: { data: DashboardData; hidden: boolean }) 
           <ul className="stock-list">
             {data.lowStock.map((product) => (
               <li key={product._id}>
-                <div>
-                  <strong>{product.name}</strong>
-                  <span>Batas aman {product.lowStockThreshold}</span>
+                <div className="stock-product">
+                  <ProductImage name={product.name} />
+                  <div className="stock-copy">
+                    <strong>{product.name}</strong>
+                    <span>Batas aman {product.lowStockThreshold}</span>
+                  </div>
                 </div>
                 <span className="stock-value">Sisa {product.stock}</span>
               </li>
             ))}
           </ul>
         ) : (
-          <EmptyState text="Semua stok masih di atas batas aman." />
+          <EmptyState image="/assets/states/stock-safe.png" text="Semua stok masih di atas batas aman." />
         )}
       </section>
     </section>
@@ -235,9 +255,14 @@ function OrdersPanel({ hidden, orders }: { hidden: boolean; orders: DashboardDat
                   <tr key={order._id}>
                     <th scope="row">{order.customerName}</th>
                     <td>
-                      {order.items
-                        .map((item) => item.quantity + " x " + item.productName)
-                        .join(", ")}
+                      <ul className="order-items">
+                        {order.items.map((item) => (
+                          <li key={item.productName}>
+                            <ProductImage name={item.productName} />
+                            <span><strong>{item.quantity}×</strong> {item.productName}</span>
+                          </li>
+                        ))}
+                      </ul>
                     </td>
                     <td>{formatDateTime(order.pickupTime)}</td>
                     <td><StatusBadge status={order.paymentStatus} /></td>
@@ -249,7 +274,7 @@ function OrdersPanel({ hidden, orders }: { hidden: boolean; orders: DashboardDat
             </table>
           </div>
         ) : (
-          <EmptyState text="Belum ada pesanan hari ini." />
+          <EmptyState image="/assets/states/orders-empty.png" text="Belum ada pesanan hari ini." />
         )}
       </div>
     </section>
@@ -307,7 +332,7 @@ function ActivityPanel({
         </ol>
       ) : (
         <div className="content-card">
-          <EmptyState text="Belum ada aktivitas AI." />
+          <EmptyState image="/assets/states/activity-empty.png" text="Belum ada aktivitas AI." />
         </div>
       )}
     </section>
@@ -331,6 +356,22 @@ function UnseededDashboard() {
   return (
     <main className="setup-shell">
       <section aria-live="polite" className="setup-card">
+        <Image
+          alt=""
+          className="setup-logo"
+          height={56}
+          priority
+          src="/assets/brand/temanusaha-logo-horizontal.png"
+          width={240}
+        />
+        <Image
+          alt=""
+          className="setup-illustration"
+          height={220}
+          priority
+          src="/assets/states/setup-unseeded.png"
+          width={220}
+        />
         <span className="eyebrow">Data belum tersedia</span>
         <h1>Data demo belum di-seed</h1>
         <p>
@@ -346,8 +387,25 @@ function StatusBadge({ status }: { status: string }) {
   return <span className={"status status-" + status.toLowerCase()}>{formatStatus(status)}</span>;
 }
 
-function EmptyState({ text }: { text: string }) {
-  return <p className="empty-state">{text}</p>;
+function ProductImage({ name }: { name: string }) {
+  return (
+    <Image
+      alt=""
+      className="product-image"
+      height={46}
+      src={productImages[name] ?? "/assets/brand/temanusaha-mark.png"}
+      width={46}
+    />
+  );
+}
+
+function EmptyState({ image, text }: { image: string; text: string }) {
+  return (
+    <div className="empty-state">
+      <Image alt="" height={150} src={image} width={150} />
+      <p>{text}</p>
+    </div>
+  );
 }
 
 function formatAction(action: string) {

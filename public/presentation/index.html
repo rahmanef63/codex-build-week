@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Presentasi interaktif TemanUsaha AI untuk Warung Nasi Bu Sari">
+  <title>TemanUsaha AI — Presentasi</title>
+  <link rel="stylesheet" href="deck.css">
+  <script defer src="deck.js"></script>
+</head>
+<body data-slide="0">
+  <main class="slide">
+    <div class="orb orb--lime"></div>
+    <div class="orb orb--orange"></div>
+    <header class="deck-top">
+      <div class="mini-brand"><img src="../assets/brand/temanusaha-mark.png" alt=""><span>TemanUsaha AI</span></div>
+      <span class="section-label">Build Week Jakarta · 2026</span>
+    </header>
+
+    <section class="slide-body cover-grid">
+      <div class="cover-copy">
+        <p class="kicker" data-reveal>AI operasional untuk UMKM Indonesia</p>
+        <h1 data-reveal><span>Teman</span><span>Usaha <em class="script">AI</em></span></h1>
+        <p class="lead" data-reveal>Mencatat pesanan semudah mengirim chat—dengan stok, total, dan jejak tindakan yang bisa diperiksa.</p>
+        <div class="cover-actions" data-reveal>
+          <a class="primary-button" data-next>Mulai presentasi <span aria-hidden="true">→</span></a>
+          <button class="ghost-button" type="button" onclick="document.documentElement.requestFullscreen?.()">Layar penuh</button>
+        </div>
+        <div class="qr-card" data-qr-card hidden>
+          <span class="qr-image"><img src="vercel-demo-qr.svg" alt="QR code untuk membuka demo TemanUsaha AI"></span>
+          <span class="qr-copy"><small>Scan & coba langsung</small><strong>Demo Warung Bu Sari di ponselmu</strong><em data-qr-domain></em></span>
+          <span class="qr-actions">
+            <button class="qr-open" type="button" data-qr-open>Perbesar QR</button>
+            <a class="qr-demo-link" data-demo-link>Buka demo ↗</a>
+          </span>
+        </div>
+        <p class="cover-meta" data-reveal>Demo: Warung Nasi Bu Sari · Bahasa Indonesia · data sintetis</p>
+      </div>
+
+      <div class="hero-frame" data-reveal data-tilt>
+        <img class="hero-photo" src="../assets/illustrations/warung-dashboard-banner.png" alt="Warung makan dengan nasi ayam, es teh, buku catatan, dan ponsel">
+        <img class="hero-mark" src="../assets/brand/temanusaha-mark.png" alt="">
+        <span class="live-pill">Dashboard realtime</span>
+        <div class="hero-caption">
+          <strong>Warung Nasi Bu Sari</strong>
+          <span>Satu percakapan. Satu sumber data. Satu bukti tindakan.</span>
+        </div>
+      </div>
+    </section>
+
+    <footer class="deck-bottom">
+      <span><span data-current>01</span> / <span data-total>09</span></span>
+      <div class="deck-progress" data-progress aria-hidden="true"></div>
+      <span class="shortcut-hint">← → navigasi · P catatan · F layar penuh</span>
+      <nav class="deck-nav" aria-label="Navigasi slide"><a class="nav-button" data-prev aria-label="Slide sebelumnya">←</a><a class="nav-button" data-next aria-label="Slide berikutnya">→</a></nav>
+    </footer>
+  </main>
+  <dialog class="qr-dialog" data-qr-dialog aria-labelledby="qr-dialog-title">
+    <button class="qr-dialog-close" type="button" data-qr-close aria-label="Tutup QR code">×</button>
+    <img src="vercel-demo-qr.svg" alt="QR code menuju demo TemanUsaha AI">
+    <div><span class="kicker">Demo live</span><h2 id="qr-dialog-title">Scan untuk mencoba</h2><p>Gunakan kamera ponsel, lalu buka Mode Demo dengan data sintetis Warung Bu Sari.</p></div>
+    <a class="primary-button" data-demo-link>Buka demo di browser <span>↗</span></a>
+  </dialog>
+  <aside class="speaker-note"><strong>Catatan presenter · 0:00–0:15</strong>“TemanUsaha AI adalah asisten operasional percakapan untuk UMKM Indonesia. Hari ini kami tunjukkan satu alur nyata di Warung Nasi Bu Sari.”</aside>
+</body>
+</html>

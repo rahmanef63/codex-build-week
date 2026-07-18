@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Bukti Produk — TemanUsaha AI</title>
+  <link rel="stylesheet" href="deck.css">
+  <script defer src="deck.js"></script>
+</head>
+<body data-slide="4">
+  <main class="slide">
+    <header class="deck-top">
+      <div class="mini-brand"><img src="../assets/brand/temanusaha-mark.png" alt=""><span>TemanUsaha AI</span></div>
+      <span class="section-label">Bukti produk</span>
+    </header>
+
+    <section class="slide-body proof-layout">
+      <article class="result-hero" data-reveal data-tilt>
+        <p class="kicker">Skenario uji utama</p>
+        <strong>55.000</strong>
+        <span>rupiah—dihitung dari harga yang tersimpan di Convex, bukan tebakan AI.</span>
+        <div class="menu-filmstrip" aria-label="Lima menu Warung Nasi Bu Sari">
+          <img src="../assets/products/nasi-ayam.png" alt="Nasi Ayam">
+          <img src="../assets/products/es-teh.png" alt="Es Teh">
+          <img src="../assets/products/ayam-goreng.png" alt="Ayam Goreng">
+          <img src="../assets/products/nasi-putih.png" alt="Nasi Putih">
+          <img src="../assets/products/sambal-extra.png" alt="Sambal Extra">
+        </div>
+        <div class="equation"><b>3 × 15rb</b><i>+</i><b>2 × 5rb</b><i>=</i><b>55rb</b></div>
+      </article>
+
+      <div>
+        <p class="kicker" data-reveal>Enam Action ID yang stabil</p>
+        <h2 data-reveal>Kecil scope-nya.<br>Besar <span class="highlight">buktinya.</span></h2>
+        <div class="action-grid">
+          <article class="card action-card" data-reveal><code class="action-id">create_order</code><h3>Buat order atomik</h3><p>Order, stok, dan log berubah bersama—atau tidak sama sekali.</p></article>
+          <article class="card action-card" data-reveal><code class="action-id">list_pending_orders</code><h3>Lihat antrean</h3><p>Daftar order yang masih perlu diselesaikan.</p></article>
+          <article class="card action-card" data-reveal><code class="action-id">update_order</code><h3>Ubah status</h3><p>Pemenuhan dan pembayaran, setelah konfirmasi.</p></article>
+          <article class="card action-card" data-reveal><code class="action-id">get_low_stock_items</code><h3>Deteksi stok rendah</h3><p>Item pada atau di bawah ambang tersimpan.</p></article>
+          <article class="card action-card" data-reveal><code class="action-id">get_daily_summary</code><h3>Satu pertanyaan: “Bagaimana kondisi warung hari ini?”</h3><p>Order, omzet tercatat, pending, belum bayar, dan stok menipis dari data aktual.</p></article>
+          <article class="card action-card" data-reveal><code class="action-id">get_dashboard_card_image</code><h3>Kartu dashboard visual</h3><p>Menghasilkan snapshot visual yang aman untuk dibagikan kembali di percakapan.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <footer class="deck-bottom">
+      <span><span data-current></span> / <span data-total></span></span><div class="deck-progress" data-progress></div><span class="shortcut-hint">Scope sempit membuat demo dapat dipercaya</span>
+      <nav class="deck-nav" aria-label="Navigasi slide"><a class="nav-button" data-prev aria-label="Slide sebelumnya">←</a><a class="nav-button" data-next aria-label="Slide berikutnya">→</a></nav>
+    </footer>
+  </main>
+  <aside class="speaker-note"><strong>Catatan presenter · 1:45–2:05</strong>“Kami sengaja hanya membangun enam operasi. Itu cukup untuk membuktikan loop lengkap: baca kondisi, buat pesanan, koreksi status, dan tunjukkan hasilnya.”</aside>
+</body>
+</html>
