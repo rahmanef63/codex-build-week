@@ -1,0 +1,13 @@
+{
+  "slug": "demo-dashboard",
+  "version": "1.0.0",
+  "description": "Mode Demo dashboard — synthetic Warung Nasi Bu Sari data, no auth. Renders the /demo dashboard UI and the OG dashboard-card image route.",
+  "owner": "frontend",
+  "contract": {
+    "reads": ["api.business.dashboard"],
+    "writes": [],
+    "auth": "none",
+    "externalApis": [],
+    "routes": ["/demo", "/api/dashboard-card-image"]
+  }
+}

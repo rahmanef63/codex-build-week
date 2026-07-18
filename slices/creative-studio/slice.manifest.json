@@ -1,0 +1,11 @@
+{
+  "slug": "creative-studio",
+  "version": "1.0.0",
+  "files": {
+    "barrel": "index.ts",
+    "types": "types.ts",
+    "components": ["components/creative-studio.tsx"],
+    "lib": ["lib/openai-features.ts"],
+    "tests": ["__tests__/openai-features.test.ts"]
+  }
+}

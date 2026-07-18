@@ -12,7 +12,7 @@
     "build:auto": "node scripts/build.mjs",
     "start": "next start",
     "typecheck": "tsc --noEmit",
-    "test": "node --test --experimental-strip-types tests/*.test.ts",
+    "test": "node --test --experimental-strip-types tests/*.test.ts slices/*/__tests__/*.test.ts",
     "check": "npm run test && npm run typecheck && npm run build",
     "convex:sync": "convex dev --once"
   },

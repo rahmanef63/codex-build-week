@@ -30,7 +30,7 @@ export default defineSchema({
     lowStockThreshold: v.number(),
     sortOrder: v.number(),
   })
-    .index("by_business", ["businessId"])
+    .index("by_business_id", ["businessId"])
     .index("by_business_slug", ["businessId", "slug"]),
 
   orders: defineTable({

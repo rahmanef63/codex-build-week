@@ -37,3 +37,7 @@ export function formatStatus(value: string) {
   };
   return labels[value] ?? value;
 }
+
+export function formatAction(value: string) {
+  return value.replaceAll("_", " ").replace(/^./, (letter) => letter.toUpperCase());
+}

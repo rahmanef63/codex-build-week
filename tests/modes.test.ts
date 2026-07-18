@@ -1,7 +1,7 @@
 import assert from "node:assert/strict";
 import test from "node:test";
 // @ts-expect-error Node's strip-types runner requires the source extension.
-import { read } from "./helpers.ts";
+import { read } from "../shared/testing/read-file.ts";
 
 test("Demo owns synthetic business wiring while Real runs its own live connected app", () => {
   const root = read("app", "page.tsx");
@@ -11,7 +11,7 @@ test("Demo owns synthetic business wiring while Real runs its own live connected
   const globalSocialCard = read("app", "opengraph-image.tsx");
   const real = read("app", "real", "page.tsx");
   const dashboard = read("app", "dashboard", "page.tsx");
-  const dashboardApp = read("components", "dashboard-app.tsx");
+  const dashboardApp = read("slices", "real-dashboard", "components", "dashboard-app.tsx");
 
   assert.match(root, /href="\/demo"/);
   assert.match(root, /href="\/dashboard"/);

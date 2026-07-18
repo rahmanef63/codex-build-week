@@ -1,10 +1,10 @@
+import type { CreativeKind } from "../types";
+
 export const onboardingScripts = [
   "Panduan ini dibacakan oleh suara AI. Mulai dengan identitas usaha dan akun pemilik yang terverifikasi. Siapkan nama usaha, jenis produk, dan kontak pemilik sebelum menghubungkan data.",
   "Panduan ini dibacakan oleh suara AI. Pisahkan data usaha nyata dari data demo. Gunakan penyimpanan khusus agar pesanan, stok, dan data pelanggan tidak bercampur.",
   "Panduan ini dibacakan oleh suara AI. Tetapkan izin untuk setiap tindakan AI. Bedakan tindakan yang hanya boleh dibaca, diusulkan, atau dijalankan setelah konfirmasi pemilik.",
 ] as const;
-
-export type CreativeKind = "logo" | "poster";
 
 export function isOpenAIMediaEnabled(
   environment: Record<string, string | undefined> = process.env,

@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 
-import { ConvexClientProvider } from "@/components/convex-provider";
-import { Dashboard } from "@/components/dashboard";
+import { ConvexClientProvider } from "@/shared/components/convex-provider";
+import { ModeNavBar } from "@/shared/components/mode-nav-bar";
+import { Dashboard } from "@/slices/demo-dashboard";
 
 export const metadata: Metadata = {
   title: "Mode Demo",
@@ -12,10 +12,7 @@ export const metadata: Metadata = {
 export default function DemoPage() {
   return (
     <div className="demo-page">
-      <nav className="demo-mode-bar" aria-label="Navigasi mode">
-        <Link href="/">← Pilih mode</Link>
-        <span>Mode Demo · Data sintetis</span>
-      </nav>
+      <ModeNavBar label="Mode Demo · Data sintetis" />
       <ConvexClientProvider>
         <Dashboard />
       </ConvexClientProvider>

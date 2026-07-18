@@ -1,40 +1,8 @@
 import { internalMutationGeneric, internalQueryGeneric } from "convex/server";
-import { ConvexError, v } from "convex/values";
-import { BUSINESS_ID, combineResolvedItems } from "./domain";
-
-const paymentStatus = v.union(
-  v.literal("UNPAID"),
-  v.literal("PAID"),
-  v.literal("PARTIAL"),
-);
-const fulfillmentStatus = v.union(v.literal("PENDING"), v.literal("COMPLETED"));
-
-function fail(code: string, message: string, fields?: string[]): never {
-  throw new ConvexError({ code, message, ...(fields ? { fields } : {}) });
-}
-
-function orderFingerprint(args: {
-  customerName: string;
-  items: { product: string; quantity: number }[];
-  pickupTime: string;
-  paymentStatus: string;
-  notes?: string;
-}) {
-  const quantities = new Map<string, number>();
-  for (const item of args.items) {
-    const product = item.product.trim().toLocaleLowerCase("id-ID");
-    quantities.set(product, (quantities.get(product) ?? 0) + item.quantity);
-  }
-  return JSON.stringify({
-    customerName: args.customerName.trim(),
-    items: [...quantities]
-      .map(([product, quantity]) => ({ product, quantity }))
-      .sort((a, b) => a.product.localeCompare(b.product, "id-ID")),
-    pickupTime: new Date(args.pickupTime).toISOString(),
-    paymentStatus: args.paymentStatus,
-    notes: args.notes?.trim() ?? "",
-  });
-}
+import { v } from "convex/values";
+import { BUSINESS_ID, combineResolvedItems, MAX_PRODUCTS_PER_BUSINESS } from "./domain";
+import { fail } from "./lib/errors";
+import { fulfillmentStatus, orderFingerprint, paymentStatus } from "./lib/orderValidation";
 
 export const listPending = internalQueryGeneric({
   args: {},
@@ -45,7 +13,7 @@ export const listPending = internalQueryGeneric({
         q.eq("businessId", BUSINESS_ID).eq("fulfillmentStatus", "PENDING"),
       )
       .order("desc")
-      .collect(),
+      .take(100),
 });
 
 export const createOrder = internalMutationGeneric({
@@ -81,8 +49,8 @@ export const createOrder = internalMutationGeneric({
 
     const products = await ctx.db
       .query("products")
-      .withIndex("by_business", (q: any) => q.eq("businessId", BUSINESS_ID))
-      .collect();
+      .withIndex("by_business_id", (q: any) => q.eq("businessId", BUSINESS_ID))
+      .take(MAX_PRODUCTS_PER_BUSINESS);
 
     // ponytail: linear scan fits five demo products; add a normalized-name index if the catalog grows.
     const resolved = args.items.map((item) => {

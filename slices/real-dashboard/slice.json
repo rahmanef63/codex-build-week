@@ -1,0 +1,13 @@
+{
+  "slug": "real-dashboard",
+  "version": "1.0.0",
+  "description": "Mode Real dashboard — authenticated, per-owner business data via @convex-dev/auth. Renders the /dashboard auth, onboarding, and connected dashboard UI.",
+  "owner": "frontend",
+  "contract": {
+    "reads": ["api.real.dashboard"],
+    "writes": ["api.real.createBusiness"],
+    "auth": "@convex-dev/auth (email/password)",
+    "externalApis": [],
+    "routes": ["/dashboard"]
+  }
+}

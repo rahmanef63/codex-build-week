@@ -18,10 +18,10 @@ export const reset = internalMutationGeneric({
     if (resetKey !== expected) throw new ConvexError({ code: "UNAUTHORIZED", message: "Reset key salah." });
 
     const oldRows = [
-      ...(await ctx.db.query("aiActionLogs").withIndex("by_business_created", (q: any) => q.eq("businessId", BUSINESS_ID)).collect()),
-      ...(await ctx.db.query("orders").withIndex("by_business_created", (q: any) => q.eq("businessId", BUSINESS_ID)).collect()),
-      ...(await ctx.db.query("products").withIndex("by_business", (q: any) => q.eq("businessId", BUSINESS_ID)).collect()),
-      ...(await ctx.db.query("businesses").withIndex("by_business_id", (q: any) => q.eq("businessId", BUSINESS_ID)).collect()),
+      ...(await ctx.db.query("aiActionLogs").withIndex("by_business_created", (q: any) => q.eq("businessId", BUSINESS_ID)).take(1000)),
+      ...(await ctx.db.query("orders").withIndex("by_business_created", (q: any) => q.eq("businessId", BUSINESS_ID)).take(1000)),
+      ...(await ctx.db.query("products").withIndex("by_business_id", (q: any) => q.eq("businessId", BUSINESS_ID)).take(1000)),
+      ...(await ctx.db.query("businesses").withIndex("by_business_id", (q: any) => q.eq("businessId", BUSINESS_ID)).take(1000)),
     ];
     for (const row of oldRows) await ctx.db.delete(row._id);
 

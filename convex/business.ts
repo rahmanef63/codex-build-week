@@ -1,5 +1,12 @@
 import { internalQueryGeneric, queryGeneric } from "convex/server";
-import { buildTodaySummary, BUSINESS_ID, jakartaDay } from "./domain";
+import type { Doc } from "./_generated/dataModel";
+import {
+  buildTodaySummary,
+  BUSINESS_ID,
+  jakartaDay,
+  MAX_PRODUCTS_PER_BUSINESS,
+  selectLowStock,
+} from "./domain";
 
 export async function readDashboard(ctx: any, businessId: string = BUSINESS_ID) {
   const now = Date.now();
@@ -11,8 +18,8 @@ export async function readDashboard(ctx: any, businessId: string = BUSINESS_ID) 
       .unique(),
     ctx.db
       .query("products")
-      .withIndex("by_business", (q: any) => q.eq("businessId", businessId))
-      .collect(),
+      .withIndex("by_business_id", (q: any) => q.eq("businessId", businessId))
+      .take(MAX_PRODUCTS_PER_BUSINESS) as Promise<Doc<"products">[]>,
     ctx.db
       .query("orders")
       .withIndex("by_business_created", (q: any) => q.eq("businessId", businessId))
@@ -26,16 +33,14 @@ export async function readDashboard(ctx: any, businessId: string = BUSINESS_ID) 
           .gte("createdAt", day.start)
           .lt("createdAt", day.end),
       )
-      .collect(),
+      .take(2000),
     ctx.db
       .query("aiActionLogs")
       .withIndex("by_business_created", (q: any) => q.eq("businessId", businessId))
       .order("desc")
       .take(20),
   ]);
-  const lowStock = products
-    .filter((product: any) => product.stock <= product.lowStockThreshold)
-    .sort((a: any, b: any) => a.sortOrder - b.sortOrder);
+  const lowStock = selectLowStock(products);
   return {
     business,
     summary: buildTodaySummary(now, todayOrders, products),

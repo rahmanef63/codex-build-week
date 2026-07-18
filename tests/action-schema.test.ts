@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import test from "node:test";
 
 // @ts-expect-error Node's strip-types runner requires the source extension.
-import { read } from "./helpers.ts";
+import { read } from "../shared/testing/read-file.ts";
 
 const jsonText = () => read("GPTs", "action-schema.json");
 const yamlText = () => read("GPTs", "temanusaha-actions.yaml");

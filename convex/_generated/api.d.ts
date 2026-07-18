@@ -13,6 +13,8 @@ import type * as business from "../business.js";
 import type * as domain from "../domain.js";
 import type * as http from "../http.js";
 import type * as inventory from "../inventory.js";
+import type * as lib_errors from "../lib/errors.js";
+import type * as lib_orderValidation from "../lib/orderValidation.js";
 import type * as orders from "../orders.js";
 import type * as real from "../real.js";
 import type * as seed from "../seed.js";
@@ -29,6 +31,8 @@ declare const fullApi: ApiFromModules<{
   domain: typeof domain;
   http: typeof http;
   inventory: typeof inventory;
+  "lib/errors": typeof lib_errors;
+  "lib/orderValidation": typeof lib_orderValidation;
   orders: typeof orders;
   real: typeof real;
   seed: typeof seed;

@@ -2,7 +2,7 @@ import {
   getOnboardingScript,
   isOpenAIMediaEnabled,
   requestOpenAI,
-} from "@/lib/openai-features";
+} from "@/slices/creative-studio";
 
 export const maxDuration = 60;
 export const runtime = "nodejs";

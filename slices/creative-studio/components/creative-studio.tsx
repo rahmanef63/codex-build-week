@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from "react";
 
-type Kind = "logo" | "poster";
+import type { CreativeKind } from "../types";
 
 export function CreativeStudio({ enabled }: Readonly<{ enabled: boolean }>) {
   const [brief, setBrief] = useState("");
   const [imageUrl, setImageUrl] = useState<string>();
-  const [kind, setKind] = useState<Kind>("logo");
+  const [kind, setKind] = useState<CreativeKind>("logo");
   const [message, setMessage] = useState(
     enabled
       ? "Jelaskan usaha Anda, lalu pilih hasil yang ingin dibuat."
@@ -19,7 +19,7 @@ export function CreativeStudio({ enabled }: Readonly<{ enabled: boolean }>) {
     if (imageUrl) URL.revokeObjectURL(imageUrl);
   }, [imageUrl]);
 
-  async function generate(nextKind: Kind) {
+  async function generate(nextKind: CreativeKind) {
     const normalizedBrief = brief.trim();
     if (!normalizedBrief) {
       setMessage("Isi brief usaha terlebih dahulu.");
@@ -83,7 +83,9 @@ export function CreativeStudio({ enabled }: Readonly<{ enabled: boolean }>) {
       <div className="creative-preview">
         {imageUrl ? (
           <>
-            {/* Generated user-requested content cannot use next/image optimization. */}
+            {/* Generated user-requested content cannot use next/image optimization, and the
+                save link is a blob: object URL (not a routable Next.js path), so it also
+                bypasses next/link — both are ephemeral client-only artifacts. */}
             <img alt={`Konsep ${kind} yang dibuat AI`} src={imageUrl} />
             <a download={`temanusaha-${kind}.png`} href={imageUrl}>Simpan PNG</a>
           </>

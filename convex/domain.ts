@@ -1,5 +1,6 @@
 export const BUSINESS_ID = "warung_nasi_bu_sari";
 export const JAKARTA_OFFSET_MS = 7 * 60 * 60 * 1000;
+export const MAX_PRODUCTS_PER_BUSINESS = 500;
 const DAY_MS = 24 * 60 * 60 * 1000;
 
 export type ResolvedItem<T extends string = string> = {
@@ -21,6 +22,14 @@ export function combineResolvedItems<T extends string>(
     else combined.set(item.productId, { ...item });
   }
   return [...combined.values()];
+}
+
+export function selectLowStock<
+  T extends { stock: number; lowStockThreshold: number; sortOrder: number },
+>(products: readonly T[]): T[] {
+  return products
+    .filter((product) => product.stock <= product.lowStockThreshold)
+    .sort((a, b) => a.sortOrder - b.sortOrder);
 }
 
 export function jakartaDay(now: number) {

@@ -26,7 +26,7 @@ function safeError(error: unknown) {
           : 400;
     return json({ error: { code: data.code ?? "BAD_REQUEST", message: data.message ?? "Permintaan tidak valid.", ...(data.fields ? { fields: data.fields } : {}) } }, status);
   }
-  console.error(error);
+  console.error("[http:safeError]", error);
   return json({ error: { code: "INTERNAL_ERROR", message: "Terjadi kesalahan internal." } }, 500);
 }
 

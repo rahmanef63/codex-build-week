@@ -3,7 +3,7 @@ import { existsSync } from "node:fs";
 import { join } from "node:path";
 import test from "node:test";
 // @ts-expect-error Node's strip-types runner requires the source extension.
-import { read } from "./helpers.ts";
+import { read } from "../shared/testing/read-file.ts";
 
 const root = join(process.cwd(), "public", "presentation");
 const gptUrl = "https://chatgpt.com/g/g-6a5b0a5ef31c819181f8a68b5536d33e-temanusaha-ai-warung-bu-sari";

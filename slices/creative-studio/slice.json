@@ -1,0 +1,13 @@
+{
+  "slug": "creative-studio",
+  "version": "1.0.0",
+  "description": "Local-only AI media studio (logo/poster image generation, onboarding narration). No Convex api usage; calls the external OpenAI API only from server-side route handlers, gated to development.",
+  "owner": "frontend",
+  "contract": {
+    "reads": [],
+    "writes": [],
+    "auth": "none",
+    "externalApis": ["OpenAI (images/generations, audio/speech)"],
+    "routes": ["/api/creative-image", "/api/onboarding-audio"]
+  }
+}

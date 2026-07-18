@@ -39,6 +39,9 @@ export const createBusiness = mutationGeneric({
     if (!userId) {
       throw new ConvexError({ code: "UNAUTHENTICATED", message: "Masuk terlebih dahulu." });
     }
+    if (args.products.length > 50) {
+      throw new ConvexError({ code: "TOO_MANY_PRODUCTS", message: "Maksimal 50 produk saat pendaftaran." });
+    }
     const name = args.name.trim();
     if (!name) {
       throw new ConvexError({ code: "INVALID_NAME", message: "Nama usaha wajib diisi." });

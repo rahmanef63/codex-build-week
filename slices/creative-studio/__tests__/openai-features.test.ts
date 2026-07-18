@@ -4,7 +4,7 @@ import test from "node:test";
 // @ts-expect-error Node's strip-types runner requires the source extension.
 import { buildCreativePrompt, getOnboardingScript, isOpenAIMediaEnabled, parseCreativeRequest } from "../lib/openai-features.ts";
 // @ts-expect-error Node's strip-types runner requires the source extension.
-import { read } from "./helpers.ts";
+import { read } from "../../../shared/testing/read-file.ts";
 
 test("OpenAI feature inputs stay bounded and fixed", () => {
   assert.deepEqual(parseCreativeRequest({ brief: "  warung sehat  ", kind: "logo" }), {
@@ -41,7 +41,7 @@ test("paid OpenAI media stays local-only and guarded", () => {
   assert.match(audioRoute, /isOpenAIMediaEnabled\(\)/);
   assert.match(audioRoute, /s-maxage=604800/);
 
-  const studio = read("components", "creative-studio.tsx");
+  const studio = read("slices", "creative-studio", "components", "creative-studio.tsx");
   assert.match(studio, /Jangan masukkan data pelanggan/);
   assert.match(studio, /disabled={!enabled \|\| pending}/);
 });
