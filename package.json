@@ -19,8 +19,8 @@
     "build:auto": "node scripts/build.mjs"
   },
   "dependencies": {
-    "@ai-sdk/anthropic": "^4.0.15",
-    "@ai-sdk/react": "^4.0.33",
+    "@ai-sdk/anthropic": "^4.0.16",
+    "@ai-sdk/react": "^4.0.34",
     "@auth/core": "^0.41.2",
     "@convex-dev/auth": "^0.0.94",
     "@vercel/analytics": "^2.0.1",
