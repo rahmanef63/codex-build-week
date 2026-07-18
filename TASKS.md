@@ -79,5 +79,6 @@ Contract source: `AGENTS.md`. Only one active writer may own a file scope. Alpha
 | Done | Update standalone Devpost description from five to six operations and attach the existing thumbnail | Submission + Alpha | GPT-5 Codex |
 | Done | Add local GPT QR/link beside the website demo CTA, test it, and redeploy the presentation | Presentation + Alpha | Thread model not reported / GPT-5 Codex |
 | Done | Make Mode Real live: Convex Auth (Password), per-user business onboarding, realtime dashboard with businessId = userId isolation; narrative updated across selector, deck, GPTs, README; E2E smoke passed on the live deployment | Claude (this session) | Opus 4.8 / Fable 5 |
+| Done | Restyle the real-mode dashboard at `/dashboard` after `template-convex-starter` (dark default, amber accent, token-driven), keep `/real` as a permanent redirect, and rebuild `GPTs/action-schema.json` as enriched valid JSON | Claude (session agents) | Fable 5 |
 
 Status values: `Todo`, `In progress`, `Blocked`, `Done`.
