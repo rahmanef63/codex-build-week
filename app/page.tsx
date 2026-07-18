@@ -50,7 +50,7 @@ export default function Home() {
             Daftar akun, kenalkan usaha Anda, lalu pantau pesanan, stok, dan
             omzet secara realtime di dashboard milik sendiri.
           </p>
-          <Link className="mode-cta mode-cta-secondary" href="/real">
+          <Link className="mode-cta mode-cta-secondary" href="/dashboard">
             Masuk mode Real <span aria-hidden="true">→</span>
           </Link>
         </article>

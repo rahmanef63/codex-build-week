@@ -10,9 +10,11 @@ test("Demo owns synthetic business wiring while Real runs its own live connected
   const globalError = read("app", "error.tsx");
   const globalSocialCard = read("app", "opengraph-image.tsx");
   const real = read("app", "real", "page.tsx");
+  const dashboard = read("app", "dashboard", "page.tsx");
+  const dashboardApp = read("components", "dashboard-app.tsx");
 
   assert.match(root, /href="\/demo"/);
-  assert.match(root, /href="\/real"/);
+  assert.match(root, /href="\/dashboard"/);
   assert.match(root, /Pilihan Mode Demo dan Mode Real/);
   assert.match(root, /Demo · Data sintetis/);
   assert.match(root, /Real · Terhubung langsung/);
@@ -24,9 +26,9 @@ test("Demo owns synthetic business wiring while Real runs its own live connected
   assert.match(demo, /ConvexClientProvider/);
   assert.match(demo, /<Dashboard \/>/);
 
-  assert.match(real, /ConvexClientProvider/);
-  assert.match(real, /RealApp/);
-  assert.doesNotMatch(real, /Bu Sari/);
+  assert.match(real, /redirect\("\/dashboard"\)/);
+  assert.match(dashboard, /ConvexClientProvider/);
+  assert.doesNotMatch(dashboardApp, /Bu Sari/);
 
   assert.match(gptPackage, /## Name\s+```text\s+TemanUsaha AI\s+```/);
   const description = gptPackage.match(/## Description\s+```text\s+([\s\S]*?)```/);

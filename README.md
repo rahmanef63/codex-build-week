@@ -7,7 +7,7 @@ Produk memiliki dua mode yang terpisah:
 Fokus produk adalah **Demo Bu Sari** untuk membuktikan workflow GPT Actions yang sudah berjalan dan **Mode Real yang kini live** agar UMKM dapat mendaftar, membuat bisnisnya sendiri, dan memakai dashboard realtime tanpa menyentuh data demo.
 
 - [`/demo`](https://codex-build-week.vercel.app/demo) memakai satu bisnis sintetis, **Warung Nasi Bu Sari**, enam operasi GPT Actions, dan dashboard realtime Today, Orders, serta AI Activity.
-- [`/real`](https://codex-build-week.vercel.app/real) sudah live: registrasi email/kata sandi via `@convex-dev/auth` (provider Password), onboarding pembuatan bisnis (nama + produk awal), dan dashboard Convex realtime milik pengguna sendiri.
+- [`/dashboard`](https://codex-build-week.vercel.app/dashboard) sudah live: registrasi email/kata sandi via `@convex-dev/auth` (provider Password), onboarding pembuatan bisnis (nama + produk awal), dan dashboard Convex realtime milik pengguna sendiri. UI-nya mengikuti design system `template-convex-starter`: dark secara default, aksen amber, dan token-driven. Rute lama `/real` tetap ada sebagai redirect permanen ke `/dashboard`, sehingga tautan lama tetap berfungsi.
 
 Pemilih mode tersedia di [`/`](https://codex-build-week.vercel.app/). Data kedua mode terisolasi penuh (`businessId = userId`); data Bu Sari dan keenam Action Demo dilarang digunakan dalam Mode Real.
 
@@ -16,13 +16,13 @@ Pemilih mode tersedia di [`/`](https://codex-build-week.vercel.app/). Data kedua
 ```text
 Pemilik warung -> Custom GPT -> Convex HTTP Actions -> Convex database
 Pemilik warung -> Next.js dashboard -------------> Convex database
-UMKM (real)    -> Next.js /real + Convex Auth ---> Convex database
+UMKM (real)    -> Next.js /dashboard + Convex Auth (/real -> redirect) ---> Convex database
 UMKM (lokal)   -> Next.js Media Studio ----------> OpenAI Images / TTS
 ```
 
 Convex adalah satu-satunya source of truth. Pembuatan order, pengurangan stok, dan audit log berjalan dalam satu mutation atomik. Next.js hanya menjadi lapisan visibilitas realtime; tidak ada API gateway kedua.
 
-Mode Real di `/real` memakai `@convex-dev/auth` dengan provider Password untuk registrasi dan login email/kata sandi. Setelah onboarding (nama bisnis + produk awal), pengguna mendapat dashboard Convex realtime miliknya sendiri. Isolasi data dijamin dengan `businessId = userId`, sehingga data pengguna terpisah penuh dari data demo Bu Sari. GPT Actions tetap Demo-only by design dan tidak menyentuh data Mode Real.
+Mode Real di `/dashboard` memakai `@convex-dev/auth` dengan provider Password untuk registrasi dan login email/kata sandi. Rute `/real` dipertahankan sebagai redirect permanen ke `/dashboard` agar tautan lama tidak putus. Setelah onboarding (nama bisnis + produk awal), pengguna mendapat dashboard Convex realtime miliknya sendiri. Isolasi data dijamin dengan `businessId = userId`, sehingga data pengguna terpisah penuh dari data demo Bu Sari. GPT Actions tetap Demo-only by design dan tidak menyentuh data Mode Real.
 
 ## Stack
 
@@ -63,7 +63,7 @@ Setelah Next.js memiliki URL HTTPS publik, hubungkan URL tersebut ke Convex agar
 npx convex env set DASHBOARD_PUBLIC_URL "https://nama-deployment.vercel.app"
 ```
 
-Buka [http://localhost:3000](http://localhost:3000), lalu pilih `/demo` atau `/real`. Jalankan `npm run check` untuk test, typecheck, dan production build.
+Buka [http://localhost:3000](http://localhost:3000), lalu pilih `/demo` atau `/dashboard` (`/real` akan dialihkan ke `/dashboard`). Jalankan `npm run check` untuk test, typecheck, dan production build.
 
 Untuk mencoba preview logo/poster dan panduan suara hanya di mesin lokal, simpan `OPENAI_API_KEY` pada `.env.local`. Jangan memasukkan key ke Vercel, Git, screenshot, atau chat. Production tetap menampilkan readiness flow tanpa memanggil endpoint OpenAI berbayar.
 
@@ -99,7 +99,7 @@ Semua endpoint adalah kontrak Demo-only dan mewajibkan header `X-Action-API-Key`
 ### Menghubungkan Custom GPT
 
 1. Ikuti paket field-by-field di [`GPTs/alfa.md`](GPTs/alfa.md).
-2. Di GPT editor, buat Action dan tempel [`GPTs/temanusaha-actions.yaml`](GPTs/temanusaha-actions.yaml).
+2. Di GPT editor, buat Action dan tempel [`GPTs/temanusaha-actions.yaml`](GPTs/temanusaha-actions.yaml). [`GPTs/action-schema.json`](GPTs/action-schema.json) adalah cermin JSON dari spesifikasi Actions yang sama.
 3. Pilih API key dengan custom header `X-Action-API-Key`.
 4. Ambil nilai Action key dari Convex Dashboard atau `npx convex env get ACTION_API_KEY`, lalu masukkan ke GPT editor tanpa menaruhnya di chat/repo.
 5. Uji setiap operasi di Preview sebelum demo.
