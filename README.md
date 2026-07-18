@@ -127,6 +127,8 @@ Belum ada login, multi-tenant admin, WhatsApp API, payment gateway, OCR, account
 
 ## Submission
 
+Repository branch: [rahmanef63/codex-build-week — agent/temanusaha-ai](https://github.com/rahmanef63/codex-build-week/tree/agent/temanusaha-ai).
+
 Sebelum Devpost: deploy dashboard dan Convex, rekam video publik kurang dari tiga menit, tambahkan URL repo/demo, lalu isi Codex `/feedback` session ID di sini.
 
 ```text

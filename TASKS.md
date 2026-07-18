@@ -18,7 +18,7 @@
 | Done | Audit GitHub authentication, remote, and Codex Cloud readiness | Reviewer | GPT-5 Codex |
 | Done | Audit the connected OpenAI Build Week Devpost submission | Reviewer | GPT-5 Codex |
 | Blocked | Import Action/Instructions in GPT Builder; browser session needs sign-in | User + Alpha | ChatGPT action-capable model |
-| In progress | Push an isolated GitHub branch for Codex Cloud | Alpha | GPT-5 Codex |
+| Done | Push isolated GitHub branch `agent/temanusaha-ai` for Codex Cloud | Alpha | GPT-5 Codex |
 | Todo | Add repo/demo/video URLs and Codex feedback ID to Devpost | User + Alpha | GPT-5 Codex |
 
 Status values: `Todo`, `In progress`, `Blocked`, `Done`.
