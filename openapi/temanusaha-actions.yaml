@@ -2,7 +2,7 @@ openapi: 3.1.0
 info:
   title: TemanUsaha AI Actions API
   version: 0.1.0
-  description: Enam operasi demo Warung Nasi Bu Sari. Tidak memproses pembayaran.
+  description: DEMO-ONLY API untuk data sintetis Warung Nasi Bu Sari. Keenam Action hanya boleh dipakai dalam Demo mode; Real mode tidak boleh memanggil Action ini. Tidak memproses pembayaran.
 servers:
   - url: https://utmost-snake-682.convex.site
 security:
@@ -12,6 +12,7 @@ paths:
     get:
       operationId: list_pending_orders
       summary: Daftar pesanan berstatus PENDING
+      description: "Demo-only: membaca pesanan PENDING sintetis Warung Nasi Bu Sari."
       responses:
         "200":
           description: Daftar pesanan
@@ -25,7 +26,7 @@ paths:
     post:
       operationId: create_order
       summary: Buat pesanan, kurangi stok, dan tulis AI Activity secara atomik
-      description: Panggil hanya setelah pengguna mengonfirmasi pelanggan, item, waktu ambil, dan status pembayaran.
+      description: "Demo-only: setelah konfirmasi pengguna, membuat pesanan sintetis dan memperbarui stok Warung Nasi Bu Sari."
       requestBody:
         required: true
         content:
@@ -50,7 +51,7 @@ paths:
     patch:
       operationId: update_order
       summary: Ubah status pemenuhan atau pembayaran
-      description: Panggil hanya setelah pengguna mengonfirmasi perubahan.
+      description: "Demo-only: setelah konfirmasi pengguna, mengubah status pesanan sintetis Warung Nasi Bu Sari."
       parameters:
         - name: id
           in: path
@@ -84,6 +85,7 @@ paths:
     get:
       operationId: get_low_stock_items
       summary: Daftar produk dengan stok pada atau di bawah ambang
+      description: "Demo-only: membaca stok rendah sintetis Warung Nasi Bu Sari."
       responses:
         "200":
           description: Produk stok rendah
@@ -98,6 +100,7 @@ paths:
     get:
       operationId: get_daily_summary
       summary: Ringkasan hari ini dalam zona Asia/Jakarta
+      description: "Demo-only: membaca ringkasan harian dari data sintetis Warung Nasi Bu Sari."
       responses:
         "200":
           description: Ringkasan harian
@@ -109,7 +112,7 @@ paths:
     get:
       operationId: get_dashboard_card_image
       summary: Ambil URL gambar kartu dashboard publik
-      description: Mengembalikan metadata gambar data demo sintetis untuk best-effort Markdown rendering di Custom GPT.
+      description: "Demo-only: mengembalikan metadata gambar agregat sintetis Warung Nasi Bu Sari untuk best-effort Markdown rendering."
       parameters:
         - name: view
           in: query

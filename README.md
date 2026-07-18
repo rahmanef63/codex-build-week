@@ -2,7 +2,12 @@
 
 TemanUsaha AI mengubah instruksi Bahasa Indonesia menjadi pencatatan pesanan, perubahan stok, dan pekerjaan yang bisa diverifikasi oleh pemilik warung.
 
-Demo sengaja sempit: satu bisnis sintetis, **Warung Nasi Bu Sari**, enam operasi GPT Actions, dan satu dashboard realtime dengan tampilan Today, Orders, serta AI Activity.
+Produk memiliki dua mode yang terpisah:
+
+- [`/demo`](https://codex-build-week.vercel.app/demo) memakai satu bisnis sintetis, **Warung Nasi Bu Sari**, enam operasi GPT Actions, dan dashboard realtime Today, Orders, serta AI Activity.
+- [`/real`](https://codex-build-week.vercel.app/real) belum terhubung ke akun atau data bisnis. Mode ini hanya menyediakan onboarding dan panduan umum sampai autentikasi serta penyimpanan bisnis nyata tersedia.
+
+Pemilih mode tersedia di [`/`](https://codex-build-week.vercel.app/). Data Bu Sari dan keenam Action Demo dilarang digunakan dalam Mode Real.
 
 ## Arsitektur
 
@@ -48,7 +53,7 @@ Setelah Next.js memiliki URL HTTPS publik, hubungkan URL tersebut ke Convex agar
 npx convex env set DASHBOARD_PUBLIC_URL "https://nama-deployment.vercel.app"
 ```
 
-Buka [http://localhost:3000](http://localhost:3000). Jalankan `npm run check` untuk test, typecheck, dan production build.
+Buka [http://localhost:3000](http://localhost:3000), lalu pilih `/demo` atau `/real`. Jalankan `npm run check` untuk test, typecheck, dan production build.
 
 ## Data demo
 
@@ -64,7 +69,7 @@ Seed membuat Warung Nasi Bu Sari dengan lima produk:
 
 Order demo `3 Nasi Ayam + 2 Es Teh` harus bernilai Rp55.000.
 
-## GPT Actions
+## GPT Actions — hanya Mode Demo
 
 HTTP Actions tersedia pada `https://utmost-snake-682.convex.site`:
 
@@ -77,7 +82,7 @@ HTTP Actions tersedia pada `https://utmost-snake-682.convex.site`:
 | GET | `/api/summary/today` | `get_daily_summary` |
 | GET | `/api/dashboard-card?view=today` | `get_dashboard_card_image` |
 
-Semua endpoint mewajibkan header `X-Action-API-Key`. `POST /api/orders` juga mewajibkan `requestId` agar retry Action tidak menggandakan order. Retry dengan payload yang sama mengembalikan order awal; pemakaian `requestId` yang sama untuk payload berbeda ditolak dengan HTTP 409.
+Semua endpoint adalah kontrak Demo-only dan mewajibkan header `X-Action-API-Key`. Mode Real tidak boleh memanggilnya. `POST /api/orders` juga mewajibkan `requestId` agar retry Action tidak menggandakan order. Retry dengan payload yang sama mengembalikan order awal; pemakaian `requestId` yang sama untuk payload berbeda ditolak dengan HTTP 409.
 
 ### Menghubungkan Custom GPT
 
@@ -117,7 +122,7 @@ Untuk Codex cloud:
 
 ChatGPT Project dan local project bukan filesystem yang sama. ChatGPT Project menyimpan chat, file, instructions, dan sources di cloud; folder lokal tetap sumber kode. GitHub menjadi jembatan yang bisa di-checkout oleh Codex cloud.
 
-Progress dan pembagian agent/model ada di [`TASKS.md`](TASKS.md). Agent Alpha mengorkestrasi integrasi; Beta mengerjakan Convex/Actions; Gamma mengerjakan dashboard; Reviewer melakukan audit read-only. Semua agent build pada sesi ini memakai GPT-5 Codex.
+Progress, kontrak file, dan model yang dilaporkan setiap agent ada di [`TASKS.md`](TASKS.md). Agent Alpha mengorkestrasi integrasi; agent lain bekerja paralel dengan satu pemilik write-scope per folder.
 
 ## Responsible AI
 
@@ -134,13 +139,13 @@ Belum ada login, multi-tenant admin, WhatsApp API, payment gateway, OCR, account
 
 ## Submission
 
-Repository branch: [rahmanef63/codex-build-week — agent/temanusaha-ai](https://github.com/rahmanef63/codex-build-week/tree/agent/temanusaha-ai).
+Repository: [rahmanef63/codex-build-week](https://github.com/rahmanef63/codex-build-week).
 
 Devpost draft: [TemanUsaha AI](https://devpost.com/software/temanusaha-ai).
 
-Demo slide deck tersedia saat aplikasi berjalan di [`/presentation/index.html`](http://localhost:3000/presentation/index.html).
+Demo produk: [codex-build-week.vercel.app/demo](https://codex-build-week.vercel.app/demo). Slide deck tersedia di [codex-build-week.vercel.app/presentation/index.html](https://codex-build-week.vercel.app/presentation/index.html).
 
-Sebelum Devpost: deploy dashboard dan Convex, rekam video publik kurang dari tiga menit, tambahkan URL repo/demo, lalu isi Codex `/feedback` session ID di sini.
+Sebelum Devpost: rekam video publik kurang dari tiga menit, tambahkan URL repo/demo, lalu isi Codex `/feedback` session ID di sini.
 
 ```text
 Codex feedback session ID: TODO

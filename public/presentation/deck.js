@@ -9,6 +9,8 @@ const slides = [
   "07-build.html",
   "08-penutup.html",
 ];
+const deploymentBaseUrl = "https://codex-build-week.vercel.app";
+const deployedDemoUrl = new URL("/demo", deploymentBaseUrl).href;
 
 const current = Math.max(0, Math.min(slides.length - 1, Number(document.body.dataset.slide || 0)));
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -16,6 +18,13 @@ const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 document.querySelectorAll("[data-current]").forEach((node) => node.textContent = String(current + 1).padStart(2, "0"));
 document.querySelectorAll("[data-total]").forEach((node) => node.textContent = String(slides.length).padStart(2, "0"));
 document.querySelectorAll("[data-progress]").forEach((node) => node.style.setProperty("--progress", `${((current + 1) / slides.length) * 100}%`));
+
+const qrCard = document.querySelector("[data-qr-card]");
+if (qrCard) {
+  qrCard.href = deployedDemoUrl;
+  qrCard.hidden = false;
+  qrCard.querySelector("[data-qr-domain]").textContent = new URL(deploymentBaseUrl).host;
+}
 
 function setNav(selector, target) {
   document.querySelectorAll(selector).forEach((link) => {
@@ -94,6 +103,7 @@ function setupInteractiveDemo() {
   const process = shell.querySelector("[data-order-process]");
   const processState = shell.querySelector("[data-process-state]");
   const processBar = shell.querySelector("[data-process-bar]");
+  const showActivity = shell.querySelector("[data-show-activity]");
   const steps = [...shell.querySelectorAll("[data-process-step]")];
   const dashboardMetrics = [...shell.querySelectorAll(".metric [data-after]")];
   const stockValues = [...shell.querySelectorAll(".stock-row [data-after]")];
@@ -152,6 +162,7 @@ function setupInteractiveDemo() {
     liveWorkspace.setAttribute("aria-hidden", "false");
     processState.textContent = "Memproses order";
     processState.classList.add("is-running");
+    process.focus({ preventScroll: true });
 
     for (const [index, step] of steps.entries()) {
       if (token !== run) return;
@@ -188,9 +199,10 @@ function setupInteractiveDemo() {
     processState.textContent = "Pesanan tercatat ✓";
     processState.classList.remove("is-running");
     processState.classList.add("is-done");
+    showActivity.focus({ preventScroll: true });
   });
 
-  shell.querySelector("[data-show-activity]").addEventListener("click", () => {
+  showActivity.addEventListener("click", () => {
     process.classList.remove("is-highlighted");
     requestAnimationFrame(() => process.classList.add("is-highlighted"));
     process.focus();

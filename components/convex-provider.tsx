@@ -12,10 +12,10 @@ export function ConvexClientProvider({ children }: { children: ReactNode }) {
       <main className="setup-shell">
         <section className="setup-card">
           <span className="eyebrow">Satu langkah lagi</span>
-          <h1>Hubungkan dashboard ke Convex</h1>
+          <h1>Hubungkan Demo ke Convex Cloud</h1>
           <p>
-            Jalankan <code>npx convex dev</code>, lalu pastikan{" "}
-            <code>NEXT_PUBLIC_CONVEX_URL</code> terisi di <code>.env.local</code>.
+            Pastikan <code>NEXT_PUBLIC_CONVEX_URL</code> di <code>.env.local</code>{" "}
+            menunjuk deployment Convex Cloud yang aktif.
           </p>
           <p className="setup-note">
             Kunci GPT Action tetap disimpan di environment Convex, bukan di browser.

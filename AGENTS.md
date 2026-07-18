@@ -8,6 +8,8 @@ Build the narrow hackathon demo: Custom GPT + Convex HTTP Actions + a Next.js da
 
 Only ship six operations: create an order, list pending orders, update an order, list low stock, show today's summary, and fetch a dashboard-card image. The dashboard has Today, Orders, and AI Activity views.
 
+The product has two explicit modes. `/demo` and the six current Actions are synthetic Demo mode only and may reference Warung Nasi Bu Sari. `/real` must never read or mutate Demo data; until separate business authentication/storage is implemented, Real mode is onboarding/advisory only and must say that it is not connected.
+
 Skip WhatsApp, real payments, accounting, OCR, marketplace, payroll, RAG, forecasting, complex auth, and multi-tenant administration unless explicitly requested.
 
 ## Data and safety
@@ -22,6 +24,7 @@ Skip WhatsApp, real payments, accounting, OCR, marketplace, payroll, RAG, foreca
 - Use synthetic customer data only and never expose secrets to the browser.
 - Dashboard-card image URLs may be public only for aggregate demo metrics and fixed product data. Never render customer names, free-form inputs/log summaries, real customer data, or secrets on a public card.
 - GPT Actions cannot return images through `openaiFileResponse`; the dashboard-card Action returns ordinary image metadata for best-effort Markdown rendering in GPT Builder.
+- GPT instructions must preserve an explicit `demo` or `real` conversation mode. Demo Actions are forbidden in Real mode.
 
 ## Stable Action IDs
 

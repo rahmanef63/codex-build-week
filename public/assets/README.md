@@ -7,9 +7,6 @@ brand/
   temanusaha-icon-512.png   Derived from the source mark.
   temanusaha-logo-horizontal.png
   temanusaha-logo-horizontal-white.png
-  temanusaha-logo-stacked.png
-  temanusaha-mark-monochrome-green.png
-  temanusaha-mark-monochrome-white.png
   temanusaha-pattern.png
 illustrations/
   warung-dashboard-banner.png
@@ -26,6 +23,8 @@ states/
   setup-unseeded.png
 ```
 
-Next.js metadata assets live in `app/apple-icon.png`, `app/favicon.ico`, and `app/opengraph-image.png`.
+Next.js metadata uses `app/apple-icon.png`, the generic root card in
+`app/opengraph-image.tsx`, and the Bu Sari Demo card in
+`app/demo/opengraph-image.png`.
 
 The matching generation prompts live in `prompts/assets/`.
