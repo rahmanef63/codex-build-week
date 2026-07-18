@@ -1,31 +1,69 @@
-import { authTables } from "@convex-dev/auth/server";
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
+const orderItem = v.object({
+  productId: v.id("products"),
+  slug: v.string(),
+  productName: v.string(),
+  quantity: v.number(),
+  unitPrice: v.number(),
+  lineTotal: v.number(),
+});
+
 export default defineSchema({
-  ...authTables,
-  notes: defineTable({
-    userId: v.id("users"),
-    text: v.string(),
-    done: v.boolean(),
-  }).index("by_user", ["userId"]),
-  // A workspace owns its own menu (its `features`). Per-user; the OS shell reads
-  // the signed-in user's workspaces via workspaces.list and the switcher picks
-  // among them. `order` gives a stable sort.
-  workspaces: defineTable({
-    userId: v.id("users"),
+  businesses: defineTable({
+    businessId: v.string(),
     name: v.string(),
-    plan: v.string(),
-    icon: v.string(),
-    order: v.number(),
-    features: v.array(
-      v.object({
-        slug: v.string(),
-        label: v.string(),
-        sub: v.string(),
-        icon: v.string(),
-        group: v.union(v.literal("project"), v.literal("system")),
-      }),
+    currency: v.string(),
+    timezone: v.string(),
+  }).index("by_business_id", ["businessId"]),
+
+  products: defineTable({
+    businessId: v.string(),
+    slug: v.string(),
+    name: v.string(),
+    price: v.number(),
+    stock: v.number(),
+    lowStockThreshold: v.number(),
+    sortOrder: v.number(),
+  })
+    .index("by_business", ["businessId"])
+    .index("by_business_slug", ["businessId", "slug"]),
+
+  orders: defineTable({
+    businessId: v.string(),
+    requestId: v.string(),
+    requestFingerprint: v.optional(v.string()),
+    customerName: v.string(),
+    items: v.array(orderItem),
+    total: v.number(),
+    paymentStatus: v.union(
+      v.literal("UNPAID"),
+      v.literal("PAID"),
+      v.literal("PARTIAL"),
     ),
-  }).index("by_user", ["userId"]),
+    fulfillmentStatus: v.union(
+      v.literal("PENDING"),
+      v.literal("COMPLETED"),
+    ),
+    pickupTime: v.string(),
+    notes: v.optional(v.string()),
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index("by_business_request", ["businessId", "requestId"])
+    .index("by_business_status", ["businessId", "fulfillmentStatus"])
+    .index("by_business_created", ["businessId", "createdAt"]),
+
+  aiActionLogs: defineTable({
+    businessId: v.string(),
+    action: v.string(),
+    requestId: v.optional(v.string()),
+    inputSummary: v.string(),
+    outputSummary: v.string(),
+    requiresVerification: v.boolean(),
+    createdAt: v.number(),
+  })
+    .index("by_business_created", ["businessId", "createdAt"])
+    .index("by_business_request", ["businessId", "requestId"]),
 });

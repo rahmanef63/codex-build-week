@@ -1,72 +1,142 @@
-# convex-starter
+# TemanUsaha AI
 
-Minimal **Convex + Next.js 16** starter. Deploy to Vercel; Convex auto-deploys on every build. **You only set 4 env vars.**
+TemanUsaha AI mengubah instruksi Bahasa Indonesia menjadi pencatatan pesanan, perubahan stok, dan pekerjaan yang bisa diverifikasi oleh pemilik warung.
 
-**Live demo:** https://template-convex-starter.vercel.app
+Demo sengaja sempit: satu bisnis sintetis, **Warung Nasi Bu Sari**, lima operasi GPT Actions, dan satu dashboard realtime dengan tampilan Today, Orders, serta AI Activity.
 
-## The 4 variables
+## Arsitektur
 
-| Your term    | Env var                  | Where             | e.g.                          |
-| ------------ | ------------------------ | ----------------- | ----------------------------- |
-| cloud        | `NEXT_PUBLIC_CONVEX_URL` | **Set in Vercel** | `https://abc-123.convex.cloud` |
-| deploy key   | `CONVEX_DEPLOY_KEY`      | **Set in Vercel** | `prod:abc...` (Convex Deploy Keys) |
-| site         | `CONVEX_SITE_URL`        | Auto              | `https://abc-123.convex.site`  |
-| domain       | `SITE_URL`               | Auto              | `https://your-app.vercel.app`  |
-
-Set **cloud** + **deploy key** yourself in Vercel. **site** + **domain** are auto (Convex Cloud provides `site`; `domain` is derived from `VERCEL_URL` by `scripts/setup-auth.mjs`).
-
-## Deploy to Vercel
-
-1. **Push this repo** to GitHub and import it into Vercel.
-2. **Set the Build Command** to `npm run build:auto`. This runs `scripts/build.mjs` — it provisions the auth keys (`scripts/setup-auth.mjs`), then `convex deploy --cmd 'next build'` pushes your Convex functions + schema and builds Next.js injecting `NEXT_PUBLIC_CONVEX_URL`.
-3. **Set env vars** `NEXT_PUBLIC_CONVEX_URL` + `CONVEX_DEPLOY_KEY`, then deploy.
-
-Every git push to your production branch redeploys both Convex and the frontend.
-
-### Preview deploys (PRs)
-
-A PR preview build with a **production** deploy key never runs `convex deploy` —
-`scripts/build.mjs` detects `VERCEL_ENV=preview` and builds the frontend only, so
-PR code can't overwrite your production backend. To get a real isolated backend
-per PR, create a **preview deploy key** (starts with `preview:`) in the Convex
-dashboard and set it as `CONVEX_DEPLOY_KEY` for Vercel's *Preview* environment
-only.
-
-## Local dev
-
-```bash
-npm install
-npx convex dev   # terminal 1 — prompts to create/link a deployment, writes NEXT_PUBLIC_CONVEX_URL
-npm run dev      # terminal 2 — http://localhost:3000
-npm test         # backend tests (Vitest + convex-test, no deployment needed)
+```text
+Pemilik warung -> Custom GPT -> Convex HTTP Actions -> Convex database
+Pemilik warung -> Next.js dashboard -------------> Convex database
 ```
 
-Sign up on `/login` to create your account.
+Convex adalah satu-satunya source of truth. Pembuatan order, pengurangan stok, dan audit log berjalan dalam satu mutation atomik. Next.js hanya menjadi lapisan visibilitas realtime; tidak ada API gateway kedua.
 
-## What's inside
+## Stack
 
-- `/` — landing page
-- `/os` — **the dashboard demo**: an adaptive OS shell (desktop sidebar + dashboard, mobile bottom dock) with a workspace switcher, project/system feature groups, nav-user, collapsible sidebar + breadcrumb, and a light/dark theme picker. Public placeholder when logged out; signed-in it reads your **workspaces from a Convex table** (per-user, seeded on first visit) with full create / rename / delete. Native + Tailwind, no UI-kit dependency.
-- `/login` — auth (sign up / sign in)
-- `/dashboard` — your notes, live via Convex
-- `/assistant` — Claude-powered AI chat (Vercel AI SDK). Optional — set `ANTHROPIC_API_KEY` to turn it on. Sign-in required; the route verifies the caller's Convex auth token so strangers can't spend your API key.
+- Next.js App Router + React + TypeScript
+- Convex database, queries, mutations, dan HTTP Actions
+- Custom GPT + OpenAPI Actions
+- Codex GPT-5 untuk orkestrasi build lokal dan cloud
 
-Auth is [`@convex-dev/auth`](https://labs.convex.dev/auth) Password provider (open signup). Data is per-user with server-side ownership checks on every mutation — a `notes` table (the dashboard) and a `workspaces` table (the OS shell), each proven by `tests/*.test.ts`. Theme is light/dark/system via `next-themes` (dark is the default). The AI route lives in `app/api/chat/route.ts` (Claude via `@ai-sdk/anthropic`). Error/loading UX is built in: global error boundary, 404, loading skeletons (`components/skeleton.tsx`), and toasts (`components/toast.tsx`). Deploy is Vercel-only: every push to your production branch triggers a Vercel build that deploys Convex + builds Next together (`build:auto`), and `next build` type-checks + lints — no separate CI service. Run `npm test` locally. Dependabot keeps deps fresh. Vercel **Web Analytics** + **Speed Insights** are wired in `app/layout.tsx` (both free — enable each in your Vercel project's *Analytics* / *Speed Insights* tab; they no-op until then).
+Backend tidak memanggil OpenAI API secara langsung pada MVP ini. Agents SDK/Responses API baru perlu ditambahkan jika percakapan dipindahkan dari Custom GPT ke aplikasi sendiri.
 
-## Vibe-coding guardrails (built in)
+## Menjalankan Next.js dengan Convex Cloud
 
-This is a **blank canvas you build on with an AI coding tool** — so it ships with
-guardrails that keep AI-assisted code clean (no slop, no DRY/SSOT violations, no
-spaghetti), even if you've never coded before:
+Prasyarat: Node.js 24.
 
-- **`AGENTS.md`** — the single source of truth for how any AI tool (Cursor, Claude
-  Code, Copilot, Windsurf) should build here: architecture map, the laziness ladder
-  (YAGNI), DRY/SSOT rules, Convex security rules (auth on every mutation, index
-  don't scan), no-AI-slop frontend rules, and the add-a-feature golden path.
-- **`CLAUDE.md`** and **`.cursor/rules/`** just point at `AGENTS.md` — one source,
-  no drift.
-- **`.claude/skills/add-feature`** — a Claude Code skill that walks the clean
-  schema → validated+authz'd function → typed UI path when you ask it to add a feature.
+```powershell
+npm install
+npx convex dev --once
+npm run dev
+```
 
-Just open the repo in your AI tool and start describing what you want — it reads
-these rules automatically.
+Project ini memakai deployment cloud development `utmost-snake-682`; tidak perlu menjalankan backend Convex lokal. `.env.local` menyimpan binding cloud dan URL client/site, sedangkan secret Action disimpan pada environment deployment Convex.
+
+Di terminal kedua, pasang secret pada deployment yang sedang aktif:
+
+```powershell
+npx convex env set ACTION_API_KEY "ganti-dengan-secret-acak"
+npx convex env set DEMO_RESET_KEY "ganti-dengan-secret-reset"
+npx convex run seed:reset '{\"resetKey\":\"ganti-dengan-secret-reset\"}'
+```
+
+Buka [http://localhost:3000](http://localhost:3000). Jalankan `npm run check` untuk test, typecheck, dan production build.
+
+## Deploy ke Vercel
+
+Hubungkan repo ini ke Vercel, lalu set `NEXT_PUBLIC_CONVEX_URL` dan `CONVEX_DEPLOY_KEY` untuk deployment Convex production. Build command `npm run build:auto` akan men-deploy fungsi Convex dan membangun Next.js bersama-sama. Preview yang hanya memiliki production deploy key membangun frontend tanpa menyentuh backend production.
+
+`ACTION_API_KEY` dan `DEMO_RESET_KEY` tetap disimpan sebagai environment variable di Convex, bukan di Vercel atau browser.
+
+## Data demo
+
+Seed membuat Warung Nasi Bu Sari dengan lima produk:
+
+| Produk | Harga | Stok | Ambang stok rendah |
+| --- | ---: | ---: | ---: |
+| Nasi Ayam | Rp15.000 | 12 | 5 |
+| Es Teh | Rp5.000 | 18 | 8 |
+| Ayam Goreng | Rp12.000 | 7 | 5 |
+| Nasi Putih | Rp5.000 | 20 | 8 |
+| Sambal Extra | Rp3.000 | 6 | 10 |
+
+Order demo `3 Nasi Ayam + 2 Es Teh` harus bernilai Rp55.000.
+
+## GPT Actions
+
+HTTP Actions tersedia pada `https://utmost-snake-682.convex.site`:
+
+| Method | Path | Operation ID |
+| --- | --- | --- |
+| POST | `/api/orders` | `create_order` |
+| GET | `/api/orders?status=pending` | `list_pending_orders` |
+| PATCH | `/api/orders/{id}` | `update_order` |
+| GET | `/api/inventory/low-stock` | `get_low_stock_items` |
+| GET | `/api/summary/today` | `get_daily_summary` |
+
+Semua endpoint mewajibkan header `X-Action-API-Key`. `POST /api/orders` juga mewajibkan `requestId` agar retry Action tidak menggandakan order. Retry dengan payload yang sama mengembalikan order awal; pemakaian `requestId` yang sama untuk payload berbeda ditolak dengan HTTP 409.
+
+### Menghubungkan Custom GPT
+
+1. Ikuti paket field-by-field di [`GPTs/alfa.md`](GPTs/alfa.md).
+2. Di GPT editor, buat Action dan tempel [`GPTs/temanusaha-actions.yaml`](GPTs/temanusaha-actions.yaml).
+3. Pilih API key dengan custom header `X-Action-API-Key`.
+4. Ambil nilai Action key dari Convex Dashboard atau `npx convex env get ACTION_API_KEY`, lalu masukkan ke GPT editor tanpa menaruhnya di chat/repo.
+5. Uji setiap operasi di Preview sebelum demo.
+
+Prompt utama:
+
+```text
+Catat pesanan Bu Rina, 3 nasi ayam dan 2 es teh, ambil jam 12.30, belum bayar.
+```
+
+Custom GPT harus menampilkan interpretasi dan meminta konfirmasi sebelum memanggil `create_order`. Setelah sukses, respons menggunakan AI Action Receipt:
+
+```text
+Apa yang saya pahami:
+Apa yang saya lakukan:
+Data yang digunakan:
+Yang harus diperiksa:
+Cara memberi instruksi lebih jelas:
+```
+
+## Codex: project lokal dan cloud
+
+Folder ini adalah local project Codex. `AGENTS.md` menyimpan scope, aturan keamanan, dan perintah verifikasi yang berlaku lintas task.
+
+Untuk Codex cloud:
+
+1. Push repo ini ke GitHub.
+2. Buat cloud environment untuk repo/branch tersebut.
+3. Gunakan setup command `npm ci` dan pin Node.js 24.
+4. Tambahkan `NEXT_PUBLIC_CONVEX_URL` dari deployment cloud sebagai environment variable bila cloud task perlu menjalankan Next.js.
+5. Jalankan task cloud per hasil yang terpisah, misalnya backend, UI, atau review; merge melalui diff/PR.
+
+ChatGPT Project dan local project bukan filesystem yang sama. ChatGPT Project menyimpan chat, file, instructions, dan sources di cloud; folder lokal tetap sumber kode. GitHub menjadi jembatan yang bisa di-checkout oleh Codex cloud.
+
+Progress dan pembagian agent/model ada di [`TASKS.md`](TASKS.md). Agent Alpha mengorkestrasi integrasi; Beta mengerjakan Convex/Actions; Gamma mengerjakan dashboard; Reviewer melakukan audit read-only. Semua agent build pada sesi ini memakai GPT-5 Codex.
+
+## Responsible AI
+
+- Data demo seluruhnya sintetis.
+- Angka bisnis hanya boleh berasal dari Action/Convex.
+- Mutasi transaksi harus dikonfirmasi dalam percakapan.
+- API menolak stok negatif, update kosong, dan request tanpa API key.
+- Dashboard dan AI Activity menjadi bukti yang dapat dikoreksi pengguna.
+- Demo tidak memproses pembayaran nyata.
+
+## Batas MVP
+
+Belum ada login, multi-tenant admin, WhatsApp API, payment gateway, OCR, accounting, forecasting, atau Agents SDK runtime. Tambahkan hanya setelah alur lima Action terbukti andal.
+
+## Submission
+
+Sebelum Devpost: deploy dashboard dan Convex, rekam video publik kurang dari tiga menit, tambahkan URL repo/demo, lalu isi Codex `/feedback` session ID di sini.
+
+```text
+Codex feedback session ID: TODO
+```
+
+Dokumentasi resmi: [Codex Projects](https://learn.chatgpt.com/docs/projects), [Codex cloud environments](https://learn.chatgpt.com/docs/environments/cloud-environment), [Custom GPT Actions](https://help.openai.com/en/articles/9442513-configuring-actions-in-gpts), [Convex + Next.js](https://docs.convex.dev/quickstart/nextjs), dan [Convex HTTP Actions](https://docs.convex.dev/functions/http-actions).
