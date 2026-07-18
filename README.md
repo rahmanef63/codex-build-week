@@ -4,27 +4,31 @@ TemanUsaha AI mengubah instruksi Bahasa Indonesia menjadi pencatatan pesanan, pe
 
 Produk memiliki dua mode yang terpisah:
 
-Fokus produk adalah **70% Demo Bu Sari** untuk membuktikan workflow yang sudah berjalan dan **30% onboarding UMKM** untuk menunjukkan jalur adopsi yang aman tanpa mengakses data nyata.
+Fokus produk adalah **Demo Bu Sari** untuk membuktikan workflow GPT Actions yang sudah berjalan dan **Mode Real yang kini live** agar UMKM dapat mendaftar, membuat bisnisnya sendiri, dan memakai dashboard realtime tanpa menyentuh data demo.
 
 - [`/demo`](https://codex-build-week.vercel.app/demo) memakai satu bisnis sintetis, **Warung Nasi Bu Sari**, enam operasi GPT Actions, dan dashboard realtime Today, Orders, serta AI Activity.
-- [`/real`](https://codex-build-week.vercel.app/real) belum terhubung ke akun atau data bisnis. Mode ini hanya menyediakan onboarding dan panduan umum sampai autentikasi serta penyimpanan bisnis nyata tersedia.
+- [`/real`](https://codex-build-week.vercel.app/real) sudah live: registrasi email/kata sandi via `@convex-dev/auth` (provider Password), onboarding pembuatan bisnis (nama + produk awal), dan dashboard Convex realtime milik pengguna sendiri.
 
-Pemilih mode tersedia di [`/`](https://codex-build-week.vercel.app/). Data Bu Sari dan keenam Action Demo dilarang digunakan dalam Mode Real.
+Pemilih mode tersedia di [`/`](https://codex-build-week.vercel.app/). Data kedua mode terisolasi penuh (`businessId = userId`); data Bu Sari dan keenam Action Demo dilarang digunakan dalam Mode Real.
 
 ## Arsitektur
 
 ```text
 Pemilik warung -> Custom GPT -> Convex HTTP Actions -> Convex database
 Pemilik warung -> Next.js dashboard -------------> Convex database
+UMKM (real)    -> Next.js /real + Convex Auth ---> Convex database
 UMKM (lokal)   -> Next.js Media Studio ----------> OpenAI Images / TTS
 ```
 
 Convex adalah satu-satunya source of truth. Pembuatan order, pengurangan stok, dan audit log berjalan dalam satu mutation atomik. Next.js hanya menjadi lapisan visibilitas realtime; tidak ada API gateway kedua.
 
+Mode Real di `/real` memakai `@convex-dev/auth` dengan provider Password untuk registrasi dan login email/kata sandi. Setelah onboarding (nama bisnis + produk awal), pengguna mendapat dashboard Convex realtime miliknya sendiri. Isolasi data dijamin dengan `businessId = userId`, sehingga data pengguna terpisah penuh dari data demo Bu Sari. GPT Actions tetap Demo-only by design dan tidak menyentuh data Mode Real.
+
 ## Stack
 
 - Next.js App Router + React + TypeScript
 - Convex database, queries, mutations, dan HTTP Actions
+- `@convex-dev/auth` + `@auth/core` untuk autentikasi email/kata sandi Mode Real
 - Custom GPT + OpenAPI Actions
 - OpenAI Image API dan Text-to-Speech untuk preview onboarding lokal
 - Codex GPT-5 untuk orkestrasi build lokal dan cloud
@@ -50,6 +54,8 @@ npx convex env set ACTION_API_KEY "ganti-dengan-secret-acak"
 npx convex env set DEMO_RESET_KEY "ganti-dengan-secret-reset"
 npx convex run seed:reset '{\"resetKey\":\"ganti-dengan-secret-reset\"}'
 ```
+
+Autentikasi Mode Real membutuhkan tiga environment variable tambahan pada deployment Convex: `JWT_PRIVATE_KEY`, `JWKS`, dan `SITE_URL`. Ketiganya digenerate lalu dipasang via `npx convex env set`; jangan menaruh material kunci di repo, chat, atau screenshot.
 
 Setelah Next.js memiliki URL HTTPS publik, hubungkan URL tersebut ke Convex agar Action dapat mengembalikan kartu PNG:
 
@@ -127,7 +133,7 @@ Progress, kontrak file, dan model yang dilaporkan setiap agent ada di [`TASKS.md
 
 ## Batas MVP
 
-Belum ada login, multi-tenant admin, WhatsApp API, payment gateway, OCR, accounting, forecasting, atau Agents SDK runtime. Tambahkan hanya setelah alur enam Action terbukti andal.
+Login email/kata sandi Mode Real sudah tersedia. Belum ada multi-tenant admin, WhatsApp API, payment gateway, OCR, accounting, forecasting, atau Agents SDK runtime. Tambahkan hanya setelah alur enam Action terbukti andal.
 
 ## Submission
 

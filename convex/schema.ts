@@ -1,3 +1,4 @@
+import { authTables } from "@convex-dev/auth/server";
 import { defineSchema, defineTable } from "convex/server";
 import { v } from "convex/values";
 
@@ -11,6 +12,8 @@ const orderItem = v.object({
 });
 
 export default defineSchema({
+  ...authTables,
+
   businesses: defineTable({
     businessId: v.string(),
     name: v.string(),

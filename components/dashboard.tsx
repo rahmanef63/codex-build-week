@@ -58,8 +58,11 @@ const productImages: Record<string, string> = {
 
 type Tab = (typeof tabs)[number]["id"];
 
-export function Dashboard() {
-  const data = useQuery(api.business.dashboard) as DashboardData | null | undefined;
+export function Dashboard({ real = false }: { real?: boolean }) {
+  const data = useQuery(real ? api.real.dashboard : api.business.dashboard) as
+    | DashboardData
+    | null
+    | undefined;
   const [activeTab, setActiveTab] = useState<Tab>("today");
 
   if (data === undefined) return <LoadingDashboard />;

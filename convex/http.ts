@@ -1,8 +1,10 @@
 import { httpActionGeneric, httpRouter } from "convex/server";
 import { ConvexError } from "convex/values";
 import { internal } from "./_generated/api";
+import { auth } from "./auth";
 
 const http = httpRouter();
+auth.addHttpRoutes(http);
 const headers = { "content-type": "application/json; charset=utf-8", "cache-control": "no-store" };
 const json = (body: unknown, status = 200) =>
   new Response(JSON.stringify(body), { status, headers });

@@ -1,35 +1,35 @@
 import { internalQueryGeneric, queryGeneric } from "convex/server";
 import { buildTodaySummary, BUSINESS_ID, jakartaDay } from "./domain";
 
-async function readDashboard(ctx: any) {
+export async function readDashboard(ctx: any, businessId: string = BUSINESS_ID) {
   const now = Date.now();
   const day = jakartaDay(now);
   const [business, products, orders, todayOrders, activity] = await Promise.all([
     ctx.db
       .query("businesses")
-      .withIndex("by_business_id", (q: any) => q.eq("businessId", BUSINESS_ID))
+      .withIndex("by_business_id", (q: any) => q.eq("businessId", businessId))
       .unique(),
     ctx.db
       .query("products")
-      .withIndex("by_business", (q: any) => q.eq("businessId", BUSINESS_ID))
+      .withIndex("by_business", (q: any) => q.eq("businessId", businessId))
       .collect(),
     ctx.db
       .query("orders")
-      .withIndex("by_business_created", (q: any) => q.eq("businessId", BUSINESS_ID))
+      .withIndex("by_business_created", (q: any) => q.eq("businessId", businessId))
       .order("desc")
       .take(50),
     ctx.db
       .query("orders")
       .withIndex("by_business_created", (q: any) =>
         q
-          .eq("businessId", BUSINESS_ID)
+          .eq("businessId", businessId)
           .gte("createdAt", day.start)
           .lt("createdAt", day.end),
       )
       .collect(),
     ctx.db
       .query("aiActionLogs")
-      .withIndex("by_business_created", (q: any) => q.eq("businessId", BUSINESS_ID))
+      .withIndex("by_business_created", (q: any) => q.eq("businessId", businessId))
       .order("desc")
       .take(20),
   ]);
@@ -47,7 +47,7 @@ async function readDashboard(ctx: any) {
 
 export const dashboard = queryGeneric({
   args: {},
-  handler: readDashboard,
+  handler: async (ctx) => readDashboard(ctx),
 });
 
 export const summaryToday = internalQueryGeneric({
