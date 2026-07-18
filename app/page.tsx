@@ -18,13 +18,13 @@ export default function Home() {
           <span className="eyebrow">TemanUsaha AI</span>
           <h1 id="mode-title">Pilih cara kerja yang tepat.</h1>
           <p>
-            Coba alur produk dengan data sintetis, atau siapkan ruang aman untuk
-            menghubungkan usaha Anda.
+            Fokus utama ada pada Demo yang siap dicoba, dilengkapi jalur onboarding
+            aman untuk UMKM yang ingin menuju Mode Real.
           </p>
         </div>
       </section>
 
-      <section className="mode-grid" aria-label="Pilihan mode TemanUsaha AI">
+      <section className="mode-grid" aria-label="70 persen Demo dan 30 persen onboarding UMKM">
         <article className="mode-card mode-card-demo">
           <div className="mode-card-top">
             <span className="mode-label">Mode Demo</span>

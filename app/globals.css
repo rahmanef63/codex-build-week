@@ -66,7 +66,7 @@ a { color: inherit; }
 
 .mode-grid {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: minmax(0, 7fr) minmax(280px, 3fr);
   gap: 18px;
 }
 
@@ -141,7 +141,10 @@ a { color: inherit; }
 .connection-state { display: inline-flex; align-items: center; gap: 10px; margin-top: 26px; padding: 10px 13px; border: 1px solid #e3c9c5; border-radius: 999px; color: var(--red); background: rgba(252, 233, 230, .78); font-size: .8rem; font-weight: 800; }
 .connection-state span { width: 9px; height: 9px; border-radius: 50%; background: currentColor; box-shadow: 0 0 0 4px rgba(155, 56, 46, .12); }
 .readiness-card { padding: clamp(24px, 4vw, 34px); border: 1px solid var(--line); border-radius: 24px; background: rgba(255, 255, 255, .92); box-shadow: 0 20px 55px rgba(35, 60, 44, .09); }
+.readiness-heading { display: grid; grid-template-columns: 108px minmax(0, 1fr); gap: 18px; align-items: center; margin-bottom: 24px; }
+.readiness-art { width: 108px; height: 108px; border: 1px solid #eadfca; border-radius: 20px; background: #fff8eb; object-fit: cover; }
 .readiness-card h2 { margin: 7px 0 24px; font-size: clamp(1.4rem, 3vw, 2rem); letter-spacing: -.035em; }
+.readiness-heading h2 { margin-bottom: 0; }
 .readiness-card ol { display: grid; gap: 18px; margin: 0; padding: 0; list-style: none; }
 .readiness-card li { display: grid; grid-template-columns: 34px minmax(0, 1fr); gap: 13px; align-items: start; }
 .readiness-card li > span { display: grid; width: 34px; height: 34px; place-items: center; border-radius: 10px; color: var(--green); background: var(--green-soft); font-size: .8rem; font-weight: 850; }
@@ -455,6 +458,8 @@ tbody tr:last-child > * { border-bottom: 0; }
   .real-nav img { width: 170px; }
   .real-hero { padding: 54px 0 40px; }
   .readiness-card { padding: 22px; }
+  .readiness-heading { grid-template-columns: 88px minmax(0, 1fr); gap: 14px; }
+  .readiness-art { width: 88px; height: 88px; border-radius: 16px; }
   .dashboard-shell { width: min(100% - 24px, 1180px); padding-top: 24px; }
   .topbar,
   .section-heading { align-items: flex-start; flex-direction: column; gap: 12px; }

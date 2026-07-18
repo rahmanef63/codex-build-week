@@ -4,6 +4,8 @@ TemanUsaha AI mengubah instruksi Bahasa Indonesia menjadi pencatatan pesanan, pe
 
 Produk memiliki dua mode yang terpisah:
 
+Fokus produk adalah **70% Demo Bu Sari** untuk membuktikan workflow yang sudah berjalan dan **30% onboarding UMKM** untuk menunjukkan jalur adopsi yang aman tanpa mengakses data nyata.
+
 - [`/demo`](https://codex-build-week.vercel.app/demo) memakai satu bisnis sintetis, **Warung Nasi Bu Sari**, enam operasi GPT Actions, dan dashboard realtime Today, Orders, serta AI Activity.
 - [`/real`](https://codex-build-week.vercel.app/real) belum terhubung ke akun atau data bisnis. Mode ini hanya menyediakan onboarding dan panduan umum sampai autentikasi serta penyimpanan bisnis nyata tersedia.
 

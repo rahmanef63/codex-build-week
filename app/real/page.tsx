@@ -52,8 +52,19 @@ export default function RealPage() {
         </div>
 
         <aside className="readiness-card" aria-labelledby="readiness-title">
-          <span className="eyebrow">Sebelum tersambung</span>
-          <h2 id="readiness-title">Tiga lapis kesiapan</h2>
+          <div className="readiness-heading">
+            <Image
+              className="readiness-art"
+              src="/assets/states/setup-unseeded.png"
+              alt="Ilustrasi ruang data dan perangkat yang siap ditumbuhkan"
+              width={180}
+              height={180}
+            />
+            <div>
+              <span className="eyebrow">30% · Onboarding UMKM</span>
+              <h2 id="readiness-title">Tiga lapis kesiapan</h2>
+            </div>
+          </div>
           <ol>
             {connectionSteps.map((step, index) => (
               <li key={step.title}>

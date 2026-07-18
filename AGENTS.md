@@ -2,7 +2,7 @@
 
 ## Goal
 
-Build the narrow hackathon demo: Custom GPT + Convex HTTP Actions + a Next.js dashboard for Warung Nasi Bu Sari.
+Build the hackathon product with a 70/30 focus: 70% runnable Demo for Warung Nasi Bu Sari, and 30% safe onboarding for other UMKM through a disconnected Real mode.
 
 ## Scope
 
