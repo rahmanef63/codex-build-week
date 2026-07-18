@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Arsitektur — TemanUsaha AI</title>
+  <link rel="stylesheet" href="deck.css">
+  <script defer src="deck.js"></script>
+</head>
+<body data-slide="5">
+  <main class="slide slide--dark">
+    <header class="deck-top">
+      <div class="mini-brand"><img src="../assets/brand/temanusaha-mark.png" alt=""><span>TemanUsaha AI</span></div>
+      <span class="section-label">Arsitektur</span>
+    </header>
+
+    <section class="slide-body">
+      <div>
+        <p class="kicker" data-reveal>Sederhana karena satu sumber kebenaran</p>
+        <h2 data-reveal>Chat masuk. <span class="highlight">Convex mencatat.</span></h2>
+        <p class="lead" data-reveal>Klik tiap lapisan untuk melihat perannya.</p>
+      </div>
+
+      <div class="architecture" data-reveal>
+        <button class="arch-node is-active" type="button" data-arch data-detail="Pemilik warung berbicara dalam Bahasa Indonesia dan tetap memegang keputusan melalui konfirmasi eksplisit.">
+          <span class="node-index">01</span><h3>Pemilik warung</h3><p>Instruksi natural, tanpa belajar UI operasional baru.</p>
+        </button>
+        <button class="arch-node" type="button" data-arch data-detail="Custom GPT menjadi reasoning layer: memilih satu dari lima Action, merangkum interpretasi, dan meminta konfirmasi sebelum mutasi.">
+          <span class="node-index">02</span><h3>Custom GPT</h3><p>Memahami maksud dan memilih Action yang tepat.</p>
+        </button>
+        <button class="arch-node" type="button" data-arch data-detail="Convex HTTP Actions memvalidasi API key, input, tenant demo tetap, requestId, dan ketersediaan stok.">
+          <span class="node-index">03</span><h3>HTTP Actions</h3><p>Trust boundary dengan validasi dan idempotensi.</p>
+        </button>
+        <button class="arch-node" type="button" data-arch data-detail="Convex menyimpan order, stok, dan aiActionLogs. Dashboard Next.js membaca data yang sama secara realtime.">
+          <span class="node-index">04</span><h3>Convex + Dashboard</h3><p>Satu database; perubahan langsung terlihat.</p>
+        </button>
+      </div>
+      <div class="arch-detail" data-arch-detail>Pemilik warung berbicara dalam Bahasa Indonesia dan tetap memegang keputusan melalui konfirmasi eksplisit.</div>
+      <div class="guard-row" data-reveal><span class="guard">X-Action-API-Key</span><span class="guard">businessId tetap</span><span class="guard">requestId idempotent</span><span class="guard">stok tidak boleh negatif</span><span class="guard">setiap mutasi dilog</span></div>
+    </section>
+
+    <footer class="deck-bottom">
+      <span><span data-current></span> / <span data-total></span></span><div class="deck-progress" data-progress></div><span class="shortcut-hint">Klik kartu arsitektur untuk detail</span>
+      <nav class="deck-nav" aria-label="Navigasi slide"><a class="nav-button" data-prev aria-label="Slide sebelumnya">←</a><a class="nav-button" data-next aria-label="Slide berikutnya">→</a></nav>
+    </footer>
+  </main>
+  <aside class="speaker-note"><strong>Catatan presenter · 2:05–2:25</strong>“Tidak ada API gateway kedua. Custom GPT memanggil HTTP Actions; Convex menjadi satu-satunya sumber kebenaran; dashboard hanya lapisan visibilitas realtime.”</aside>
+</body>
+</html>

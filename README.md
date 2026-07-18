@@ -131,6 +131,8 @@ Repository branch: [rahmanef63/codex-build-week — agent/temanusaha-ai](https:/
 
 Devpost draft: [TemanUsaha AI](https://devpost.com/software/temanusaha-ai).
 
+Demo slide deck tersedia saat aplikasi berjalan di [`/presentation/index.html`](http://localhost:3000/presentation/index.html).
+
 Sebelum Devpost: deploy dashboard dan Convex, rekam video publik kurang dari tiga menit, tambahkan URL repo/demo, lalu isi Codex `/feedback` session ID di sini.
 
 ```text

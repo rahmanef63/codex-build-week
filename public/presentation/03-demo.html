@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Demo — TemanUsaha AI</title>
+  <link rel="stylesheet" href="deck.css">
+  <script defer src="deck.js"></script>
+</head>
+<body data-slide="3">
+  <main class="slide slide--dark">
+    <header class="deck-top">
+      <div class="mini-brand"><img src="../assets/brand/temanusaha-mark.png" alt=""><span>TemanUsaha AI</span></div>
+      <span class="section-label">Demo interaktif</span>
+    </header>
+
+    <section class="slide-body demo-grid">
+      <div class="demo-copy">
+        <div>
+          <p class="kicker" data-reveal>Satu prompt, tiga perubahan</p>
+          <h2 data-reveal>Pesanan Bu Rina, <span class="highlight">Rp55.000.</span></h2>
+          <p class="lead" data-reveal>Tekan tombol untuk melihat GPT mengonfirmasi pesanan, membuat order, mengurangi stok, dan meninggalkan jejak Aktivitas AI.</p>
+        </div>
+        <button class="primary-button warm demo-run" type="button" data-demo-run>Jalankan demo</button>
+      </div>
+
+      <div class="demo-stage" aria-live="polite">
+        <section class="phone" aria-label="Percakapan Custom GPT">
+          <div class="chat-head"><img src="../assets/brand/temanusaha-mark.png" alt="">TemanUsaha AI <span class="realtime">online</span></div>
+          <div class="chat-log">
+            <div class="bubble bubble--user">Catat pesanan Bu Rina, 3 nasi ayam dan 2 es teh, ambil jam 12.30, belum bayar.</div>
+            <div class="bubble bubble--ai demo-hidden" data-demo-stage="1"><strong>Saya memahami:</strong>3 Nasi Ayam · 2 Es Teh<br>12.30 WIB · Belum bayar<br><br>Simpan pesanan ini?</div>
+            <div class="bubble bubble--user demo-hidden" data-demo-stage="2">Ya, simpan.</div>
+            <div class="bubble bubble--ai demo-hidden" data-demo-stage="3"><strong>Pesanan berhasil ✓</strong>Total Rp55.000. Order berstatus pending dan stok sudah diperbarui.</div>
+            <div class="bubble bubble--ai demo-hidden" data-demo-stage="4"><strong>Yang harus diperiksa:</strong>Jumlah, harga, status pembayaran, dan Aktivitas AI di dashboard.</div>
+            <div class="bubble bubble--ai demo-hidden" data-demo-stage="1" data-demo-typing><span class="typing" aria-label="AI sedang mengetik"><i></i><i></i><i></i></span></div>
+          </div>
+        </section>
+
+        <section class="dashboard-mock" aria-label="Dashboard realtime">
+          <div class="dash-head"><div class="dash-brand"><img src="../assets/brand/temanusaha-mark.png" alt="">Warung Bu Sari</div><span class="realtime">Realtime</span></div>
+          <div class="metrics">
+            <div class="metric"><span>Pesanan hari ini</span><strong data-before="2" data-after="3">2</strong></div>
+            <div class="metric"><span>Omzet tercatat</span><strong data-before="Rp37rb" data-after="Rp92rb">Rp37rb</strong></div>
+            <div class="metric"><span>Masih pending</span><strong data-before="1" data-after="2">1</strong></div>
+            <div class="metric"><span>Belum dibayar</span><strong data-before="1" data-after="2">1</strong></div>
+          </div>
+          <div class="stock-panel">
+            <h3>Perubahan stok</h3>
+            <div class="stock-row"><span>Nasi Ayam</span><span class="stock-track"><i style="--stock:60%"></i></span><b data-before="12" data-after="9">12</b></div>
+            <div class="stock-row"><span>Es Teh</span><span class="stock-track"><i style="--stock:80%"></i></span><b data-before="18" data-after="16">18</b></div>
+          </div>
+          <div class="activity-preview demo-hidden" data-demo-stage="4"><strong>Aktivitas AI · create_order</strong>Bu Rina: 3 Nasi Ayam, 2 Es Teh → order dibuat, total Rp55.000.</div>
+        </section>
+      </div>
+    </section>
+
+    <footer class="deck-bottom">
+      <span><span data-current></span> / <span data-total></span></span><div class="deck-progress" data-progress></div><span class="shortcut-hint">Klik “Jalankan demo” untuk animasi</span>
+      <nav class="deck-nav" aria-label="Navigasi slide"><a class="nav-button" data-prev aria-label="Slide sebelumnya">←</a><a class="nav-button" data-next aria-label="Slide berikutnya">→</a></nav>
+    </footer>
+  </main>
+  <aside class="speaker-note"><strong>Catatan presenter · 0:55–1:45</strong>Tekan “Jalankan demo”. “Prompt biasa diubah menjadi interpretasi terstruktur. Setelah saya mengonfirmasi, satu mutation membuat order, mengurangi stok, dan menulis log. Dashboard berubah dari 2 ke 3 order; total baru tepat Rp55.000.”</aside>
+</body>
+</html>

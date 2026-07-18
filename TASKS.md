@@ -18,6 +18,7 @@
 | Done | Audit GitHub authentication, remote, and Codex Cloud readiness | Reviewer | GPT-5 Codex |
 | Done | Audit the connected OpenAI Build Week Devpost submission | Reviewer | GPT-5 Codex |
 | Done | Create a separate TemanUsaha AI Devpost draft with copy, stack, and repo link | Alpha | GPT-5 Codex |
+| Done | Integrate and verify the presentation deck plus product/state assets | Alpha | GPT-5 Codex |
 | Blocked | Upload Devpost thumbnail; PowerShell and curl uploads timed out | Alpha | GPT-5 Codex |
 | Blocked | Import Action/Instructions in GPT Builder; browser session needs sign-in | User + Alpha | ChatGPT action-capable model |
 | Done | Push isolated GitHub branch `agent/temanusaha-ai` for Codex Cloud | Alpha | GPT-5 Codex |
