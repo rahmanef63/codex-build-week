@@ -11,6 +11,7 @@ const slides = [
 ];
 const deploymentBaseUrl = "https://codex-build-week.vercel.app";
 const deployedDemoUrl = new URL("/demo", deploymentBaseUrl).href;
+const deployedRealUrl = new URL("/real", deploymentBaseUrl).href;
 
 const current = Math.max(0, Math.min(slides.length - 1, Number(document.body.dataset.slide || 0)));
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -20,11 +21,19 @@ document.querySelectorAll("[data-total]").forEach((node) => node.textContent = S
 document.querySelectorAll("[data-progress]").forEach((node) => node.style.setProperty("--progress", `${((current + 1) / slides.length) * 100}%`));
 
 const qrCard = document.querySelector("[data-qr-card]");
+document.querySelectorAll("[data-demo-link]").forEach((link) => link.href = deployedDemoUrl);
+document.querySelectorAll("[data-real-link]").forEach((link) => link.href = deployedRealUrl);
 if (qrCard) {
-  qrCard.href = deployedDemoUrl;
   qrCard.hidden = false;
   qrCard.querySelector("[data-qr-domain]").textContent = new URL(deploymentBaseUrl).host;
 }
+
+const qrDialog = document.querySelector("[data-qr-dialog]");
+document.querySelector("[data-qr-open]")?.addEventListener("click", () => qrDialog.showModal());
+document.querySelector("[data-qr-close]")?.addEventListener("click", () => qrDialog.close());
+qrDialog?.addEventListener("click", (event) => {
+  if (event.target === qrDialog) qrDialog.close();
+});
 
 function setNav(selector, target) {
   document.querySelectorAll(selector).forEach((link) => {
@@ -216,6 +225,56 @@ function setupInteractiveDemo() {
 }
 
 setupInteractiveDemo();
+
+function setupOnboardingDemo() {
+  const play = document.querySelector("[data-interview-play]");
+  if (!play) return;
+
+  const card = play.closest(".interview-card");
+  const icon = play.querySelector("[data-interview-icon]");
+  const label = play.querySelector("[data-interview-label]");
+  const transcript = document.querySelector("[data-interview-transcript]");
+  const stages = [...document.querySelectorAll("[data-interview-stage]")];
+  const draft = document.querySelector(".product-draft");
+  const accept = document.querySelector("[data-accept-draft]");
+  const success = document.querySelector("[data-onboarding-success]");
+  let run = 0;
+
+  play.addEventListener("click", async () => {
+    const token = ++run;
+    transcript.hidden = true;
+    stages.forEach((stage) => stage.hidden = true);
+    success.hidden = true;
+    play.disabled = true;
+    play.setAttribute("aria-expanded", "false");
+    card.classList.remove("is-playing");
+    void card.offsetWidth;
+    card.classList.add("is-playing");
+    icon.textContent = "■";
+    label.textContent = "Mendengarkan contoh…";
+
+    await wait(420);
+    if (token !== run) return;
+    transcript.hidden = false;
+    play.setAttribute("aria-expanded", "true");
+
+    await wait(780);
+    if (token !== run) return;
+    stages.forEach((stage) => stage.hidden = false);
+    card.classList.remove("is-playing");
+    icon.textContent = "↻";
+    label.textContent = "Putar ulang simulasi";
+    play.disabled = false;
+    draft.focus({ preventScroll: true });
+  });
+
+  accept.addEventListener("click", () => {
+    success.hidden = false;
+    success.focus({ preventScroll: true });
+  });
+}
+
+setupOnboardingDemo();
 
 const archDetail = document.querySelector("[data-arch-detail]");
 document.querySelectorAll("[data-arch]").forEach((node) => {

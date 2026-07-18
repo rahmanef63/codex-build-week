@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Build — TemanUsaha AI</title>
+  <title>Onboarding UMKM — TemanUsaha AI</title>
   <link rel="stylesheet" href="deck.css">
   <script defer src="deck.js"></script>
 </head>
@@ -11,45 +11,66 @@
   <main class="slide">
     <header class="deck-top">
       <div class="mini-brand"><img src="../assets/brand/temanusaha-mark.png" alt=""><span>TemanUsaha AI</span></div>
-      <span class="section-label">Build story</span>
+      <span class="section-label">Onboarding UMKM</span>
     </header>
 
-    <section class="slide-body build-grid">
+    <section class="slide-body onboarding-grid">
       <div>
-        <p class="kicker" data-reveal>Stack yang langsung ke demo</p>
-        <h2 data-reveal>Dibangun untuk <span class="highlight">selesai.</span></h2>
-        <div class="stack-list">
-          <div class="stack-item" data-reveal><b>GPT</b><div><h3>Custom GPT</h3><span>Reasoning + Bahasa Indonesia</span></div><strong>Interface</strong></div>
-          <div class="stack-item" data-reveal><b>CVX</b><div><h3>Convex</h3><span>HTTP Actions + database + realtime</span></div><strong>Truth</strong></div>
-          <div class="stack-item" data-reveal><b>NXT</b><div><h3>Next.js</h3><span>Today · Orders · AI Activity</span></div><strong>Proof</strong></div>
-          <div class="stack-item" data-reveal><b>CDX</b><div><h3>Codex / GPT-5</h3><span>Orkestrasi, implementasi, dan verifikasi</span></div><strong>Build</strong></div>
+        <p class="kicker" data-reveal>Setelah workflow terbukti</p>
+        <h2 data-reveal>Ceritakan usaha.<br><span class="highlight">AI susun produknya.</span></h2>
+        <p class="lead" data-reveal>Pemilik UMKM cukup bercerita seperti sedang diwawancara. AI mengubah percakapan menjadi draft profil dan katalog yang tetap harus diperiksa pemilik.</p>
+        <span class="mode-real-badge" data-reveal><i></i> Mode Real · belum terhubung</span>
+
+        <div class="interview-card" data-reveal>
+          <div class="interview-head">
+            <span class="interview-mic" aria-hidden="true">●</span>
+            <span><small>Contoh sintetis · tanpa data nyata</small><strong>Wawancara singkat pemilik</strong></span>
+            <time>00:18</time>
+          </div>
+          <button class="interview-play" type="button" data-interview-play aria-controls="interview-transcript" aria-expanded="false">
+            <span data-interview-icon aria-hidden="true">▶</span>
+            <span data-interview-label>Putar simulasi wawancara</span>
+          </button>
+          <div class="interview-wave" aria-hidden="true">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <div class="interview-progress" aria-hidden="true"><i data-interview-progress></i></div>
+          <blockquote id="interview-transcript" data-interview-transcript tabindex="-1" hidden>
+            “Saya menjual sambal rumahan. Produk terlaris Sambal Cumi 150 ml, harganya Rp35.000, stok awal 18 botol.”
+          </blockquote>
         </div>
       </div>
 
-      <div class="scope-board">
-        <section class="scope-side scope-side--yes" data-reveal>
-          <p class="kicker">Yang dibangun</p><h3>Loop utama</h3>
-          <ul><li>6 GPT Actions</li><li>Mutation atomik</li><li>Dashboard realtime</li><li>Reset data demo</li><li>AI Action Receipt</li></ul>
-        </section>
-        <section class="scope-side scope-side--no" data-reveal>
-          <p class="kicker">Yang sengaja ditunda</p><h3>Setelah validasi</h3>
-          <ul><li>WhatsApp</li><li>Payment gateway</li><li>OCR & accounting</li><li>Forecasting</li><li>Multi-tenant admin</li></ul>
-        </section>
-        <p class="codex-note" data-reveal><strong>Prinsip build:</strong> satu pengguna, satu masalah, satu workflow utama, satu bukti hasil. Fitur lanjutan baru layak setelah alur ini diuji bersama warung nyata.</p>
-        <div class="state-gallery" data-reveal aria-label="Ilustrasi state dashboard">
-          <figure><img src="../assets/states/orders-empty.png" alt="Ilustrasi daftar pesanan kosong"><figcaption>Pesanan kosong</figcaption></figure>
-          <figure><img src="../assets/states/activity-empty.png" alt="Ilustrasi aktivitas AI kosong"><figcaption>Aktivitas AI kosong</figcaption></figure>
-          <figure><img src="../assets/states/stock-safe.png" alt="Ilustrasi stok dalam kondisi aman"><figcaption>Stok aman</figcaption></figure>
-          <figure><img src="../assets/states/setup-unseeded.png" alt="Ilustrasi data demo belum disiapkan"><figcaption>Setup data demo</figcaption></figure>
+      <aside class="signup-preview onboarding-demo" data-reveal data-tilt aria-label="Simulasi onboarding produk dari wawancara">
+        <div class="preview-head"><div><span>Chat onboarding</span><h3>Dari cerita menjadi katalog</h3></div><b>Draft</b></div>
+        <div class="onboarding-chat" aria-live="polite">
+          <p class="chat-bubble chat-bubble--ai"><b>AI</b>Ceritakan produk yang paling sering dibeli pelanggan.</p>
+          <p class="chat-bubble chat-bubble--owner" data-interview-stage hidden><b>Pemilik</b>Sambal Cumi 150 ml, Rp35.000. Stok awal 18 botol.</p>
         </div>
-      </div>
+        <section class="product-draft" data-interview-stage tabindex="-1" hidden aria-label="Draft produk hasil wawancara">
+          <div><small>AI menemukan produk</small><strong>Sambal Cumi</strong><span>150 ml · Makanan kemasan</span></div>
+          <dl><div><dt>Harga</dt><dd>Rp35.000</dd></div><div><dt>Stok awal</dt><dd>18 botol</dd></div></dl>
+          <button type="button" data-accept-draft>Benar, simpan draft <span aria-hidden="true">→</span></button>
+        </section>
+        <div class="onboarding-success" data-onboarding-success tabindex="-1" hidden>
+          <b>✓ Draft siap ditinjau</b><span>Belum dipublikasikan dan belum terhubung ke data operasional.</span>
+        </div>
+        <div class="onboarding-assets" aria-label="Contoh state antarmuka">
+          <img src="../assets/states/orders-empty.png" alt="State pesanan kosong">
+          <img src="../assets/states/activity-empty.png" alt="State Aktivitas AI kosong">
+          <img src="../assets/states/stock-safe.png" alt="State stok aman">
+          <img src="../assets/states/setup-unseeded.png" alt="State setup data">
+        </div>
+        <a class="primary-button" data-real-link>Daftarkan usaha Anda <span>→</span></a>
+        <p class="preview-disclaimer">Simulasi ini memakai contoh sintetis. Pemilik tetap memeriksa setiap hasil sebelum disimpan.</p>
+      </aside>
     </section>
 
     <footer class="deck-bottom">
-      <span><span data-current></span> / <span data-total></span></span><div class="deck-progress" data-progress></div><span class="shortcut-hint">Boring stack, working demo</span>
+      <span><span data-current></span> / <span data-total></span></span><div class="deck-progress" data-progress></div><span class="shortcut-hint">Putar wawancara untuk membuat draft produk</span>
       <nav class="deck-nav" aria-label="Navigasi slide"><a class="nav-button" data-prev aria-label="Slide sebelumnya">←</a><a class="nav-button" data-next aria-label="Slide berikutnya">→</a></nav>
     </footer>
   </main>
-  <aside class="speaker-note"><strong>Catatan presenter · 2:43–2:52</strong>“Codex membantu menjaga scope, membagi backend, UI, dokumentasi, dan QA, lalu menjalankan verifikasi end-to-end. Kami menunda semua integrasi yang belum dibutuhkan untuk membuktikan loop utama.”</aside>
+  <aside class="speaker-note"><strong>Catatan presenter · 2:43–2:53</strong>“Setelah demo tadi, bayangkan pemilik UMKM lain cukup bercerita. Tekan putar: contoh wawancara sintetis berubah menjadi chat, lalu AI menyusun draft produk. Pemilik tetap memeriksa sebelum menyimpan.”</aside>
 </body>
 </html>

@@ -26,11 +26,14 @@
           <a class="primary-button" data-next>Mulai presentasi <span aria-hidden="true">→</span></a>
           <button class="ghost-button" type="button" onclick="document.documentElement.requestFullscreen?.()">Layar penuh</button>
         </div>
-        <a class="qr-card" data-qr-card hidden>
+        <div class="qr-card" data-qr-card hidden>
           <span class="qr-image"><img src="vercel-demo-qr.svg" alt="QR code untuk membuka demo TemanUsaha AI"></span>
           <span class="qr-copy"><small>Scan & coba langsung</small><strong>Demo Warung Bu Sari di ponselmu</strong><em data-qr-domain></em></span>
-          <b aria-hidden="true">↗</b>
-        </a>
+          <span class="qr-actions">
+            <button class="qr-open" type="button" data-qr-open>Perbesar QR</button>
+            <a class="qr-demo-link" data-demo-link>Buka demo ↗</a>
+          </span>
+        </div>
         <p class="cover-meta" data-reveal>Demo: Warung Nasi Bu Sari · Bahasa Indonesia · data sintetis</p>
       </div>
 
@@ -52,6 +55,12 @@
       <nav class="deck-nav" aria-label="Navigasi slide"><a class="nav-button" data-prev aria-label="Slide sebelumnya">←</a><a class="nav-button" data-next aria-label="Slide berikutnya">→</a></nav>
     </footer>
   </main>
+  <dialog class="qr-dialog" data-qr-dialog aria-labelledby="qr-dialog-title">
+    <button class="qr-dialog-close" type="button" data-qr-close aria-label="Tutup QR code">×</button>
+    <img src="vercel-demo-qr.svg" alt="QR code menuju demo TemanUsaha AI">
+    <div><span class="kicker">Demo live</span><h2 id="qr-dialog-title">Scan untuk mencoba</h2><p>Gunakan kamera ponsel, lalu buka Mode Demo dengan data sintetis Warung Bu Sari.</p></div>
+    <a class="primary-button" data-demo-link>Buka demo di browser <span>↗</span></a>
+  </dialog>
   <aside class="speaker-note"><strong>Catatan presenter · 0:00–0:15</strong>“TemanUsaha AI adalah asisten operasional percakapan untuk UMKM Indonesia. Hari ini kami tunjukkan satu alur nyata di Warung Nasi Bu Sari.”</aside>
 </body>
 </html>

@@ -17,6 +17,8 @@ test("Demo owns synthetic business wiring while Root and Real stay disconnected"
   assert.match(root, /href="\/demo"/);
   assert.match(root, /href="\/real"/);
   assert.match(root, /70 persen Demo dan 30 persen onboarding UMKM/);
+  assert.match(root, /70% · Data sintetis/);
+  assert.match(root, /30% · Belum terhubung/);
   assert.doesNotMatch(root, /Bu Sari|ConvexClientProvider|Dashboard/);
   assert.doesNotMatch(real, /Bu Sari|ConvexClientProvider|Dashboard/);
   assert.doesNotMatch(globalError, /Bu Sari|Convex|Dashboard/);

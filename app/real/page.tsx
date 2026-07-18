@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 
+import { CreativeStudio } from "@/components/creative-studio";
+import { isOpenAIMediaEnabled } from "@/lib/openai-features";
+
 export const metadata: Metadata = {
   title: "Mode Real",
   description: "Persiapan koneksi aman untuk data usaha Anda.",
@@ -23,6 +26,8 @@ const connectionSteps = [
 ];
 
 export default function RealPage() {
+  const mediaEnabled = isOpenAIMediaEnabled();
+
   return (
     <main className="real-shell">
       <nav className="real-nav" aria-label="Navigasi mode">
@@ -72,6 +77,16 @@ export default function RealPage() {
                 <div>
                   <strong>{step.title}</strong>
                   <p>{step.description}</p>
+                  {mediaEnabled ? (
+                    <audio
+                      aria-label={`Dengarkan panduan: ${step.title}`}
+                      controls
+                      preload="none"
+                      src={`/api/onboarding-audio?step=${index}`}
+                    />
+                  ) : (
+                    <span className="media-local-note">Audio AI tersedia pada demo lokal terkontrol.</span>
+                  )}
                 </div>
               </li>
             ))}
@@ -89,6 +104,8 @@ export default function RealPage() {
           data dan tindakan operasional belum diaktifkan.
         </p>
       </section>
+
+      <CreativeStudio enabled={mediaEnabled} />
     </main>
   );
 }

@@ -10,7 +10,7 @@
     "typecheck": "tsc --noEmit",
     "test": "node --test --experimental-strip-types tests/*.test.ts",
     "check": "npm run test && npm run typecheck && npm run build",
-    "convex:dev": "convex dev"
+    "convex:sync": "convex dev --once"
   },
   "dependencies": {
     "convex": "1.42.3",

@@ -28,7 +28,7 @@ export default function Home() {
         <article className="mode-card mode-card-demo">
           <div className="mode-card-top">
             <span className="mode-label">Mode Demo</span>
-            <span className="mode-status">Data sintetis</span>
+            <span className="mode-status">70% · Data sintetis</span>
           </div>
           <h2>Lihat produk bekerja</h2>
           <p>
@@ -43,7 +43,7 @@ export default function Home() {
         <article className="mode-card mode-card-real">
           <div className="mode-card-top">
             <span className="mode-label">Mode Real</span>
-            <span className="mode-status mode-status-muted">Belum terhubung</span>
+            <span className="mode-status mode-status-muted">30% · Belum terhubung</span>
           </div>
           <h2>Siapkan usaha Anda</h2>
           <p>

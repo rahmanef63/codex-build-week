@@ -16,6 +16,7 @@ Pemilih mode tersedia di [`/`](https://codex-build-week.vercel.app/). Data Bu Sa
 ```text
 Pemilik warung -> Custom GPT -> Convex HTTP Actions -> Convex database
 Pemilik warung -> Next.js dashboard -------------> Convex database
+UMKM (lokal)   -> Next.js Media Studio ----------> OpenAI Images / TTS
 ```
 
 Convex adalah satu-satunya source of truth. Pembuatan order, pengurangan stok, dan audit log berjalan dalam satu mutation atomik. Next.js hanya menjadi lapisan visibilitas realtime; tidak ada API gateway kedua.
@@ -25,9 +26,10 @@ Convex adalah satu-satunya source of truth. Pembuatan order, pengurangan stok, d
 - Next.js App Router + React + TypeScript
 - Convex database, queries, mutations, dan HTTP Actions
 - Custom GPT + OpenAPI Actions
+- OpenAI Image API dan Text-to-Speech untuk preview onboarding lokal
 - Codex GPT-5 untuk orkestrasi build lokal dan cloud
 
-Backend tidak memanggil OpenAI API secara langsung pada MVP ini. Agents SDK/Responses API baru perlu ditambahkan jika percakapan dipindahkan dari Custom GPT ke aplikasi sendiri.
+Media Studio di Mode Real memakai `gpt-image-2` dan `gpt-4o-mini-tts` hanya saat `next dev`. Route berbayar ini hard-disabled pada build Production sampai identitas pengguna, kuota persisten, dan rate limit tersedia. Brief lokal dikirim ke OpenAI; jangan masukkan data pelanggan, data pribadi, kata sandi, atau rahasia usaha.
 
 ## Menjalankan Next.js dengan Convex Cloud
 
@@ -35,7 +37,7 @@ Prasyarat: Node.js 20 atau lebih baru.
 
 ```powershell
 npm install
-npx convex dev --once
+npm run convex:sync
 npm run dev
 ```
 
@@ -56,6 +58,8 @@ npx convex env set DASHBOARD_PUBLIC_URL "https://nama-deployment.vercel.app"
 ```
 
 Buka [http://localhost:3000](http://localhost:3000), lalu pilih `/demo` atau `/real`. Jalankan `npm run check` untuk test, typecheck, dan production build.
+
+Untuk mencoba preview logo/poster dan panduan suara hanya di mesin lokal, simpan `OPENAI_API_KEY` pada `.env.local`. Jangan memasukkan key ke Vercel, Git, screenshot, atau chat. Production tetap menampilkan readiness flow tanpa memanggil endpoint OpenAI berbayar.
 
 ## Data demo
 
@@ -145,7 +149,7 @@ Repository: [rahmanef63/codex-build-week](https://github.com/rahmanef63/codex-bu
 
 Devpost draft: [TemanUsaha AI](https://devpost.com/software/temanusaha-ai).
 
-Demo produk: [codex-build-week.vercel.app/demo](https://codex-build-week.vercel.app/demo). Slide deck tersedia di [codex-build-week.vercel.app/presentation/index.html](https://codex-build-week.vercel.app/presentation/index.html).
+Demo produk: [codex-build-week.vercel.app/demo](https://codex-build-week.vercel.app/demo). Slide deck tersedia di [codex-build-week.vercel.app/presentation](https://codex-build-week.vercel.app/presentation).
 
 Sebelum Devpost: rekam video publik kurang dari tiga menit, tambahkan URL repo/demo, lalu isi Codex `/feedback` session ID di sini.
 

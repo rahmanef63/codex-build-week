@@ -45,6 +45,7 @@ test("deck presentation is complete and locally linked", () => {
   assert.match(script, /setupInteractiveDemo\(\)/);
   assert.match(script, /const deploymentBaseUrl = "https:\/\/codex-build-week\.vercel\.app"/);
   assert.match(script, /const deployedDemoUrl = new URL\("\/demo", deploymentBaseUrl\)\.href/);
+  assert.match(script, /const deployedRealUrl = new URL\("\/real", deploymentBaseUrl\)\.href/);
   assert.doesNotMatch(script, /api\.qrserver\.com/);
   assert.doesNotMatch(deck, /Lima Action|5 GPT Actions/i);
   assert.match(deck, /get_dashboard_card_image/);
@@ -59,8 +60,33 @@ test("deck presentation is complete and locally linked", () => {
   assert.match(styles, /@media \(max-width: 390px\)/);
   assert.match(styles, /safe-area-inset-bottom/);
   assert.match(styles, /scroll-snap-type: x mandatory/);
+
+  const opening = readFileSync(join(root, "index.html"), "utf8");
+  assert.doesNotMatch(deck, /(?:70|30)%/);
+  assert.match(opening, /data-qr-open/);
+  assert.match(opening, /<dialog[^>]+data-qr-dialog/);
+  assert.match(script, /qrDialog\.showModal\(\)/);
+  assert.match(script, /qrDialog\.close\(\)/);
+  const onboarding = readFileSync(join(root, "07-build.html"), "utf8");
+  assert.match(onboarding, /data-real-link/);
+  assert.match(onboarding, /Mode Real[^<]+belum terhubung/);
+  assert.doesNotMatch(onboarding, /Bu Sari/);
+  assert.match(onboarding, /data-interview-play/);
+  assert.match(onboarding, /data-interview-transcript/);
+  assert.match(onboarding, /data-interview-stage/);
+  assert.match(onboarding, /data-accept-draft/);
+  assert.match(onboarding, /Contoh sintetis[^<]+tanpa data nyata/);
+  assert.match(script, /setupOnboardingDemo\(\)/);
+  assert.match(script, /draft\.focus\(\{ preventScroll: true \}\)/);
+  assert.match(script, /success\.focus\(\{ preventScroll: true \}\)/);
   for (const asset of [
     "nasi-ayam.png", "es-teh.png", "ayam-goreng.png", "nasi-putih.png", "sambal-extra.png",
     "orders-empty.png", "activity-empty.png", "stock-safe.png", "setup-unseeded.png",
   ]) assert.match(deck, new RegExp(asset.replace(".", "\\.")));
+});
+
+test("clean presentation route embeds the static interactive deck", () => {
+  const route = readFileSync(join(process.cwd(), "app", "presentation", "page.tsx"), "utf8");
+  assert.match(route, /src="\/presentation\/index\.html"/);
+  assert.match(route, /title="Presentasi interaktif TemanUsaha AI"/);
 });
