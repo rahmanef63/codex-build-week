@@ -1,7 +1,9 @@
 import assert from "node:assert/strict";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync } from "node:fs";
 import { join } from "node:path";
 import test from "node:test";
+// @ts-expect-error Node's strip-types runner requires the source extension.
+import { read } from "./helpers.ts";
 
 const root = join(process.cwd(), "public", "presentation");
 const gptUrl = "https://chatgpt.com/g/g-6a5b0a5ef31c819181f8a68b5536d33e-temanusaha-ai-warung-bu-sari";
@@ -20,7 +22,7 @@ const slides = [
 test("deck presentation is complete and locally linked", () => {
   let deck = "";
   slides.forEach((file, index) => {
-    const html = readFileSync(join(root, file), "utf8");
+    const html = read("public", "presentation", file);
     deck += html;
     assert.match(html, new RegExp(`data-slide=["']${index}["']`));
     assert.match(html, /href=["']deck\.css["']/);
@@ -35,14 +37,14 @@ test("deck presentation is complete and locally linked", () => {
     }
   });
 
-  const demo = readFileSync(join(root, "03-demo.html"), "utf8");
+  const demo = read("public", "presentation", "03-demo.html");
   assert.match(demo, /Rp55\.000/);
   assert.match(demo, /data-chat-send/);
   assert.match(demo, /data-confirm-order/);
   assert.match(demo, /data-live-workspace/);
   assert.match(demo, /data-order-process tabindex="-1"/);
   assert.equal(demo.match(/data-process-step/g)?.length, 5);
-  const script = readFileSync(join(root, "deck.js"), "utf8");
+  const script = read("public", "presentation", "deck.js");
   assert.match(script, /setupInteractiveDemo\(\)/);
   assert.match(script, /const deploymentBaseUrl = "https:\/\/codex-build-week\.vercel\.app"/);
   assert.match(script, /const deployedDemoUrl = new URL\("\/demo", deploymentBaseUrl\)\.href/);
@@ -52,25 +54,25 @@ test("deck presentation is complete and locally linked", () => {
   assert.doesNotMatch(script, /api\.qrserver\.com/);
   assert.doesNotMatch(deck, /Lima Action|5 GPT Actions/i);
   assert.match(deck, /get_dashboard_card_image/);
-  assert.equal(readFileSync(join(root, "04-bukti.html"), "utf8").match(/class="action-id"/g)?.length, 6);
-  const qr = readFileSync(join(root, "vercel-demo-qr.svg"), "utf8");
+  assert.equal(read("public", "presentation", "04-bukti.html").match(/class="action-id"/g)?.length, 6);
+  const qr = read("public", "presentation", "vercel-demo-qr.svg");
   assert.match(qr, /<desc>https:\/\/codex-build-week\.vercel\.app\/demo<\/desc>/);
   assert.match(qr, /width="407" height="407"/);
   assert.match(qr, /<rect[^>]+width="407" height="407"/);
   assert.match(qr, /<g id="elements" transform="translate\(44 44\)"/);
-  const gptQr = readFileSync(join(root, "chatgpt-gpt-qr.svg"), "utf8");
+  const gptQr = read("public", "presentation", "chatgpt-gpt-qr.svg");
   assert.ok(gptQr.includes(`<desc>${gptUrl}</desc>`));
   assert.match(gptQr, /width="675" height="675"/);
   assert.match(gptQr, /<rect[^>]+width="675" height="675"/);
   assert.match(gptQr, /d="M 60,60 l 15,0/);
   assert.match(gptQr, /M 600,600 l 15,0/);
-  const styles = readFileSync(join(root, "deck.css"), "utf8");
+  const styles = read("public", "presentation", "deck.css");
   assert.match(styles, /@media \(max-width: 720px\)/);
   assert.match(styles, /@media \(max-width: 390px\)/);
   assert.match(styles, /safe-area-inset-bottom/);
   assert.match(styles, /scroll-snap-type: x mandatory/);
 
-  const opening = readFileSync(join(root, "index.html"), "utf8");
+  const opening = read("public", "presentation", "index.html");
   assert.doesNotMatch(deck, /(?:70|30)%/);
   assert.match(opening, /data-qr-open/);
   assert.match(opening, /<dialog[^>]+data-qr-dialog/);
@@ -81,8 +83,8 @@ test("deck presentation is complete and locally linked", () => {
   assert.match(script, /qrDialog\.close\(\)/);
   assert.match(script, /gptDialog\.showModal\(\)/);
   assert.match(script, /gptDialog\.close\(\)/);
-  assert.match(readFileSync(join(root, "08-penutup.html"), "utf8"), /data-gpt-link/);
-  const onboarding = readFileSync(join(root, "07-build.html"), "utf8");
+  assert.match(read("public", "presentation", "08-penutup.html"), /data-gpt-link/);
+  const onboarding = read("public", "presentation", "07-build.html");
   assert.match(onboarding, /data-real-link/);
   assert.match(onboarding, /Mode Real[^<]+belum terhubung/);
   assert.doesNotMatch(onboarding, /Bu Sari/);
@@ -100,8 +102,9 @@ test("deck presentation is complete and locally linked", () => {
   ]) assert.match(deck, new RegExp(asset.replace(".", "\\.")));
 });
 
-test("clean presentation route embeds the static interactive deck", () => {
-  const route = readFileSync(join(process.cwd(), "app", "presentation", "page.tsx"), "utf8");
-  assert.match(route, /src="\/presentation\/index\.html"/);
-  assert.match(route, /title="Presentasi interaktif TemanUsaha AI"/);
+test("/presentation redirects to the static interactive deck", () => {
+  const config = read("next.config.ts");
+  assert.match(config, /source: "\/presentation"/);
+  assert.match(config, /destination: "\/presentation\/index\.html"/);
+  assert.ok(existsSync(join(root, "index.html")));
 });

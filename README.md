@@ -33,7 +33,7 @@ Media Studio di Mode Real memakai `gpt-image-2` dan `gpt-4o-mini-tts` hanya saat
 
 ## Menjalankan Next.js dengan Convex Cloud
 
-Prasyarat: Node.js 20 atau lebih baru.
+Prasyarat: Node.js 22.6 atau lebih baru.
 
 ```powershell
 npm install
@@ -82,7 +82,7 @@ HTTP Actions tersedia pada `https://utmost-snake-682.convex.site`:
 | Method | Path | Operation ID |
 | --- | --- | --- |
 | POST | `/api/orders` | `create_order` |
-| GET | `/api/orders?status=pending` | `list_pending_orders` |
+| GET | `/api/orders` | `list_pending_orders` |
 | PATCH | `/api/orders/{id}` | `update_order` |
 | GET | `/api/inventory/low-stock` | `get_low_stock_items` |
 | GET | `/api/summary/today` | `get_daily_summary` |
@@ -98,21 +98,7 @@ Semua endpoint adalah kontrak Demo-only dan mewajibkan header `X-Action-API-Key`
 4. Ambil nilai Action key dari Convex Dashboard atau `npx convex env get ACTION_API_KEY`, lalu masukkan ke GPT editor tanpa menaruhnya di chat/repo.
 5. Uji setiap operasi di Preview sebelum demo.
 
-Prompt utama:
-
-```text
-Catat pesanan Bu Rina, 3 nasi ayam dan 2 es teh, ambil jam 12.30, belum bayar.
-```
-
-Custom GPT harus menampilkan interpretasi dan meminta konfirmasi sebelum memanggil `create_order`. Setelah sukses, respons menggunakan AI Action Receipt:
-
-```text
-Apa yang saya pahami:
-Apa yang saya lakukan:
-Data yang digunakan:
-Yang harus diperiksa:
-Cara memberi instruksi lebih jelas:
-```
+Format konfirmasi dan template AI Action Receipt ada di [`GPTs/alfa.md`](GPTs/alfa.md).
 
 ## Codex: project lokal dan cloud
 
@@ -122,7 +108,7 @@ Untuk Codex cloud:
 
 1. Push repo ini ke GitHub.
 2. Buat cloud environment untuk repo/branch tersebut.
-3. Gunakan setup command `npm ci` dan pin Node.js 20+.
+3. Gunakan setup command `npm ci` dan pin Node.js 22.6+.
 4. Tambahkan `NEXT_PUBLIC_CONVEX_URL` dari deployment cloud sebagai environment variable bila cloud task perlu menjalankan Next.js.
 5. Jalankan task cloud per hasil yang terpisah, misalnya backend, UI, atau review; merge melalui diff/PR.
 
@@ -150,11 +136,5 @@ Repository: [rahmanef63/codex-build-week](https://github.com/rahmanef63/codex-bu
 Devpost draft: [TemanUsaha AI](https://devpost.com/software/temanusaha-ai).
 
 Demo produk: [codex-build-week.vercel.app/demo](https://codex-build-week.vercel.app/demo). Slide deck tersedia di [codex-build-week.vercel.app/presentation](https://codex-build-week.vercel.app/presentation).
-
-Sebelum Devpost: rekam video publik kurang dari tiga menit, tambahkan URL repo/demo, lalu isi Codex `/feedback` session ID di sini.
-
-```text
-Codex feedback session ID: TODO
-```
 
 Dokumentasi resmi: [Codex Projects](https://learn.chatgpt.com/docs/projects), [Codex cloud environments](https://learn.chatgpt.com/docs/environments/cloud-environment), [Custom GPT Actions](https://help.openai.com/en/articles/9442513-configuring-actions-in-gpts), [Convex + Next.js](https://docs.convex.dev/quickstart/nextjs), dan [Convex HTTP Actions](https://docs.convex.dev/functions/http-actions).

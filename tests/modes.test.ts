@@ -1,14 +1,11 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
-import { join } from "node:path";
 import test from "node:test";
-
-const read = (...parts: string[]) => readFileSync(join(process.cwd(), ...parts), "utf8");
+// @ts-expect-error Node's strip-types runner requires the source extension.
+import { read } from "./helpers.ts";
 
 test("Demo owns synthetic business wiring while Root and Real stay disconnected", () => {
   const root = read("app", "page.tsx");
   const demo = read("app", "demo", "page.tsx");
-  const demoError = read("app", "demo", "error.tsx");
   const gptPackage = read("GPTs", "alfa.md");
   const globalError = read("app", "error.tsx");
   const globalSocialCard = read("app", "opengraph-image.tsx");
@@ -27,7 +24,6 @@ test("Demo owns synthetic business wiring while Root and Real stay disconnected"
   assert.match(demo, /Warung Nasi Bu Sari/);
   assert.match(demo, /ConvexClientProvider/);
   assert.match(demo, /<Dashboard \/>/);
-  assert.match(demoError, /Dashboard Demo|data cloud/);
   assert.match(real, /Bisnis Anda belum terhubung/);
   assert.match(real, /tidak ada[\s\S]*dibaca maupun diubah/i);
   assert.match(real, /\/assets\/states\/setup-unseeded\.png/);

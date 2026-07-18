@@ -4,26 +4,38 @@
 
 | Agent | Role | Model | Status | Objective | Exclusive write scope | Last handoff |
 | --- | --- | --- | --- | --- | --- | --- |
-| Alpha (`/root`) | Orchestrator/integrator | GPT-5 Codex | In progress | Integrate, publish, and hand off the sixth Action | Shared docs/config, Git, cloud/deploy, final integration | Convex redeployed; public Next URL pending |
-| Beta (`/root/beta_repo_audit`) | Convex/Actions | GPT-5 Codex | Done | Remove unsupported image `openaiFileResponse`; harden the public base URL | `convex/http.ts`, `openapi/temanusaha-actions.yaml`, backend checks | Typecheck/OpenAPI passed; no external side effects |
-| Gamma (`/root/gamma_stack_audit`) | Next.js/UI | GPT-5 Codex | Done | Redact public card identifiers; harden types/errors/tests | `app/api/dashboard-card-image/**`, `tests/dashboard-card.test.ts` | Full check passed; no external side effects |
-| Reviewer (`/root/reviewer_final`) | Read-only reviewer | GPT-5 Codex | Done | Re-audit the remediated sixth Action and public PNG route | None | Final pass: No issues |
-| Infrastructure (`019f7366…`) | GitHub/Vercel integration | Thread model not reported | Idle | Maintain the isolated integration branch and Draft PR #2 | Separate worktree `build-week-integration` only | Branch `codex/integrate-temanusaha`, commit `2b42a2d`, PR #2 |
-| Presentation (`019f737e…`) | Interactive deck | Thread model not reported | Active | Finish the interactive deck and provide a scoped handoff | `public/presentation/**`, `tests/presentation.test.ts` | Scope contract sent; handoff pending |
-| Designer (`019f736f…`) | Brand/product/state assets | Thread model not reported | Done | Finish generated assets and provide a scoped handoff | `prompts/assets/**`, `public/assets/**`, `app/icon*`, `app/apple-icon*`, `app/favicon*`, `app/opengraph-image*` | 23 images verified; no external side effects |
-| GPTs (`019f7370…`) | Custom GPT package/testing | Thread model not reported | Waiting | Add the sixth schema/instructions and test every-response card behavior | `GPTs/**` and GPT Builder only | Wait for Beta/Gamma live endpoint handoff |
+| Alpha (`/root`) | Orchestrator/integrator | GPT-5 Codex | Done | Add the public GPT link/QR to the presentation and redeploy | Shared docs/config, Git, cloud/deploy, final integration | PR #7 merged; paired Demo/GPT QR presentation verified on Production |
+| Beta (`/root/beta_repo_audit`) | Convex/Actions | GPT-5 Codex | Done | Mark all six canonical Actions as Demo-only without changing IDs/paths | `GPTs/temanusaha-actions.yaml`, OpenAPI checks | Descriptions-only diff; all checks passed |
+| Gamma (`/root/gamma_stack_audit`) | Next.js/UI | GPT-5 Codex | Done | Finish the visual refresh and split product routes into Demo/Real modes | `app/page.tsx`, `app/demo/**`, `app/real/**`, `app/globals.css`, `app/layout.tsx`, `components/dashboard.tsx` | Routes and responsive checks passed; no cloud/Git side effects |
+| Reviewer (`/root/reviewer_final`) | Read-only reviewer | GPT-5 Codex | Done | Final audit of the integrated Demo/Real/GPT/presentation tree | None | No remaining mode/GPT/presentation defects; main-based allowlist required |
+| Delta (`/root/delta_mode_guard`) | Read-only mode guard | GPT-5 Codex | Done | Audit every Bu Sari reference and global/Real boundary | None | Five boundary findings remediated by Alpha/GPTs; no writes or side effects |
+| Epsilon (`/root/epsilon_git_allowlist`) | Read-only Git planner | GPT-5 Codex | Stopped | Produce exact main-based integration allowlist and exclusions | None | Stopped after Reviewer completed the same allowlist; no mutations |
+| Infrastructure (`019f7366…`) | GitHub/Vercel integration | Thread model not reported | Stopped | Build a clean `origin/main` PR from Alpha allowlist | Separate main-based worktree/branch plus GitHub/Vercel only | Recalled before mutations after no command progress; OpenAI key flow also stopped with no key created |
+| Zeta (`/root/zeta_main_deploy`) | Git/Vercel integrator | GPT-5 Codex | Done | Integrate the six-file GPT QR presentation amendment into current `origin/main` | Handed off; none active | PR #7 merged at `8a6d231`; Production `dpl_3HoP1ovKwqYZEPi54zmQ979rJuSs` Ready and smoke passed |
+| Eta (`/root/eta_7030_audit`) | Read-only framing reviewer | GPT-5 Codex | Done | Audit 70% Demo / 30% onboarding amendment and asset completeness | None | Requested visible mobile-safe 70%/30% labels; all planned assets exist and no new image is needed |
+| Presentation (`019f737e…`) | Interactive deck | Thread model not reported | Done | Add the verified public TemanUsaha GPT link and local QR beside the website demo CTA | Handed off; none active | Six scoped files changed; URL verified public, JavaScript valid, and full check passed |
+| Asset Designer (`019f736f…`) | Brand/product/state assets | Thread model not reported | Done | Finish generated assets and provide a scoped handoff | `prompts/assets/**`, `public/assets/**`, `app/icon*`, `app/apple-icon*`, `app/favicon*`, `app/opengraph-image*` | 23 images verified; no external side effects |
+| UI Designer (`/root/designer_agent`) | Product UI/UX polish | GPT-5 Codex | Stopped | Read-only visual QA after a conflicting authorized writer appeared | None | Correctly stopped with no writes; local QA server stopped and port 3130 verified empty |
+| OpenAI Media (`019f7366…`) | Server media/onboarding integration | Thread model not reported | Done | Add project-scoped image generation and TTS-assisted Real onboarding | Handed off; none active | Checks passed; Production creative/audio endpoints independently return 404, confirming paid media is fail-closed |
+| Media Security (`/root/media_security_review`) | Read-only security/cost reviewer | GPT-5 Codex | Done | Re-audit Alpha's production-off media remediation | None | GO for Production inclusion while media remains disabled; auth + persistent quota + rate limit required before activation |
+| Submission (`/root/submission_audit`) | Devpost draft updater | GPT-5 Codex | Blocked | Fill only verified fields on TemanUsaha AI project `1347708` | None; external writes stopped | Description and thumbnail saved; `update_project` unexpectedly auto-published the standalone project, so agent stopped without attach/submit/revert |
+| GPTs (`019f7370…`) | Custom GPT package/testing | Thread model not reported | Done | Add the sixth Action plus explicit Demo/Real conversation modes | `GPTs/**` and GPT Builder only | Six Actions and mode tests passed; local identity neutral, final two-field Builder autosave unverified due active user input |
 
 ## Workspace quarantine
 
 | Paths | Owner | State |
 | --- | --- | --- |
 | `AGENTS.md`, `TASKS.md` | Alpha | Contract edit in progress |
-| `public/presentation/03-demo.html`, `04-bukti.html`, `07-build.html`, `deck.css`, `tests/presentation.test.ts` | Presentation | Active; do not stage until handoff |
-| `prompts/assets/brand-derivatives.md`, `public/assets/README.md`, `public/assets/brand/*`, `app/apple-icon.png`, `app/favicon.ico`, `app/opengraph-image*` | Alpha, handed off by Designer | Read-only until Alpha verification/integration |
-| `.env.example`, `app/globals.css`, `app/layout.tsx`, `components/dashboard.tsx`, `next-env.d.ts`, `scripts/generate_brand_assets.py`, `work/openai-platform-opportunities.md` | Alpha, previously touched by Designer | Quarantined for integration review; no active writer |
-| `convex/http.ts`, `openapi/temanusaha-actions.yaml` | Alpha, handed off by Beta | Ready for final review/integration |
+| `public/presentation/**`, `tests/presentation.test.ts` | Alpha, handed off by Presentation | GPT QR/link amendment integrated into `main` and verified on public Production |
+| `public/assets/README.md`, selected `public/assets/brand/*`, `app/apple-icon.png`, `app/opengraph-image*` | Alpha, handed off by Designer | Alpha integrating; Bu Sari social card scoped under `app/demo/**` |
+| `.env.example`, `next-env.d.ts`, `work/openai-platform-opportunities.md` | Alpha, previously touched by Designer | Quarantined for integration review; no active writer |
+| `app/page.tsx`, `app/demo/page.tsx`, `tests/modes.test.ts` | Alpha, handed back by UI Designer | Visible 70%/30% selector labels preserved; no active writer |
+| `app/real/page.tsx`, `app/globals.css`, `app/api/creative-image/**`, `app/api/onboarding-audio/**`, `components/creative-studio.tsx`, `lib/openai-features.ts`, `tests/openai-features.test.ts` | Alpha, handed off by OpenAI Media | Complete; code shipped with Production UI/endpoints disabled and public 404 smoke verified |
+| `app/layout.tsx`, `components/dashboard.tsx` | Alpha, handed off by Gamma | Ready for final integration |
+| `convex/http.ts` | Alpha, handed off by Beta | Ready for final integration |
+| `GPTs/temanusaha-actions.yaml` | Alpha, handed off by Beta | Demo-only wording complete; ready for integration |
 | `app/api/dashboard-card-image/**`, `tests/dashboard-card.test.ts` | Alpha, handed off by Gamma | Ready for final review/integration |
-| `GPTs/alfa.md`, `GPTs/temanusaha-actions.yaml` | GPTs | Waiting; read-only until backend/UI handoff |
+| `GPTs/alfa.md`, `GPTs/temanusaha-actions.yaml` | Alpha, handed off by GPTs | Complete; ready for final integration |
 
 Contract source: `AGENTS.md`. Only one active writer may own a file scope. Alpha updates this registry before dispatch and after handoff.
 
@@ -41,16 +53,30 @@ Contract source: `AGENTS.md`. Only one active writer may own a file scope. Alpha
 | Done | Verify all dashboard tabs against Convex Cloud with zero browser errors | Alpha | GPT-5 Codex |
 | Done | Finalize README, cloud workflow, and demo handoff | Alpha | GPT-5 Codex |
 | Done | Validate the live GPT Actions contract against Convex Cloud | Beta | GPT-5 Codex |
-| Blocked | Publish a Vercel preview; CLI unavailable and fallback network timed out | Gamma | GPT-5 Codex |
+| Done | Publish and verify stable Vercel Production deployment | Infrastructure + Alpha | Thread model not reported / GPT-5 Codex |
 | Done | Audit GitHub authentication, remote, and Codex Cloud readiness | Reviewer | GPT-5 Codex |
 | Done | Audit the connected OpenAI Build Week Devpost submission | Reviewer | GPT-5 Codex |
 | Done | Create a separate TemanUsaha AI Devpost draft with copy, stack, and repo link | Alpha | GPT-5 Codex |
 | Done | Integrate and verify the presentation deck plus product/state assets | Alpha | GPT-5 Codex |
-| Blocked | Upload Devpost thumbnail; PowerShell and curl uploads timed out | Alpha | GPT-5 Codex |
-| Blocked | Import Action/Instructions in GPT Builder; browser session needs sign-in | User + Alpha | ChatGPT action-capable model |
+| Blocked | Upload existing `app/apple-icon.png` as Devpost thumbnail through the authenticated draft API; re-audit 18 Jul 2026 found the public project page renders no thumbnail, so the earlier Done status is unverified | Submission + Alpha | GPT-5 Codex |
+| Done | Import six Actions/Instructions and verify Demo/Real behavior in GPT Builder | GPTs + Alpha | Thread model not reported / GPT-5 Codex |
 | Done | Push isolated GitHub branch `agent/temanusaha-ai` for Codex Cloud | Alpha | GPT-5 Codex |
 | Todo | Add repo/demo/video URLs and Codex feedback ID to Devpost | User + Alpha | GPT-5 Codex |
 | Done | Establish and audit the durable agent contract and registry | Alpha + Reviewer | GPT-5 Codex |
-| In progress | Add and validate `get_dashboard_card_image` with a public PNG card | Beta + Gamma + GPTs + Alpha | GPT-5 Codex / thread model not reported |
+| Done | Add and validate `get_dashboard_card_image` with a public PNG card/link fallback | Beta + Gamma + GPTs + Alpha | GPT-5 Codex / thread model not reported |
+| Done | Split product into neutral selector, `/demo`, and disconnected `/real` | Gamma + Delta + Alpha | GPT-5 Codex |
+| Done | Upgrade presentation to six Actions with responsive offline QR to Production `/demo` | Presentation + Reviewer + Alpha | Thread model not reported / GPT-5 Codex |
+| Done | Amend product framing to 70% runnable Demo / 30% disconnected UMKM onboarding and reuse the existing neutral setup asset | Eta + Alpha | GPT-5 Codex |
+| Done | Run conflict-safe responsive product audit; stop without writes when a user-owned writer appears | UI Designer + Alpha | GPT-5 Codex |
+| Done | Add project-scoped OpenAI image generation and TTS-assisted Real onboarding | OpenAI Media + Alpha | Thread model not reported / GPT-5 Codex |
+| Done | Apply production-off media guard, payload/cache/privacy fixes, and route-level regression tests | Media Security + Alpha | GPT-5 Codex |
+| Done | Present Demo Bu Sari first, then natural audio/chat UMKM onboarding; keep `/presentation` clean and QR modal accessible | Presentation + Alpha | Thread model not reported / GPT-5 Codex |
+| Done | Integrate final source `70921af` into `main` and verify Production redeploy | Zeta + Alpha | GPT-5 Codex |
+| Done | Independently smoke Production `/`, `/demo`, `/real`, `/presentation`, dashboard PNG, and fail-closed media endpoints | GPTs + Alpha | Thread model not reported / GPT-5 Codex |
+| Done | Verify local OpenAI API connectivity without generation or secret output; `/v1/models` returned 200 with `gpt-image-2` and `gpt-4o-mini-tts` visible | GPTs + Alpha | Thread model not reported / GPT-5 Codex |
+| Done | Audit remaining Devpost thumbnail, video URL, repo/demo links, and Codex feedback ID requirements | Submission + Alpha | GPT-5 Codex |
+| Blocked | Fill remaining Devpost submission fields; requires video, `/feedback` ID, country, submitter type, repo access choice, and explicit attach/submit authority | Submission + Alpha | GPT-5 Codex |
+| Done | Update standalone Devpost description from five to six operations and attach the existing thumbnail | Submission + Alpha | GPT-5 Codex |
+| Done | Add local GPT QR/link beside the website demo CTA, test it, and redeploy the presentation | Presentation + Alpha | Thread model not reported / GPT-5 Codex |
 
 Status values: `Todo`, `In progress`, `Blocked`, `Done`.
