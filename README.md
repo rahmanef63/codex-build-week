@@ -2,7 +2,7 @@
 
 TemanUsaha AI mengubah instruksi Bahasa Indonesia menjadi pencatatan pesanan, perubahan stok, dan pekerjaan yang bisa diverifikasi oleh pemilik warung.
 
-Demo sengaja sempit: satu bisnis sintetis, **Warung Nasi Bu Sari**, lima operasi GPT Actions, dan satu dashboard realtime dengan tampilan Today, Orders, serta AI Activity.
+Demo sengaja sempit: satu bisnis sintetis, **Warung Nasi Bu Sari**, enam operasi GPT Actions, dan satu dashboard realtime dengan tampilan Today, Orders, serta AI Activity.
 
 ## Arsitektur
 
@@ -42,6 +42,12 @@ npx convex env set DEMO_RESET_KEY "ganti-dengan-secret-reset"
 npx convex run seed:reset '{\"resetKey\":\"ganti-dengan-secret-reset\"}'
 ```
 
+Setelah Next.js memiliki URL HTTPS publik, hubungkan URL tersebut ke Convex agar Action dapat mengembalikan kartu PNG:
+
+```powershell
+npx convex env set DASHBOARD_PUBLIC_URL "https://nama-deployment.vercel.app"
+```
+
 Buka [http://localhost:3000](http://localhost:3000). Jalankan `npm run check` untuk test, typecheck, dan production build.
 
 ## Data demo
@@ -69,6 +75,7 @@ HTTP Actions tersedia pada `https://utmost-snake-682.convex.site`:
 | PATCH | `/api/orders/{id}` | `update_order` |
 | GET | `/api/inventory/low-stock` | `get_low_stock_items` |
 | GET | `/api/summary/today` | `get_daily_summary` |
+| GET | `/api/dashboard-card?view=today` | `get_dashboard_card_image` |
 
 Semua endpoint mewajibkan header `X-Action-API-Key`. `POST /api/orders` juga mewajibkan `requestId` agar retry Action tidak menggandakan order. Retry dengan payload yang sama mengembalikan order awal; pemakaian `requestId` yang sama untuk payload berbeda ditolak dengan HTTP 409.
 
@@ -123,7 +130,7 @@ Progress dan pembagian agent/model ada di [`TASKS.md`](TASKS.md). Agent Alpha me
 
 ## Batas MVP
 
-Belum ada login, multi-tenant admin, WhatsApp API, payment gateway, OCR, accounting, forecasting, atau Agents SDK runtime. Tambahkan hanya setelah alur lima Action terbukti andal.
+Belum ada login, multi-tenant admin, WhatsApp API, payment gateway, OCR, accounting, forecasting, atau Agents SDK runtime. Tambahkan hanya setelah alur enam Action terbukti andal.
 
 ## Submission
 

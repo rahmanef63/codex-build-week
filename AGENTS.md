@@ -6,7 +6,7 @@ Build the narrow hackathon demo: Custom GPT + Convex HTTP Actions + a Next.js da
 
 ## Scope
 
-Only ship five operations: create an order, list pending orders, update an order, list low stock, and show today's summary. The dashboard has Today, Orders, and AI Activity views.
+Only ship six operations: create an order, list pending orders, update an order, list low stock, show today's summary, and fetch a dashboard-card image. The dashboard has Today, Orders, and AI Activity views.
 
 Skip WhatsApp, real payments, accounting, OCR, marketplace, payroll, RAG, forecasting, complex auth, and multi-tenant administration unless explicitly requested.
 
@@ -20,6 +20,8 @@ Skip WhatsApp, real payments, accounting, OCR, marketplace, payroll, RAG, foreca
 - Reject insufficient stock and empty updates.
 - Every mutation writes `aiActionLogs`.
 - Use synthetic customer data only and never expose secrets to the browser.
+- Dashboard-card image URLs may be public only for aggregate demo metrics and fixed product data. Never render customer names, free-form inputs/log summaries, real customer data, or secrets on a public card.
+- GPT Actions cannot return images through `openaiFileResponse`; the dashboard-card Action returns ordinary image metadata for best-effort Markdown rendering in GPT Builder.
 
 ## Stable Action IDs
 
@@ -28,10 +30,13 @@ Skip WhatsApp, real payments, accounting, OCR, marketplace, payroll, RAG, foreca
 - `update_order`
 - `get_low_stock_items`
 - `get_daily_summary`
+- `get_dashboard_card_image`
 
 ## Verify
 
 Run `npm run check`. Use the linked cloud Convex deployment with `npx convex dev --once`; do not start or claim a local Convex deployment. Then reset the seed, create the Bu Rina order, and confirm the total is Rp55.000, stock decreases, the order is pending, and AI Activity contains the mutation.
+
+For the sixth Action, deploy Next.js to public HTTPS with `NEXT_PUBLIC_CONVEX_URL`, set the origin-only URL as Convex `DASHBOARD_PUBLIC_URL`, and call the authenticated `/api/dashboard-card`. Confirm its `imageUrl` returns a no-store 1200x630 PNG for all three views and contains no customer names, free-form log summaries, or secret material. Verify best-effort Markdown rendering separately in GPT Builder Preview.
 
 ## Agent contract
 
@@ -42,7 +47,7 @@ Run `npm run check`. Use the linked cloud Convex deployment with `npx convex dev
 | Role | Primary write scope |
 | --- | --- |
 | Alpha | Orchestration, `AGENTS.md`, `TASKS.md`, `README.md`, root config, Git, cloud/deploy state, final integration |
-| Beta | `convex/**`, `openapi/**`, `GPTs/temanusaha-actions.yaml`, backend checks |
+| Beta | `convex/**`, `openapi/**`, backend checks |
 | Gamma | `app/**` except generated icons/social images, `components/**`, `lib/**`, frontend checks |
 | Presentation, when assigned | `public/presentation/**`, `tests/presentation.test.ts` |
 | Delta, when assigned | `prompts/assets/**`, `public/assets/**`, `app/icon*`, `app/apple-icon*`, `app/favicon*`, `app/opengraph-image*` |
