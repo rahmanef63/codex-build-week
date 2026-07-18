@@ -2,13 +2,21 @@
 
 TemanUsaha AI mengubah instruksi Bahasa Indonesia menjadi pencatatan pesanan, perubahan stok, dan pekerjaan yang bisa diverifikasi oleh pemilik warung.
 
-Demo sengaja sempit: satu bisnis sintetis, **Warung Nasi Bu Sari**, enam operasi GPT Actions, dan satu dashboard realtime dengan tampilan Today, Orders, serta AI Activity.
+Produk memiliki dua mode yang terpisah:
+
+Fokus produk adalah **70% Demo Bu Sari** untuk membuktikan workflow yang sudah berjalan dan **30% onboarding UMKM** untuk menunjukkan jalur adopsi yang aman tanpa mengakses data nyata.
+
+- [`/demo`](https://codex-build-week.vercel.app/demo) memakai satu bisnis sintetis, **Warung Nasi Bu Sari**, enam operasi GPT Actions, dan dashboard realtime Today, Orders, serta AI Activity.
+- [`/real`](https://codex-build-week.vercel.app/real) belum terhubung ke akun atau data bisnis. Mode ini hanya menyediakan onboarding dan panduan umum sampai autentikasi serta penyimpanan bisnis nyata tersedia.
+
+Pemilih mode tersedia di [`/`](https://codex-build-week.vercel.app/). Data Bu Sari dan keenam Action Demo dilarang digunakan dalam Mode Real.
 
 ## Arsitektur
 
 ```text
 Pemilik warung -> Custom GPT -> Convex HTTP Actions -> Convex database
 Pemilik warung -> Next.js dashboard -------------> Convex database
+UMKM (lokal)   -> Next.js Media Studio ----------> OpenAI Images / TTS
 ```
 
 Convex adalah satu-satunya source of truth. Pembuatan order, pengurangan stok, dan audit log berjalan dalam satu mutation atomik. Next.js hanya menjadi lapisan visibilitas realtime; tidak ada API gateway kedua.
@@ -18,17 +26,18 @@ Convex adalah satu-satunya source of truth. Pembuatan order, pengurangan stok, d
 - Next.js App Router + React + TypeScript
 - Convex database, queries, mutations, dan HTTP Actions
 - Custom GPT + OpenAPI Actions
+- OpenAI Image API dan Text-to-Speech untuk preview onboarding lokal
 - Codex GPT-5 untuk orkestrasi build lokal dan cloud
 
-Backend tidak memanggil OpenAI API secara langsung pada MVP ini. Agents SDK/Responses API baru perlu ditambahkan jika percakapan dipindahkan dari Custom GPT ke aplikasi sendiri.
+Media Studio di Mode Real memakai `gpt-image-2` dan `gpt-4o-mini-tts` hanya saat `next dev`. Route berbayar ini hard-disabled pada build Production sampai identitas pengguna, kuota persisten, dan rate limit tersedia. Brief lokal dikirim ke OpenAI; jangan masukkan data pelanggan, data pribadi, kata sandi, atau rahasia usaha.
 
 ## Menjalankan Next.js dengan Convex Cloud
 
-Prasyarat: Node.js 24.
+Prasyarat: Node.js 20 atau lebih baru.
 
 ```powershell
 npm install
-npx convex dev --once
+npm run convex:sync
 npm run dev
 ```
 
@@ -48,13 +57,9 @@ Setelah Next.js memiliki URL HTTPS publik, hubungkan URL tersebut ke Convex agar
 npx convex env set DASHBOARD_PUBLIC_URL "https://nama-deployment.vercel.app"
 ```
 
-Buka [http://localhost:3000](http://localhost:3000). Jalankan `npm run check` untuk test, typecheck, dan production build.
+Buka [http://localhost:3000](http://localhost:3000), lalu pilih `/demo` atau `/real`. Jalankan `npm run check` untuk test, typecheck, dan production build.
 
-## Deploy ke Vercel
-
-Hubungkan repo ini ke Vercel, lalu set `NEXT_PUBLIC_CONVEX_URL` dan `CONVEX_DEPLOY_KEY` untuk deployment Convex production. Build command `npm run build:auto` akan men-deploy fungsi Convex dan membangun Next.js bersama-sama. Preview yang hanya memiliki production deploy key membangun frontend tanpa menyentuh backend production.
-
-`ACTION_API_KEY` dan `DEMO_RESET_KEY` tetap disimpan sebagai environment variable di Convex, bukan di Vercel atau browser.
+Untuk mencoba preview logo/poster dan panduan suara hanya di mesin lokal, simpan `OPENAI_API_KEY` pada `.env.local`. Jangan memasukkan key ke Vercel, Git, screenshot, atau chat. Production tetap menampilkan readiness flow tanpa memanggil endpoint OpenAI berbayar.
 
 ## Data demo
 
@@ -70,7 +75,7 @@ Seed membuat Warung Nasi Bu Sari dengan lima produk:
 
 Order demo `3 Nasi Ayam + 2 Es Teh` harus bernilai Rp55.000.
 
-## GPT Actions
+## GPT Actions — hanya Mode Demo
 
 HTTP Actions tersedia pada `https://utmost-snake-682.convex.site`:
 
@@ -83,7 +88,7 @@ HTTP Actions tersedia pada `https://utmost-snake-682.convex.site`:
 | GET | `/api/summary/today` | `get_daily_summary` |
 | GET | `/api/dashboard-card?view=today` | `get_dashboard_card_image` |
 
-Semua endpoint mewajibkan header `X-Action-API-Key`. `POST /api/orders` juga mewajibkan `requestId` agar retry Action tidak menggandakan order. Retry dengan payload yang sama mengembalikan order awal; pemakaian `requestId` yang sama untuk payload berbeda ditolak dengan HTTP 409.
+Semua endpoint adalah kontrak Demo-only dan mewajibkan header `X-Action-API-Key`. Mode Real tidak boleh memanggilnya. `POST /api/orders` juga mewajibkan `requestId` agar retry Action tidak menggandakan order. Retry dengan payload yang sama mengembalikan order awal; pemakaian `requestId` yang sama untuk payload berbeda ditolak dengan HTTP 409.
 
 ### Menghubungkan Custom GPT
 
@@ -117,13 +122,13 @@ Untuk Codex cloud:
 
 1. Push repo ini ke GitHub.
 2. Buat cloud environment untuk repo/branch tersebut.
-3. Gunakan setup command `npm ci` dan pin Node.js 24.
+3. Gunakan setup command `npm ci` dan pin Node.js 20+.
 4. Tambahkan `NEXT_PUBLIC_CONVEX_URL` dari deployment cloud sebagai environment variable bila cloud task perlu menjalankan Next.js.
 5. Jalankan task cloud per hasil yang terpisah, misalnya backend, UI, atau review; merge melalui diff/PR.
 
 ChatGPT Project dan local project bukan filesystem yang sama. ChatGPT Project menyimpan chat, file, instructions, dan sources di cloud; folder lokal tetap sumber kode. GitHub menjadi jembatan yang bisa di-checkout oleh Codex cloud.
 
-Progress dan pembagian agent/model ada di [`TASKS.md`](TASKS.md). Agent Alpha mengorkestrasi integrasi; Beta mengerjakan Convex/Actions; Gamma mengerjakan dashboard; Reviewer melakukan audit read-only. Semua agent build pada sesi ini memakai GPT-5 Codex.
+Progress, kontrak file, dan model yang dilaporkan setiap agent ada di [`TASKS.md`](TASKS.md). Agent Alpha mengorkestrasi integrasi; agent lain bekerja paralel dengan satu pemilik write-scope per folder.
 
 ## Responsible AI
 
@@ -140,7 +145,13 @@ Belum ada login, multi-tenant admin, WhatsApp API, payment gateway, OCR, account
 
 ## Submission
 
-Sebelum Devpost: deploy dashboard dan Convex, rekam video publik kurang dari tiga menit, tambahkan URL repo/demo, lalu isi Codex `/feedback` session ID di sini.
+Repository: [rahmanef63/codex-build-week](https://github.com/rahmanef63/codex-build-week).
+
+Devpost draft: [TemanUsaha AI](https://devpost.com/software/temanusaha-ai).
+
+Demo produk: [codex-build-week.vercel.app/demo](https://codex-build-week.vercel.app/demo). Slide deck tersedia di [codex-build-week.vercel.app/presentation](https://codex-build-week.vercel.app/presentation).
+
+Sebelum Devpost: rekam video publik kurang dari tiga menit, tambahkan URL repo/demo, lalu isi Codex `/feedback` session ID di sini.
 
 ```text
 Codex feedback session ID: TODO
