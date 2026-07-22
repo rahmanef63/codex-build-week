@@ -9,7 +9,7 @@ Fokus produk adalah **Demo Bu Sari** untuk membuktikan workflow GPT Actions yang
 - [`/demo`](https://codex-build-week.vercel.app/demo) memakai satu bisnis sintetis, **Warung Nasi Bu Sari**, enam operasi GPT Actions, dan dashboard realtime Today, Orders, serta AI Activity.
 - [`/dashboard`](https://codex-build-week.vercel.app/dashboard) sudah live: registrasi email/kata sandi via `@convex-dev/auth` (provider Password), onboarding pembuatan bisnis (nama + produk awal), dan dashboard Convex realtime milik pengguna sendiri. UI-nya mengikuti design system `template-convex-starter`: dark secara default, aksen amber, dan token-driven. Rute lama `/real` tetap ada sebagai redirect permanen ke `/dashboard`, sehingga tautan lama tetap berfungsi.
 
-Pemilih mode tersedia di [`/`](https://codex-build-week.vercel.app/). Data kedua mode terisolasi penuh (`businessId = userId`); data Bu Sari dan keenam Action Demo dilarang digunakan dalam Mode Real.
+Pemilih mode tersedia di [`/`](https://codex-build-week.vercel.app/). Data kedua mode terisolasi penuh (`businessId = userId`). Enam Action Demo tetap khusus Bu Sari; setiap usaha Real memiliki schema dan token Action sendiri yang menentukan tenant di server.
 
 ## Arsitektur
 
@@ -22,7 +22,7 @@ UMKM (lokal)   -> Next.js Media Studio ----------> OpenAI Images / TTS
 
 Convex adalah satu-satunya source of truth. Pembuatan order, pengurangan stok, dan audit log berjalan dalam satu mutation atomik. Next.js hanya menjadi lapisan visibilitas realtime; tidak ada API gateway kedua.
 
-Mode Real di `/dashboard` memakai `@convex-dev/auth` dengan provider Password untuk registrasi dan login email/kata sandi (live per persetujuan owner 2026-07-18, tercatat di AGENTS.md). Rute `/real` dipertahankan sebagai redirect permanen ke `/dashboard` agar tautan lama tidak putus. Setelah onboarding (nama bisnis + produk awal), pengguna mendapat dashboard Convex realtime miliknya sendiri. Isolasi data dijamin dengan `businessId = userId`, sehingga data pengguna terpisah penuh dari data demo Bu Sari. GPT Actions tetap Demo-only by design dan tidak menyentuh data Mode Real.
+Mode Real di `/dashboard` memakai `@convex-dev/auth` dengan provider Password untuk registrasi dan login email/kata sandi (live per persetujuan owner 2026-07-18, tercatat di AGENTS.md). Rute `/real` dipertahankan sebagai redirect permanen ke `/dashboard` agar tautan lama tidak putus. Setelah onboarding (nama bisnis + produk awal), pengguna mendapat dashboard Convex realtime miliknya sendiri. Isolasi data dijamin dengan `businessId = userId`, sehingga data pengguna terpisah penuh dari data demo Bu Sari. GPT Actions Demo tetap khusus Bu Sari. Pada **Agent GPT** di dashboard, pemilik dapat menyalin schema Workspace dan token sekali-pakai untuk GPT Builder; endpoint Workspace menentukan `businessId` dari token, bukan dari input GPT.
 
 ## Struktur
 
@@ -110,8 +110,8 @@ Semua endpoint adalah kontrak Demo-only dan mewajibkan header `X-Action-API-Key`
 1. Ikuti paket field-by-field di [`GPTs/alfa.md`](GPTs/alfa.md).
 2. Di GPT editor, buat Action dan tempel [`GPTs/temanusaha-actions.yaml`](GPTs/temanusaha-actions.yaml). [`GPTs/action-schema.json`](GPTs/action-schema.json) adalah cermin JSON dari spesifikasi Actions yang sama.
 3. Pilih API key dengan custom header `X-Action-API-Key`.
-4. Ambil nilai Action key dari Convex Dashboard atau `npx convex env get ACTION_API_KEY`, lalu masukkan ke GPT editor tanpa menaruhnya di chat/repo.
-5. Uji setiap operasi di Preview sebelum demo.
+4. Untuk Demo, masukkan `ACTION_API_KEY`. Untuk Workspace, gunakan schema dan token yang dibuat di tab **Agent GPT** dashboard; jangan menaruh token di chat/repo.
+5. Uji setiap operasi di Preview sebelum demo atau pemakaian usaha.
 
 Format konfirmasi dan template AI Action Receipt ada di [`GPTs/alfa.md`](GPTs/alfa.md).
 
@@ -142,7 +142,7 @@ Progress, kontrak file, dan model yang dilaporkan setiap agent ada di [`TASKS.md
 
 ## Batas MVP
 
-Belum ada login Mode Real, multi-tenant admin, WhatsApp API, payment gateway, OCR, accounting, forecasting, atau Agents SDK runtime. Tambahkan hanya setelah alur enam Action terbukti andal dan persetujuan manusia terpisah untuk menghubungkan Mode Real tercatat.
+Belum ada multi-tenant admin, WhatsApp API, payment gateway, OCR, accounting, forecasting, atau Agents SDK runtime.
 
 ## Submission
 

@@ -6,12 +6,12 @@ import { logError } from "./_shared/log";
 import { fulfillmentStatus, orderFingerprint, paymentStatus } from "./lib/orderValidation";
 
 export const listPending = internalQuery({
-  args: {},
-  handler: (ctx) =>
+  args: { businessId: v.optional(v.string()) },
+  handler: (ctx, args) =>
     ctx.db
       .query("orders")
       .withIndex("by_business_status", (q) =>
-        q.eq("businessId", BUSINESS_ID).eq("fulfillmentStatus", "PENDING"),
+        q.eq("businessId", args.businessId ?? BUSINESS_ID).eq("fulfillmentStatus", "PENDING"),
       )
       .order("desc")
       .take(100),
@@ -25,9 +25,11 @@ export const createOrder = internalMutation({
     pickupTime: v.string(),
     paymentStatus,
     notes: v.optional(v.string()),
+    businessId: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     try {
+      const businessId = args.businessId ?? BUSINESS_ID;
       const requestId = args.requestId.trim();
       const customerName = args.customerName.trim();
       const requestFingerprint = orderFingerprint({ ...args, customerName });
@@ -35,7 +37,7 @@ export const createOrder = internalMutation({
       const existing = await ctx.db
         .query("orders")
         .withIndex("by_business_request", (q) =>
-          q.eq("businessId", BUSINESS_ID).eq("requestId", requestId),
+          q.eq("businessId", businessId).eq("requestId", requestId),
         )
         .unique();
       if (existing) {
@@ -51,7 +53,7 @@ export const createOrder = internalMutation({
 
       const products = await ctx.db
         .query("products")
-        .withIndex("by_business_id", (q) => q.eq("businessId", BUSINESS_ID))
+        .withIndex("by_business_id", (q) => q.eq("businessId", businessId))
         .take(MAX_PRODUCTS_PER_BUSINESS);
 
       // ponytail: linear scan fits five demo products; add a normalized-name index if the catalog grows.
@@ -103,7 +105,7 @@ export const createOrder = internalMutation({
       }));
       const total = items.reduce((sum, item) => sum + item.lineTotal, 0);
       const orderId = await ctx.db.insert("orders", {
-        businessId: BUSINESS_ID,
+        businessId,
         requestId,
         requestFingerprint,
         customerName,
@@ -129,7 +131,7 @@ export const createOrder = internalMutation({
         });
       }
       const logId = await ctx.db.insert("aiActionLogs", {
-        businessId: BUSINESS_ID,
+        businessId,
         action: "create_order",
         requestId,
         inputSummary: `${customerName}: ${items.map((item) => `${item.quantity} ${item.productName}`).join(", ")}`,
@@ -155,15 +157,17 @@ export const updateOrder = internalMutation({
     orderId: v.string(),
     fulfillmentStatus: v.optional(fulfillmentStatus),
     paymentStatus: v.optional(paymentStatus),
+    businessId: v.optional(v.string()),
   },
   handler: async (ctx, args) => {
     try {
+      const businessId = args.businessId ?? BUSINESS_ID;
       if (args.fulfillmentStatus === undefined && args.paymentStatus === undefined) {
         fail("EMPTY_UPDATE", "Minimal satu status wajib diubah.");
       }
       const orderId = ctx.db.normalizeId("orders", args.orderId);
       const order = orderId ? await ctx.db.get(orderId) : null;
-      if (!order || order.businessId !== BUSINESS_ID) {
+      if (!order || order.businessId !== businessId) {
         fail("ORDER_NOT_FOUND", "Pesanan tidak ditemukan.");
       }
       const now = Date.now();
@@ -174,7 +178,7 @@ export const updateOrder = internalMutation({
       });
       const updated = await ctx.db.get(orderId!);
       const logId = await ctx.db.insert("aiActionLogs", {
-        businessId: BUSINESS_ID,
+        businessId,
         action: "update_order",
         inputSummary: `Update order ${args.orderId}.`,
         outputSummary: `Status order ${args.orderId} diperbarui.`,

@@ -1,3 +1,4 @@
+import { v } from "convex/values";
 import { internalQuery, query, type QueryCtx } from "./_generated/server";
 import type { Doc } from "./_generated/dataModel";
 import {
@@ -64,6 +65,6 @@ export const dashboard = query({
 });
 
 export const summaryToday = internalQuery({
-  args: {},
-  handler: async (ctx) => (await readDashboard(ctx)).summary,
+  args: { businessId: v.optional(v.string()) },
+  handler: async (ctx, args) => (await readDashboard(ctx, args.businessId)).summary,
 });

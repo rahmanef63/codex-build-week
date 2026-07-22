@@ -81,9 +81,9 @@ test("servers URL matches temanusaha-actions.yaml", () => {
   expect(spec.servers?.[0]?.url).toBe(yamlUrlMatch?.[1]);
 });
 
-test("convex/http.ts routes match temanusaha-actions.yaml paths exactly", () => {
+test("every Demo schema route is registered in Convex HTTP", () => {
   const httpPaths = collectHttpPaths(httpText());
   const yamlPaths = collectYamlPaths(yamlText());
   expect(yamlPaths.length).toBeGreaterThan(0);
-  expect(httpPaths).toEqual(yamlPaths);
+  expect(httpPaths).toEqual(expect.arrayContaining(yamlPaths));
 });

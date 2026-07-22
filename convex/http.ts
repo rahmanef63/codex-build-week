@@ -15,6 +15,14 @@ function authorize(request: Request) {
 const secured = (handler: (ctx: any, request: Request) => Promise<Response>) =>
   securedRoute(authorize, handler);
 
+const agentSecured = (handler: (ctx: any, request: Request, businessId: string) => Promise<Response>) =>
+  securedRoute(() => true, async (ctx, request) => {
+    const token = request.headers.get("X-Action-API-Key") ?? "";
+    const identity = await ctx.runQuery(internal.agent.resolve, { token });
+    if (!identity) return json({ error: { code: "UNAUTHORIZED", message: "API key tidak valid." } }, 401);
+    return handler(ctx, request, identity.businessId);
+  });
+
 http.route({
   path: "/api/orders",
   method: "GET",
@@ -111,6 +119,77 @@ http.route({
       generatedAt,
     });
   }),
+});
+
+http.route({
+  path: "/api/agent/orders",
+  method: "GET",
+  handler: agentSecured(async (ctx, _request, businessId) =>
+    json({ orders: await ctx.runQuery(internal.orders.listPending, { businessId }) })),
+});
+
+http.route({
+  path: "/api/agent/orders",
+  method: "POST",
+  handler: agentSecured(async (ctx, request, businessId) => {
+    const input = await body(request);
+    const items = input.items;
+    if (
+      typeof input.requestId !== "string" || !input.requestId.trim() ||
+      typeof input.customerName !== "string" || !input.customerName.trim() ||
+      typeof input.pickupTime !== "string" || Number.isNaN(Date.parse(input.pickupTime)) ||
+      !["UNPAID", "PAID", "PARTIAL"].includes(String(input.paymentStatus)) ||
+      !Array.isArray(items) || !items.length || items.some((item) =>
+        !item || typeof item !== "object" ||
+        typeof (item as any).product !== "string" || !(item as any).product.trim() ||
+        !Number.isInteger((item as any).quantity) || (item as any).quantity <= 0)
+    ) throw new ConvexError({ code: "VALIDATION_ERROR", message: "Field order tidak lengkap atau tidak valid." });
+    const result = await ctx.runMutation(internal.orders.createOrder, {
+      businessId,
+      requestId: input.requestId.trim(),
+      customerName: input.customerName.trim(),
+      items,
+      pickupTime: new Date(input.pickupTime).toISOString(),
+      paymentStatus: input.paymentStatus,
+      ...(typeof input.notes === "string" && input.notes.trim() ? { notes: input.notes.trim() } : {}),
+    });
+    return json(result, result.idempotent ? 200 : 201);
+  }),
+});
+
+http.route({
+  pathPrefix: "/api/agent/orders/",
+  method: "PATCH",
+  handler: agentSecured(async (ctx, request, businessId) => {
+    const orderId = decodeURIComponent(new URL(request.url).pathname.slice("/api/agent/orders/".length));
+    const input = await body(request);
+    if (!orderId || orderId.includes("/") ||
+      (input.fulfillmentStatus === undefined && input.paymentStatus === undefined) ||
+      (input.fulfillmentStatus !== undefined && !["PENDING", "COMPLETED"].includes(String(input.fulfillmentStatus))) ||
+      (input.paymentStatus !== undefined && !["UNPAID", "PAID", "PARTIAL"].includes(String(input.paymentStatus)))) {
+      throw new ConvexError({ code: "VALIDATION_ERROR", message: "ID atau status pesanan tidak valid." });
+    }
+    return json(await ctx.runMutation(internal.orders.updateOrder, {
+      businessId,
+      orderId,
+      ...(input.fulfillmentStatus ? { fulfillmentStatus: input.fulfillmentStatus } : {}),
+      ...(input.paymentStatus ? { paymentStatus: input.paymentStatus } : {}),
+    }));
+  }),
+});
+
+http.route({
+  path: "/api/agent/inventory/low-stock",
+  method: "GET",
+  handler: agentSecured(async (ctx, _request, businessId) =>
+    json({ items: await ctx.runQuery(internal.inventory.lowStock, { businessId }) })),
+});
+
+http.route({
+  path: "/api/agent/summary/today",
+  method: "GET",
+  handler: agentSecured(async (ctx, _request, businessId) =>
+    json(await ctx.runQuery(internal.business.summaryToday, { businessId }))),
 });
 
 export default http;
