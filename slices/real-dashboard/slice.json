@@ -1,6 +1,6 @@
 {
   "slug": "real-dashboard",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "description": "Mode Real live dashboard \u2014 Convex Auth sign-up/sign-in, business onboarding, and a per-user realtime dashboard on /dashboard. Data isolated from Demo via businessId = userId (owner sign-off 2026-07-18 in AGENTS.md).",
   "owner": "frontend",
   "contract": {

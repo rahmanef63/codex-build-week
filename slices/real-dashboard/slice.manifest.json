@@ -1,18 +1,20 @@
 {
   "slug": "real-dashboard",
-  "version": "1.1.0",
+  "version": "1.2.0",
   "files": {
     "barrel": "index.ts",
     "types": "types.ts",
     "components": [
       "components/auth-card.tsx",
       "components/connected-dashboard.tsx",
+      "components/dashboard-activity.tsx",
       "components/dashboard-app.tsx",
+      "components/dashboard-orders.tsx",
+      "components/dashboard-overview.tsx",
+      "components/dashboard-shell.tsx",
       "components/dashboard-skeleton.tsx",
       "components/onboarding-card.tsx",
-      "components/status-badge.tsx",
-      "components/theme-provider.tsx",
-      "components/theme-toggle.tsx"
+      "components/status-badge.tsx"
     ],
     "lib": [],
     "tests": []
