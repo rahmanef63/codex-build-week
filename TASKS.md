@@ -29,6 +29,7 @@
 | Alpha (`Codex session`) | Orchestrator/UI integration | GPT-5 Codex | Done | Redesign the public hackathon landing, add its header theme picker, and share theme state with the workspace | `app/(public)/**`, `app/(workspace)/layout.tsx`, `TASKS.md`, Git | `npm run check` passed (33 tests, typecheck, production build) |
 | Alpha (`Codex session`) | Orchestrator/full-stack integration | GPT-5 Codex | Done | Configure isolated per-business Agent Actions and align the Custom GPT package with the presentation token exception | `AGENTS.md`, `TASKS.md`, `convex/**`, `slices/real-dashboard/**`, `GPTs/**`, tests, Git | Workspace HTTP Actions derive tenant only from the per-business token; dynamic Builder fields and schema verified locally; `npm run check` passed |
 | Alpha (`Codex session`) | Orchestrator/full-stack integration | GPT-5 Codex | Done | Improve Workspace GPT setup, safe Action diagnostics, AI activity filters, and responsive dashboard shell | `TASKS.md`, `convex/**`, `slices/real-dashboard/**`, `shared/**`, tests, Git | Safe GPT read logs, dynamic Knowledge Base, activity filters, and responsive Agent tabs shipped; BYOK excluded by secret policy |
+| Alpha (`Codex session`) | Orchestrator/full-stack integration | GPT-5 Codex | Done | Expand Workspace GPT schema and instructions for profile and catalog management | `TASKS.md`, `convex/**`, `slices/real-dashboard/**`, tests, Git | Profile and catalog Actions added with tenant isolation and mutation confirmation preserved |
 
 ## Workspace quarantine
 
