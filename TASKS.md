@@ -27,6 +27,7 @@
 | Alpha (`Codex session`) | Orchestrator/UI integration | GPT-5 Codex | Done | Apply Taste Skill UI/UX polish to the public mode selector and Mode Real workspace while preserving the Demo/Real data boundary | `app/(public)/page.tsx`, `slices/real-dashboard/components/{dashboard-shell,dashboard-overview,dashboard-orders,dashboard-activity}.tsx`, `TASKS.md`, Git | `npm run check` passed (33 tests, typecheck, production build); public mode-boundary test and token scan passed |
 | Alpha (`Codex session`) | Orchestrator/UI integration | GPT-5 Codex | Done | Expand landing-page learning context and replace public-facing “Real” labels with “Workspace usaha” | `app/(public)/page.tsx`, `tests/modes.test.ts`, `TASKS.md`, Git | `npm run check` passed (33 tests, typecheck, production build) |
 | Alpha (`Codex session`) | Orchestrator/UI integration | GPT-5 Codex | Done | Redesign the public hackathon landing, add its header theme picker, and share theme state with the workspace | `app/(public)/**`, `app/(workspace)/layout.tsx`, `TASKS.md`, Git | `npm run check` passed (33 tests, typecheck, production build) |
+| Alpha (`Codex session`) | Orchestrator/full-stack integration | GPT-5 Codex | In progress | Configure isolated per-business Agent Actions and align the Custom GPT package with the presentation token exception | `AGENTS.md`, `TASKS.md`, `convex/**`, `slices/real-dashboard/**`, `GPTs/**`, tests, Git | Owner approval recorded 2026-07-22; implementation pending |
 
 ## Workspace quarantine
 

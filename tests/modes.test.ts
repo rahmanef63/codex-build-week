@@ -38,6 +38,6 @@ test("Demo owns synthetic business wiring while the workspace runs its own live 
   const descriptionText = description?.[1] ?? "";
   expect(descriptionText).toMatch(/\S/);
   expect(descriptionText).toMatch(/Mode Demo/);
-  expect(descriptionText).toMatch(/Mode Real/);
+  expect(descriptionText).toMatch(/Workspace Usaha/);
   expect(descriptionText).toMatch(/kini live/);
 });

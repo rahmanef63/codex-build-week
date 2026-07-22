@@ -6,11 +6,13 @@ Build the hackathon product with a 70/30 focus: 70% runnable Demo for Warung Nas
 
 ## Scope
 
-Only ship six operations: create an order, list pending orders, update an order, list low stock, show today's summary, and fetch a dashboard-card image. The dashboard has Today, Orders, and AI Activity views.
+Ship six canonical Demo operations plus the same order, stock, and summary operations for a signed-in business through its isolated Agent configuration. The dashboard has Today, Orders, AI Activity, and Agent Setup views.
 
-The product has two explicit modes. `/demo` and the six current Actions are synthetic Demo mode only and may reference Warung Nasi Bu Sari. `/real` (a permanent redirect to `/dashboard`) must never read or mutate Demo data. Mode Real is **live**: sign-up/sign-in via `@convex-dev/auth` (Password provider) and a per-user realtime dashboard, with isolation guaranteed by `businessId = userId`. GPT Actions remain Demo-only and never touch Real data.
+The product has two explicit modes. `/demo` and its six current Actions are synthetic Demo mode only and may reference Warung Nasi Bu Sari. `/real` (a permanent redirect to `/dashboard`) must never read or mutate Demo data. Mode Real is **live**: sign-up/sign-in via `@convex-dev/auth` (Password provider) and a per-user realtime dashboard, with isolation guaranteed by `businessId = userId`. Per-business Agent Actions are authorized separately: handlers derive `businessId` only from a verified token and never from a request field.
 
 **Owner sign-off (2026-07-18):** connecting Mode Real (authentication + per-user business storage) was explicitly approved by the repository owner (Rahman), given as a direct interactive instruction in a Claude Code session — independent of, and outside, any agent-authored commit or doc trail. This supersedes the earlier reverted self-authored "Approved pivot" note (an agent session had approved its own pivot in the same auto-shipped commit, which did not meet the bar for overriding a P0 rule; it was correctly reverted pending this genuine sign-off).
+
+**Owner sign-off (2026-07-22):** for the hackathon presentation, a signed-in owner may reveal an opaque per-business Action token once in Agent Setup for manual entry into their own GPT Builder. Store only its hash server-side; do not put it in an OpenAPI schema, logs, generated cards, source control, chat, or later read response. Rotation invalidates the prior token.
 
 ## Data and safety
 
@@ -21,7 +23,7 @@ The product has two explicit modes. `/demo` and the six current Actions are synt
 - Require an idempotency `requestId` for order creation.
 - Reject insufficient stock and empty updates.
 - Every mutation writes `aiActionLogs`.
-- Use synthetic customer data only and never expose secrets to the browser.
+- Use synthetic customer data only. **Presentation exception:** the one-time opaque per-business Action token may be rendered to its authenticated owner in Agent Setup; no other secret may reach the browser.
 - Dashboard-card image URLs may be public only for aggregate demo metrics and fixed product data. Never render customer names, free-form inputs/log summaries, real customer data, or secrets on a public card.
 - GPT Actions cannot return images through `openaiFileResponse`; the dashboard-card Action returns ordinary image metadata for best-effort Markdown rendering in GPT Builder.
 - GPT instructions must preserve an explicit `demo` or `real` conversation mode. Demo Actions are forbidden in Real mode.

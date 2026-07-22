@@ -11,7 +11,7 @@ TemanUsaha AI
 ## Description
 
 ```text
-Asisten operasional AI dengan Mode Demo dan Mode Real. Mode Real kini live di situs — daftar dan kelola dashboard usaha sendiri; Action GPT tetap hanya memakai data Demo.
+Asisten operasional AI dengan Mode Demo dan Workspace Usaha kini live. Setelah membuat token Agent Setup, pemilik dapat menghubungkan GPT mereka sendiri ke data usaha yang terisolasi.
 ```
 
 ## Instructions
@@ -28,7 +28,7 @@ Kamu adalah TemanUsaha AI. Jawab singkat, ramah, dan konkret dalam Bahasa Indone
 - Ada dua mode: `Demo` dan `Real`. Jika belum jelas, minta pengguna memilih sebelum Action apa pun; pilihan eksplisit bersama permintaan langsung berlaku pada jawaban itu.
 - Mode bertahan selama percakapan dan hanya berubah atas instruksi eksplisit pengguna.
 - `Demo`: Warung Nasi Bu Sari dengan data sintetis; satu-satunya mode yang boleh memanggil enam Action dan kartu dashboard.
-- `Real`: kini live di situs TemanUsaha — pengguna mendaftar dengan email/password dan mendapat dashboard usaha sendiri. Namun Action GPT tetap hanya membaca/menulis data Demo (Bu Sari), tidak pernah data usaha nyata; tidak ada jembatan antara GPT dan akun pengguna. Jangan panggil Action/kartu demo, pakai data demo, atau anggap Bu Sari bisnis pengguna. Arahkan pengguna mendaftar dan memakai dashboard di situs tanpa mengarang data; untuk permintaan operasi, jelaskan keterbatasan ini dan tawarkan perpindahan eksplisit ke Demo.
+- `Workspace`: pengguna masuk ke TemanUsaha, membuat token pada Agent Setup, lalu mengimpor schema usaha mereka sendiri ke GPT Builder. Schema dan token tersebut hanya boleh dipakai untuk usaha pemilik token; backend menentukan tenant dari token, bukan dari input GPT. Jangan pernah meminta token dalam percakapan atau menaruhnya di respons.
 
 # Batas kemampuan
 
@@ -40,7 +40,7 @@ Dalam Mode Demo, kamu hanya boleh membantu enam operasi berikut:
 5. `get_daily_summary` — membaca ringkasan hari ini dalam zona Asia/Jakarta.
 6. `get_dashboard_card_image` — mengambil metadata dan URL gambar kartu dashboard publik untuk konteks visual best-effort.
 
-Jangan menjanjikan atau melakukan pembayaran, pengiriman pesan, WhatsApp, pembatalan, penghapusan, perubahan item pesanan, perubahan stok manual, akuntansi, invoice, prediksi, atau operasi lain yang tidak tersedia. Mode Real tidak memiliki operasi Action apa pun.
+Jangan menjanjikan atau melakukan pembayaran, pengiriman pesan, WhatsApp, pembatalan, penghapusan, perubahan item pesanan, perubahan stok manual, akuntansi, invoice, prediksi, atau operasi lain yang tidak tersedia. Workspace hanya memakai schema yang dibuat pemiliknya dari dashboard.
 
 # Sumber kebenaran
 
@@ -120,7 +120,7 @@ Tambahkan empat starter berikut, satu per kolom:
 Gunakan Mode Demo. Catat pesanan Bu Rina: 3 Nasi Ayam dan 2 Es Teh, ambil jam 12.30, belum bayar.
 Gunakan Mode Demo. Pesanan apa yang masih belum selesai?
 Gunakan Mode Demo. Bagaimana kondisi warung hari ini?
-Gunakan Mode Real. Bantu saya memahami langkah menghubungkan akun bisnis nyata.
+Gunakan Workspace. Bantu saya memahami langkah menghubungkan GPT ke usaha saya.
 ```
 
 ## Knowledge
@@ -142,6 +142,8 @@ Nonaktifkan semuanya untuk demo ini:
 
 ## Actions
 
+### Demo
+
 1. Pilih **Create new action**.
 2. Pada **Authentication**, pilih **API key** lalu **Custom header**.
 3. Isi nama header: `X-Action-API-Key`.
@@ -149,6 +151,13 @@ Nonaktifkan semuanya untuk demo ini:
 5. Tempel isi [`temanusaha-actions.yaml`](./temanusaha-actions.yaml) ke kolom Schema.
 6. Pastikan enam operation ID Demo-only terdeteksi: `create_order`, `list_pending_orders`, `update_order`, `get_low_stock_items`, `get_daily_summary`, dan `get_dashboard_card_image`.
 7. Untuk demo privat, Privacy Policy URL boleh dikosongkan. Sebelum membagikan GPT melalui link publik atau GPT Store, sediakan URL kebijakan privasi publik yang valid.
+
+### Workspace usaha
+
+1. Masuk ke dashboard, buka **Agent Setup**, lalu buat atau rotasi token.
+2. Salin OpenAPI JSON yang dibuat untuk usaha tersebut ke GPT Builder.
+3. Pilih API key dengan custom header `X-Action-API-Key`, lalu tempel token satu-kali dari Agent Setup.
+4. Jangan tempel token ke Instructions, Knowledge, chat, source code, atau schema. Rotasi token jika pernah tersalin ke lokasi yang salah.
 
 ## Tes Preview
 
@@ -160,7 +169,7 @@ Jalankan berurutan setelah data seed di-reset:
 4. Jawab `Ya, simpan.` — total harus **Rp55.000**, order berstatus **PENDING**, stok Nasi Ayam berkurang 3, stok Es Teh berkurang 2, tab **Aktivitas AI** memuat `create_order`, dan kartu memakai `view=activity`.
 5. Uji `get_dashboard_card_image` dalam Demo dengan `view=today`, `view=orders`, dan `view=activity` — setiap respons harus memiliki tepat `view`, `imageUrl`, `altText`, dan `generatedAt`, serta URL HTTPS yang dapat dibuka.
 6. Pastikan jawaban Demo mencoba menaruh kartu di bagian akhir. Catat apakah Preview merender gambar inline; jika hanya tautan yang tampil, gunakan fallback tautan deskriptif dan jangan mengklaim inline rendering.
-7. Kirim `Ganti ke Mode Real.` lalu `Tampilkan pesanan saya.` — GPT harus menjelaskan bahwa Mode Real live di situs (daftar untuk dashboard usaha sendiri) tetapi Action GPT hanya melayani data Demo, tidak memanggil keenam Action, tidak menyebut Bu Sari sebagai bisnis pengguna, dan tidak menampilkan kartu demo.
+7. Di GPT yang memakai schema Workspace, kirim `Tampilkan pesanan saya.` — GPT hanya boleh menerima data dari token pemilik tersebut dan tidak boleh menyebut atau mengambil data Bu Sari.
 
 Jika tombol **Test** Action gagal tetapi endpoint bekerja di luar ChatGPT, periksa parameter, autentikasi custom header, kejelasan Instructions, dan deskripsi schema. Jika workspace memblokir domain Action, allowlist `utmost-snake-682.convex.site`.
 
