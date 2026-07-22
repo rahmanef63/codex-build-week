@@ -1,6 +1,7 @@
 import type { ReactNode } from "react";
 
-// Static light-token stamp for the public product surface.
+import { ThemeProviders } from "@/slices/theme-presets";
+
 export default function PublicLayout({ children }: { children: ReactNode }) {
-  return <div className="light">{children}</div>;
+  return <ThemeProviders defaultMode="light" storageKey="theme">{children}</ThemeProviders>;
 }

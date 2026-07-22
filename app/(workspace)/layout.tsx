@@ -10,5 +10,5 @@ export const metadata: Metadata = {
 };
 
 export default function WorkspaceLayout({ children }: { children: ReactNode }) {
-  return <ThemeProviders defaultMode="dark" storageKey="dash-theme">{children}</ThemeProviders>;
+  return <ThemeProviders defaultMode="dark" storageKey="theme">{children}</ThemeProviders>;
 }

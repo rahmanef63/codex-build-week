@@ -3,11 +3,13 @@ import Link from "next/link";
 import { ArrowRight, Bot, Building2, CheckCircle2, PlayCircle } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
+import { ThemePresetSwitcher } from "@/slices/theme-presets";
+import { AgentFlowPreview } from "./agent-flow-preview";
 
 export default function Home() {
   return (
     <main className="min-h-dvh bg-background text-foreground">
-      <div className="mx-auto flex min-h-dvh max-w-6xl flex-col px-5 py-6 sm:px-8 sm:py-10">
+      <div className="mx-auto flex min-h-dvh max-w-7xl flex-col px-5 py-5 sm:px-8 sm:py-8">
         <header className="flex items-center justify-between gap-4">
           <div className="flex items-center gap-3">
             <div className="grid size-10 place-items-center rounded-md border border-border bg-card">
@@ -21,28 +23,42 @@ export default function Home() {
             </div>
             <span className="text-sm font-semibold">TemanUsaha AI</span>
           </div>
-          <span className="hidden text-xs text-muted-foreground sm:inline">Belajar dari data, bukan tebakan</span>
+          <div className="flex items-center gap-2">
+            <span className="hidden text-xs text-muted-foreground sm:inline">Belajar dari data, bukan tebakan</span>
+            <span className="hidden text-xs font-medium text-muted-foreground sm:inline">Tema</span>
+            <ThemePresetSwitcher triggerClassName="border border-border bg-card hover:bg-muted" />
+          </div>
         </header>
 
-        <section className="py-14 sm:py-20" aria-labelledby="mode-title">
-          <div className="max-w-3xl">
-            <span className="inline-flex items-center gap-2 text-xs font-medium text-accent">
-              <Bot aria-hidden className="size-4" />
-              Belajar AI agent untuk UMKM
-            </span>
-            <h1 className="mt-4 text-balance text-4xl font-semibold tracking-tight sm:text-6xl" id="mode-title">
-              Dari percakapan GPTs ke operasional usaha yang bisa diperiksa.
-            </h1>
-            <p className="mt-5 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
-              TemanUsaha AI adalah proyek pembelajaran untuk pemilik UMKM yang ingin memahami
-              cara AI agent berbasis GPTs menerima instruksi, mencatat tindakan, membaca data,
-              dan menunjukkan hasilnya secara transparan.
-            </p>
+        <section className="py-12 sm:py-16 lg:py-20" aria-labelledby="mode-title">
+          <div className="grid items-end gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(24rem,0.95fr)] lg:gap-16">
+            <div>
+              <span className="inline-flex items-center gap-2 text-xs font-medium text-accent">
+                <Bot aria-hidden className="size-4" />
+                Hackathon project · Belajar AI agent untuk UMKM
+              </span>
+              <h1 className="mt-5 max-w-3xl text-balance text-4xl font-semibold tracking-tight sm:text-5xl lg:text-6xl" id="mode-title">
+                Dari percakapan GPTs ke operasional usaha yang bisa diperiksa.
+              </h1>
+              <p className="mt-5 max-w-xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">
+                Latih cara menilai AI agent: beri instruksi, lihat tindakan pada data usaha, lalu periksa hasilnya.
+              </p>
+              <div className="mt-7 flex flex-col gap-3 sm:flex-row">
+                <Link className={buttonVariants({ className: "w-full sm:w-fit", size: "lg" })} href="/demo">
+                  Coba mode Demo
+                  <ArrowRight aria-hidden />
+                </Link>
+                <Link className={buttonVariants({ className: "w-full sm:w-fit", size: "lg", variant: "outline" })} href="/dashboard">
+                  Buka workspace usaha
+                </Link>
+              </div>
+            </div>
+            <AgentFlowPreview />
           </div>
 
           <div
             aria-label="Pilihan Demo dan Workspace usaha"
-            className="mt-10 grid gap-4 lg:grid-cols-[minmax(0,1.35fr)_minmax(18rem,0.85fr)]"
+            className="mt-14 grid gap-4 lg:grid-cols-[minmax(0,1.35fr)_minmax(18rem,0.85fr)]"
           >
             <article className="overflow-hidden rounded-md border border-border bg-card">
               <div className="relative aspect-[16/7] border-b border-border bg-muted">
@@ -134,7 +150,7 @@ export default function Home() {
                 Pahami keputusan AI sebelum mengandalkannya untuk usaha.
               </h2>
             </div>
-            <div className="mt-8 grid gap-8 md:grid-cols-3">
+            <div className="mt-8 grid gap-8 md:grid-cols-[0.85fr_1.3fr_0.85fr]">
               <section>
                 <p className="text-sm font-semibold">Instruksi menjadi tindakan</p>
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">
