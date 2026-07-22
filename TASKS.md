@@ -31,6 +31,7 @@
 | Alpha (`Codex session`) | Orchestrator/full-stack integration | GPT-5 Codex | Done | Improve Workspace GPT setup, safe Action diagnostics, AI activity filters, and responsive dashboard shell | `TASKS.md`, `convex/**`, `slices/real-dashboard/**`, `shared/**`, tests, Git | Safe GPT read logs, dynamic Knowledge Base, activity filters, and responsive Agent tabs shipped; BYOK excluded by secret policy |
 | Alpha (`Codex session`) | Orchestrator/full-stack integration | GPT-5 Codex | Done | Expand Workspace GPT schema and instructions for profile and catalog management | `TASKS.md`, `convex/**`, `slices/real-dashboard/**`, tests, Git | Profile and catalog Actions added with tenant isolation and mutation confirmation preserved |
 | Alpha (`Codex session`) | Orchestrator/full-stack audit | GPT-5 Codex | Done | Audit the full project, record 20 actionable findings, and apply focused reliability and UX fixes | `TASKS.md`, `convex/**`, `slices/real-dashboard/**`, tests, root Git | GPT profile/catalog reads now log activity; mobile setup and dashboard error states verified; 37 checks passed |
+| Alpha (`Codex session`) | Orchestrator/full-stack hardening | GPT-5 Codex | Done | Apply the accepted audit improvements that fit the existing secure Workspace GPT contract | `TASKS.md`, `convex/**`, `slices/real-dashboard/**`, `shared/**`, tests, Git | Token lifecycle, lazy theme registry, mutation logs, and developer activity filters shipped; 37 checks passed and Convex synced |
 
 ## Workspace quarantine
 

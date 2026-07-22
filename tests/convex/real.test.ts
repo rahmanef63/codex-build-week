@@ -108,5 +108,6 @@ describe("real catalog and profile", () => {
     const finalDashboard = await asUser.query(api.real.dashboard, {});
     if (!finalDashboard || !finalDashboard.business) throw new Error("Expected final dashboard");
     expect(finalDashboard.products).toHaveLength(0);
+    expect(finalDashboard.activity.map((item) => item.action)).toEqual(expect.arrayContaining(["create_business", "update_business", "create_product", "update_product", "delete_product"]));
   });
 });

@@ -40,7 +40,7 @@ export async function readDashboard(ctx: QueryCtx, businessId: string = BUSINESS
       .query("aiActionLogs")
       .withIndex("by_business_created", (q) => q.eq("businessId", businessId))
       .order("desc")
-      .take(20),
+      .take(100),
   ]);
   const lowStock = selectLowStock(products);
   return {

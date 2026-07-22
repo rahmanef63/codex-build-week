@@ -27,6 +27,7 @@ interface ThemePresetContextValue {
   setPreset: (name: string | null) => void;
   preview: (name: string | null) => void;
   restore: () => void;
+  loadRegistry: () => void;
   isReady: boolean;
 }
 
@@ -36,6 +37,7 @@ const ThemePresetContext = createContext<ThemePresetContextValue>({
   setPreset: () => {},
   preview: () => {},
   restore: () => {},
+  loadRegistry: () => {},
   isReady: false,
 });
 
@@ -67,13 +69,10 @@ export function ThemePresetProvider({
     void previewTweakcnPreset(hostDefault);
   }, [isReady, hostDefault]);
 
-  useEffect(() => {
-    let cancelled = false;
-    loadTweakcnRegistry()
-      .then((r) => { if (!cancelled) setRegistry(r); })
-      .catch(() => {});
-    return () => { cancelled = true; };
-  }, []);
+  const loadRegistry = useCallback(() => {
+    if (registry) return;
+    void loadTweakcnRegistry().then(setRegistry).catch(() => {});
+  }, [registry]);
 
   const setPreset = useCallback((name: string | null) => {
     if (!name) {
@@ -99,8 +98,8 @@ export function ThemePresetProvider({
   }, [hostDefault]);
 
   const value = useMemo<ThemePresetContextValue>(
-    () => ({ presetName, registry, setPreset, preview, restore, isReady }),
-    [presetName, registry, setPreset, preview, restore, isReady],
+    () => ({ presetName, registry, setPreset, preview, restore, loadRegistry, isReady }),
+    [presetName, registry, setPreset, preview, restore, loadRegistry, isReady],
   );
 
   return (

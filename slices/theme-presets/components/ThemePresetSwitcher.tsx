@@ -13,7 +13,7 @@
  *  Requires ThemePresetProvider higher in the tree so state survives
  *  across mounts + deeply-nested consumers can read `useThemePreset()`. */
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useTheme } from "next-themes";
 import { ChevronDown, Palette, RotateCcw } from "lucide-react";
 import { Button, buttonVariants } from "@/components/ui/button";
@@ -35,9 +35,11 @@ export function ThemePresetSwitcher({
   size = "sm",
   triggerClassName,
 }: ThemePresetSwitcherProps) {
-  const { registry, presetName, setPreset, preview, restore } = useThemePreset();
+  const { registry, presetName, setPreset, preview, restore, loadRegistry } = useThemePreset();
   const { theme, setTheme } = useTheme();
   const [open, setOpen] = useState(false);
+
+  useEffect(() => { if (open) loadRegistry(); }, [open, loadRegistry]);
 
   const groups: TweakcnPresetGroup<TweakcnPresetItem>[] = useMemo(
     () => (registry ? groupTweakcnPresets(registry.items) : []),

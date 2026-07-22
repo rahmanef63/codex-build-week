@@ -69,7 +69,7 @@ export default defineSchema({
   })
     .index("by_business_created", ["businessId", "createdAt"])
     .index("by_business_request", ["businessId", "requestId"]),
-  agentTokens: defineTable({ businessId: v.string(), tokenHash: v.string(), tokenPrefix: v.string(), createdAt: v.number(), revokedAt: v.optional(v.number()) })
+  agentTokens: defineTable({ businessId: v.string(), tokenHash: v.string(), tokenPrefix: v.string(), createdAt: v.number(), expiresAt: v.optional(v.number()), revokedAt: v.optional(v.number()) })
     .index("by_token_hash", ["tokenHash"])
     .index("by_business_created", ["businessId", "createdAt"]),
 });

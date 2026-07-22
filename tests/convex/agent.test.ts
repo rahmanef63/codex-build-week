@@ -22,9 +22,11 @@ describe("Workspace Agent token", () => {
       await ctx.db.insert("products", { businessId: userB, slug: "teh", name: "Teh", price: 5_000, stock: 9, lowStockThreshold: 5, sortOrder: 0 });
     });
 
-    const { token } = await asA.mutation(api.agent.issue, {});
+    const { token, expiresAt } = await asA.mutation(api.agent.issue, {});
+    expect(expiresAt).toBeGreaterThan(Date.now());
     expect(await t.query(internal.agent.resolve, { token })).toEqual({ businessId: userA });
     expect(await t.query(internal.agent.resolve, { token: `${token}x` })).toBeNull();
+    expect((await asA.query(api.agent.configuration, {})).token?.prefix).toBe(token.slice(0, 14));
 
     await t.mutation(internal.orders.createOrder, {
       businessId: userA,

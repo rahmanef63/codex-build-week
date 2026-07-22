@@ -2,7 +2,7 @@ import { v } from "convex/values";
 import { optionalUserId, requireUserId } from "./_shared/auth";
 import { fail } from "./_shared/errors";
 import { logError } from "./_shared/log";
-import { mutation, query } from "./_generated/server";
+import { mutation, query, type MutationCtx } from "./_generated/server";
 import { readDashboard } from "./business";
 
 // Mode Real: setiap user memiliki satu usaha; businessId = userId sehingga
@@ -31,6 +31,9 @@ const slugify = (name: string) =>
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-+|-+$/g, "")
     .slice(0, 40) || "produk";
+
+const logChange = (ctx: MutationCtx, businessId: string, action: string, outputSummary: string) =>
+  ctx.db.insert("aiActionLogs", { businessId, action, inputSummary: "Perubahan dari dashboard usaha.", outputSummary, requiresVerification: true, createdAt: Date.now() });
 
 export const createBusiness = mutation({
   args: {
@@ -84,6 +87,7 @@ export const createBusiness = mutation({
           sortOrder: sortOrder++,
         });
       }
+      await logChange(ctx, userId, "create_business", "Usaha baru dibuat.");
       return { ok: true };
     } catch (error) {
       logError("real:createBusiness", error);
@@ -101,6 +105,7 @@ export const updateBusiness = mutation({
     const business = await ctx.db.query("businesses").withIndex("by_business_id", (q) => q.eq("businessId", userId)).unique();
     if (!business) fail("BUSINESS_EXISTS", "Buat usaha terlebih dahulu.");
     await ctx.db.patch(business._id, { name });
+    await logChange(ctx, userId, "update_business", "Profil usaha diperbarui.");
   },
 });
 
@@ -117,6 +122,7 @@ export const createProduct = mutation({
     let suffix = 2;
     while (products.some((product) => product.slug === slug)) slug = `${base}-${suffix++}`;
     await ctx.db.insert("products", { businessId: userId, slug, name, price: Math.round(args.price), stock: Math.round(args.stock), lowStockThreshold: Math.round(args.lowStockThreshold), sortOrder: products.length });
+    await logChange(ctx, userId, "create_product", `Produk ${name} ditambahkan.`);
   },
 });
 
@@ -129,6 +135,7 @@ export const updateProduct = mutation({
     if (!product || product.businessId !== userId) fail("PRODUCT_NOT_FOUND", "Produk tidak ditemukan.");
     if (!name || !Number.isFinite(args.price) || !Number.isFinite(args.stock) || !Number.isFinite(args.lowStockThreshold) || args.price < 0 || args.stock < 0 || args.lowStockThreshold < 0) fail("VALIDATION_ERROR", "Data produk tidak valid.");
     await ctx.db.patch(args.productId, { name, price: Math.round(args.price), stock: Math.round(args.stock), lowStockThreshold: Math.round(args.lowStockThreshold) });
+    await logChange(ctx, userId, "update_product", `Produk ${name} diperbarui.`);
   },
 });
 
@@ -139,5 +146,6 @@ export const removeProduct = mutation({
     const product = await ctx.db.get(args.productId);
     if (!product || product.businessId !== userId) fail("PRODUCT_NOT_FOUND", "Produk tidak ditemukan.");
     await ctx.db.delete(args.productId);
+    await logChange(ctx, userId, "delete_product", `Produk ${product.name} dihapus.`);
   },
 });
