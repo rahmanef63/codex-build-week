@@ -4,7 +4,7 @@ import { StatusBadge } from "./status-badge";
 
 export function DashboardOrders({ orders }: { orders: DashboardData["orders"] }) {
   return (
-    <section className="overflow-hidden rounded-xl border border-border bg-card">
+    <section className="max-w-6xl overflow-hidden rounded-md border border-border bg-card">
       <div className="flex items-center justify-between gap-4 border-b border-border px-6 py-4">
         <div>
           <h2 className="text-sm font-semibold">Pesanan terbaru</h2>

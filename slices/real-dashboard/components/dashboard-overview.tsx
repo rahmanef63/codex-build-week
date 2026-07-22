@@ -10,17 +10,17 @@ export function DashboardOverview({ data }: { data: DashboardData }) {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="max-w-6xl space-y-6">
       <section aria-label="Ringkasan hari ini" className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {stats.map(([label, value]) => (
-          <article className="rounded-xl border border-border bg-card p-5" key={label}>
+          <article className="rounded-md border border-border bg-card p-4 sm:p-5" key={label}>
             <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{label}</p>
             <p className="mt-2 text-2xl font-semibold tabular-nums">{value}</p>
           </article>
         ))}
       </section>
 
-      <section className="rounded-xl border border-border bg-card p-6">
+      <section className="rounded-md border border-border bg-card p-5 sm:p-6">
         <div className="flex items-center justify-between gap-4 pb-4">
           <div>
             <h2 className="text-sm font-semibold">Stok menipis</h2>

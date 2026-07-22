@@ -32,13 +32,13 @@ export function DashboardShell({
   return (
     <div className="flex min-h-dvh bg-background text-foreground">
       <aside className="hidden w-64 shrink-0 flex-col border-r border-border bg-card/40 p-4 md:flex">
-        <Link className="rounded-lg px-3 py-2 text-sm font-semibold hover:bg-muted" href="/">
+        <Link className="rounded-md px-3 py-2 text-sm font-semibold hover:bg-muted" href="/">
           TemanUsaha AI
         </Link>
         <p className="px-3 pt-1 text-xs text-muted-foreground">{businessName}</p>
         <nav aria-label="Operasional usaha" className="mt-6 flex flex-1 flex-col gap-1">
           <p className="px-3 pb-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
-            Operasional
+            Workspace usaha
           </p>
           {navigation.map(({ icon: Icon, label, view: itemView }) => (
             <Button
@@ -72,10 +72,10 @@ export function DashboardShell({
           </div>
         </header>
 
-        <header className="pb-6">
+        <header className="max-w-3xl pb-7">
           <p className="text-xs font-medium uppercase tracking-widest text-accent">Mode Real</p>
-          <h1 className="mt-1 text-2xl font-semibold tracking-tight">{active.label}</h1>
-          <p className="text-sm text-muted-foreground">{businessName}</p>
+          <h1 className="mt-2 text-2xl font-semibold tracking-tight">{active.label}</h1>
+          <p className="mt-1 text-sm text-muted-foreground">{businessName}</p>
         </header>
 
         {children}
@@ -83,7 +83,7 @@ export function DashboardShell({
 
       <nav
         aria-label="Navigasi operasional"
-        className="fixed inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+0.6rem)] z-40 grid grid-cols-3 rounded-2xl border border-border bg-card/95 p-1.5 shadow-lg backdrop-blur md:hidden"
+        className="fixed inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+0.6rem)] z-40 grid grid-cols-3 rounded-lg border border-border bg-card/95 p-1.5 shadow-lg backdrop-blur md:hidden"
       >
         {navigation.map(({ icon: Icon, label, view: itemView }) => (
           <Button

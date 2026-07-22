@@ -3,7 +3,7 @@ import { formatAction, formatDateTime } from "@/shared/lib/format";
 
 export function DashboardActivity({ activity }: { activity: DashboardData["activity"] }) {
   return (
-    <section className="rounded-xl border border-border bg-card">
+    <section className="max-w-6xl rounded-md border border-border bg-card">
       <div className="flex items-center justify-between gap-4 border-b border-border px-6 py-4">
         <div>
           <h2 className="text-sm font-semibold">Aktivitas AI</h2>
