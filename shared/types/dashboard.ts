@@ -24,6 +24,13 @@ export type DashboardData = {
     stock: number;
     lowStockThreshold: number;
   }>;
+  products: Array<{
+    _id: string;
+    name: string;
+    price: number;
+    stock: number;
+    lowStockThreshold: number;
+  }>;
   activity: Array<{
     _id: string;
     action: string;

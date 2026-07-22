@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Copy, KeyRound } from "lucide-react";
+import { Check, Copy, Download, KeyRound } from "lucide-react";
 import { useMutation, useQuery } from "convex/react";
 import { useState } from "react";
 import { api } from "@/convex/_generated/api";
@@ -39,6 +39,7 @@ function builderDetails(businessName: string) {
       "Saya ingin mencatat pesanan baru.",
     ],
     settings: "Knowledge: kosong\nRecommended model: No Recommended Model\nCapabilities: Web Search off, Canvas off, Image Generation off, Code Interpreter & Data Analysis off\nAuthentication: API Key → Custom header → X-Action-API-Key",
+    knowledge: `# ${businessName}\n\nAsisten ini hanya membantu operasional ${businessName}. Gunakan Action sebagai sumber kebenaran untuk pesanan, stok, dan ringkasan hari ini. Jangan memakai data usaha lain atau data demo.\n\n## Batas aman\n\nMinta konfirmasi eksplisit sebelum membuat atau mengubah pesanan. Jangan meminta atau menampilkan API key maupun token.`,
   };
 }
 
@@ -47,6 +48,7 @@ export function AgentSetup() {
   const issue = useMutation(api.agent.issue);
   const [token, setToken] = useState("");
   const [copied, setCopied] = useState("");
+  const [tab, setTab] = useState("name");
   if (!config) return <p className="text-sm text-muted-foreground">Memuat setup agent / Loading agent setup…</p>;
 
   const details = builderDetails(config.businessName);
@@ -59,10 +61,18 @@ export function AgentSetup() {
     ["starters", "Conversation starters", details.starters.join("\n")],
     ["settings", "Pengaturan Builder", details.settings],
   ] as const;
+  const active = fields.find(([id]) => id === tab) ?? fields[0];
+  const downloadKnowledge = () => {
+    const href = URL.createObjectURL(new Blob([details.knowledge], { type: "text/markdown" }));
+    const link = document.createElement("a"); link.href = href; link.download = `${config.businessName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-knowledge.md`; link.click(); URL.revokeObjectURL(href);
+  };
 
   return <section className="max-w-3xl rounded-md border border-border bg-card p-6">
     <div className="flex items-start justify-between gap-4"><div><p className="text-xs font-medium uppercase tracking-widest text-accent">Agent setup / Setup agen</p><h2 className="mt-2 text-xl font-semibold">Custom GPT untuk {config.businessName}</h2><p className="mt-2 text-sm text-muted-foreground">Salin tiap detail ke tab Configure GPT Builder. Semua teks disesuaikan dengan nama usaha Anda.</p></div><KeyRound className="text-accent" /></div>
-    <div className="mt-6 space-y-4">{fields.map(([id, label, value]) => <div key={id} className="rounded-md border border-border bg-muted/30 p-4"><div className="flex items-center justify-between gap-3"><h3 className="text-sm font-semibold">{label}</h3><Button size="sm" variant="outline" onClick={() => void copy(id, value)}>{copied === id ? <Check /> : <Copy />}{copied === id ? "Tersalin" : "Salin"}</Button></div><pre className="mt-3 max-h-52 overflow-auto whitespace-pre-wrap break-words text-xs text-muted-foreground">{value}</pre></div>)}</div>
+    <div className="mt-6 hidden border-b border-border md:flex" role="tablist" aria-label="Detail GPT Builder">{fields.map(([id, label]) => <button className={`border-b-2 px-3 py-2 text-sm ${tab === id ? "border-accent text-foreground" : "border-transparent text-muted-foreground"}`} key={id} onClick={() => setTab(id)} role="tab" aria-selected={tab === id}>{label}</button>)}</div>
+    <div className="mt-6 md:hidden space-y-4">{fields.map(([id, label, value]) => <div key={id} className="rounded-md border border-border bg-muted/30 p-4"><div className="flex items-center justify-between gap-3"><h3 className="text-sm font-semibold">{label}</h3><Button size="sm" variant="outline" onClick={() => void copy(id, value)}>{copied === id ? <Check /> : <Copy />}{copied === id ? "Tersalin" : "Salin"}</Button></div><pre className="mt-3 max-h-52 overflow-auto whitespace-pre-wrap break-words text-xs text-muted-foreground">{value}</pre></div>)}</div>
+    <div className="mt-6 hidden rounded-md border border-border bg-muted/30 p-5 md:block" role="tabpanel"><div className="flex items-center justify-between gap-3"><h3 className="text-sm font-semibold">{active[1]}</h3><Button size="sm" variant="outline" onClick={() => void copy(active[0], active[2])}>{copied === active[0] ? <Check /> : <Copy />}{copied === active[0] ? "Tersalin" : "Salin semua"}</Button></div>{active[0] === "starters" ? <div className="mt-4 space-y-2">{details.starters.map((starter, index) => <div className="flex items-center justify-between gap-3 rounded-md border border-border bg-background p-3 text-sm" key={starter}><span>{starter}</span><Button size="xs" variant="outline" onClick={() => void copy(`starter-${index}`, starter)}>{copied === `starter-${index}` ? <Check /> : <Copy />}{copied === `starter-${index}` ? "Tersalin" : "Salin"}</Button></div>)}</div> : <pre className="mt-4 max-h-80 overflow-auto whitespace-pre-wrap break-words text-xs text-muted-foreground">{active[2]}</pre>}</div>
+    <div className="mt-6 rounded-md border border-border p-4"><div className="flex items-center justify-between gap-3"><div><h3 className="text-sm font-semibold">Knowledge Base</h3><p className="mt-1 text-xs text-muted-foreground">Opsional: unduh lalu unggah ke bagian Knowledge GPT Builder.</p></div><Button size="sm" variant="outline" onClick={downloadKnowledge}><Download />Unduh .md</Button></div></div>
     <div className="mt-6 rounded-md border border-border p-4"><div className="flex flex-wrap items-center justify-between gap-3"><div><h3 className="text-sm font-semibold">Action schema dan token</h3><p className="mt-1 text-xs text-muted-foreground">Tempel schema ke Action. Token hanya untuk field API Key dengan custom header.</p></div><div className="flex gap-2"><Button size="sm" onClick={async () => setToken((await issue()).token)}>Buat / rotasi token</Button><Button size="sm" variant="outline" onClick={() => void copy("schema", schema)}>{copied === "schema" ? <Check /> : <Copy />}{copied === "schema" ? "Tersalin" : "Salin schema"}</Button></div></div>{token && <div className="mt-4 rounded-md border border-accent bg-secondary p-4"><p className="text-sm font-semibold">Token satu-kali / One-time token</p><code className="mt-2 block break-all text-xs">{token}</code><Button className="mt-3" onClick={() => void copy("token", token)} size="sm">{copied === "token" ? <Check /> : <Copy />}{copied === "token" ? "Tersalin" : "Salin token"}</Button></div>}<pre className="mt-5 max-h-72 overflow-auto whitespace-pre-wrap break-words rounded-md bg-muted p-4 text-xs">{schema}</pre></div>
   </section>;
 }

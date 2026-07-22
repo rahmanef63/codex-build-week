@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { Bot, ClipboardList, LayoutDashboard, LogOut, Sparkles } from "lucide-react";
+import { Bot, ClipboardList, LayoutDashboard, LogOut, Package, Settings, Sparkles } from "lucide-react";
 import type { ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -11,8 +11,10 @@ import type { DashboardView } from "../types";
 const navigation = [
   { icon: LayoutDashboard, label: "Ringkasan", view: "overview" },
   { icon: ClipboardList, label: "Pesanan", view: "orders" },
+  { icon: Package, label: "Katalog", view: "catalog" },
   { icon: Sparkles, label: "Aktivitas AI", view: "activity" },
   { icon: Bot, label: "Agent GPT", view: "agent" },
+  { icon: Settings, label: "Pengaturan", view: "settings" },
 ] as const;
 
 export function DashboardShell({
@@ -84,7 +86,7 @@ export function DashboardShell({
 
       <nav
         aria-label="Navigasi operasional"
-        className="fixed inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+0.6rem)] z-40 grid grid-cols-4 rounded-lg border border-border bg-card/95 p-1.5 shadow-lg backdrop-blur md:hidden"
+        className="fixed inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+0.6rem)] z-40 grid grid-cols-6 rounded-lg border border-border bg-card/95 p-1.5 shadow-lg backdrop-blur md:hidden"
       >
         {navigation.map(({ icon: Icon, label, view: itemView }) => (
           <Button

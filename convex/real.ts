@@ -91,3 +91,53 @@ export const createBusiness = mutation({
     }
   },
 });
+
+export const updateBusiness = mutation({
+  args: { name: v.string() },
+  handler: async (ctx, args) => {
+    const userId = await requireUserId(ctx);
+    const name = args.name.trim();
+    if (!name) fail("INVALID_NAME", "Nama usaha wajib diisi.");
+    const business = await ctx.db.query("businesses").withIndex("by_business_id", (q) => q.eq("businessId", userId)).unique();
+    if (!business) fail("BUSINESS_EXISTS", "Buat usaha terlebih dahulu.");
+    await ctx.db.patch(business._id, { name });
+  },
+});
+
+export const createProduct = mutation({
+  args: { name: v.string(), price: v.number(), stock: v.number(), lowStockThreshold: v.number() },
+  handler: async (ctx, args) => {
+    const userId = await requireUserId(ctx);
+    const name = args.name.trim();
+    if (!name || !Number.isFinite(args.price) || !Number.isFinite(args.stock) || !Number.isFinite(args.lowStockThreshold) || args.price < 0 || args.stock < 0 || args.lowStockThreshold < 0) fail("VALIDATION_ERROR", "Data produk tidak valid.");
+    const products = await ctx.db.query("products").withIndex("by_business_id", (q) => q.eq("businessId", userId)).take(51);
+    if (products.length >= 50) fail("TOO_MANY_PRODUCTS", "Maksimal 50 produk.");
+    const base = slugify(name);
+    let slug = base;
+    let suffix = 2;
+    while (products.some((product) => product.slug === slug)) slug = `${base}-${suffix++}`;
+    await ctx.db.insert("products", { businessId: userId, slug, name, price: Math.round(args.price), stock: Math.round(args.stock), lowStockThreshold: Math.round(args.lowStockThreshold), sortOrder: products.length });
+  },
+});
+
+export const updateProduct = mutation({
+  args: { productId: v.id("products"), name: v.string(), price: v.number(), stock: v.number(), lowStockThreshold: v.number() },
+  handler: async (ctx, args) => {
+    const userId = await requireUserId(ctx);
+    const name = args.name.trim();
+    const product = await ctx.db.get(args.productId);
+    if (!product || product.businessId !== userId) fail("PRODUCT_NOT_FOUND", "Produk tidak ditemukan.");
+    if (!name || !Number.isFinite(args.price) || !Number.isFinite(args.stock) || !Number.isFinite(args.lowStockThreshold) || args.price < 0 || args.stock < 0 || args.lowStockThreshold < 0) fail("VALIDATION_ERROR", "Data produk tidak valid.");
+    await ctx.db.patch(args.productId, { name, price: Math.round(args.price), stock: Math.round(args.stock), lowStockThreshold: Math.round(args.lowStockThreshold) });
+  },
+});
+
+export const removeProduct = mutation({
+  args: { productId: v.id("products") },
+  handler: async (ctx, args) => {
+    const userId = await requireUserId(ctx);
+    const product = await ctx.db.get(args.productId);
+    if (!product || product.businessId !== userId) fail("PRODUCT_NOT_FOUND", "Produk tidak ditemukan.");
+    await ctx.db.delete(args.productId);
+  },
+});

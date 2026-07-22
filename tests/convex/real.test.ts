@@ -84,3 +84,29 @@ describe("real.createBusiness", () => {
     expect(business?.businessId).not.toBe(BUSINESS_ID);
   });
 });
+
+describe("real catalog and profile", () => {
+  test("owner can update profile and CRUD only their products", async () => {
+    const t = setup();
+    const { asUser } = await signUp(t, "catalog@example.com");
+    await asUser.mutation(api.real.createBusiness, { name: "Toko Awal", products: [] });
+    await asUser.mutation(api.real.updateBusiness, { name: "Toko Baru" });
+    await asUser.mutation(api.real.createProduct, { name: "Kopi", price: 10_000, stock: 8, lowStockThreshold: 3 });
+
+    const dashboard = await asUser.query(api.real.dashboard, {});
+    if (!dashboard || !dashboard.business) throw new Error("Expected business dashboard");
+    expect(dashboard?.business?.name).toBe("Toko Baru");
+    expect(dashboard?.products).toHaveLength(1);
+    const product = dashboard!.products[0];
+
+    await asUser.mutation(api.real.updateProduct, { productId: product._id, name: "Kopi Susu", price: 12_000, stock: 5, lowStockThreshold: 2 });
+    const updatedDashboard = await asUser.query(api.real.dashboard, {});
+    if (!updatedDashboard || !updatedDashboard.business) throw new Error("Expected updated dashboard");
+    expect(updatedDashboard.products[0]).toMatchObject({ name: "Kopi Susu", price: 12_000, stock: 5 });
+
+    await asUser.mutation(api.real.removeProduct, { productId: product._id });
+    const finalDashboard = await asUser.query(api.real.dashboard, {});
+    if (!finalDashboard || !finalDashboard.business) throw new Error("Expected final dashboard");
+    expect(finalDashboard.products).toHaveLength(0);
+  });
+});

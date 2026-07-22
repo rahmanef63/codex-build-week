@@ -45,6 +45,7 @@ export async function readDashboard(ctx: QueryCtx, businessId: string = BUSINESS
   const lowStock = selectLowStock(products);
   return {
     business,
+    products,
     summary: buildTodaySummary(now, todayOrders, products),
     orders,
     lowStock,
