@@ -2,7 +2,7 @@ import { expect, test } from "vitest";
 // @ts-expect-error tsc needs allowImportingTsExtensions for the .ts extension import; vitest resolves it directly.
 import { read } from "../shared/testing/read-file.ts";
 
-test("Demo owns synthetic business wiring while Real runs its own live connected app (owner sign-off 2026-07-18)", () => {
+test("Demo owns synthetic business wiring while the workspace runs its own live connected app (owner sign-off 2026-07-18)", () => {
   const root = read("app", "(public)", "page.tsx");
   const demo = read("app", "(public)", "demo", "page.tsx");
   const gptPackage = read("GPTs", "alfa.md");
@@ -14,9 +14,9 @@ test("Demo owns synthetic business wiring while Real runs its own live connected
 
   expect(root).toMatch(/href="\/demo"/);
   expect(root).toMatch(/href="\/dashboard"/);
-  expect(root).toMatch(/Pilihan Mode Demo dan Mode Real/);
+  expect(root).toMatch(/Pilihan Demo dan Workspace usaha/);
   expect(root).toMatch(/Demo · Data sintetis/);
-  expect(root).toMatch(/Real · Terhubung langsung/);
+  expect(root).toMatch(/Workspace usaha · Terhubung langsung/);
   expect(root).not.toMatch(/Bu Sari|ConvexClientProvider|Dashboard/);
   expect(globalError).not.toMatch(/Bu Sari|Convex|Dashboard/);
   expect(globalSocialCard).not.toMatch(/Bu Sari|Warung Nasi/);
