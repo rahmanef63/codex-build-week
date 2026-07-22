@@ -124,29 +124,13 @@ import { ThemePresetSwitcher } from "@/slices/theme-presets";
 That's the whole UI — light/dark/system tabs + grouped preset list +
 hover preview + Default reset, all in one Popover.
 
-## 4. Optional — `<ThemeColorSync />` for PWAs
+## 4. Default preset
 
-Drop near the root once if you ship a PWA / want `<meta
-name="theme-color">` to follow the active preset (Android address bar,
-iOS PWA status bar). Side-effect-only, returns null:
+Pass `defaultPreset` to `ThemeProviders` when the host needs a starting
+preset. It applies only until the visitor chooses a preset locally; the value
+must match a `name` in `registry-data.json`.
 
-```tsx
-import { ThemeColorSync } from "@/slices/theme-presets";
-
-<>
-  <ThemeColorSync />
-  {/* rest of the app */}
-</>
-```
-
-## 5. Default preset
-
-`DEFAULT_PRESET = "claude"` (warm minimal, works for light + dark) is
-applied + persisted on first visit so the session is never empty.
-Override by forking `lib/tweakcn/types.ts` — value must match a
-`name` in `registry-data.json`.
-
-## 6. Common pitfalls — checklist
+## 5. Common pitfalls — checklist
 
 - [ ] `<html suppressHydrationWarning>` on the root layout
 - [ ] `<ThemeProvider>` from `next-themes` wraps `<ThemePresetProvider>`

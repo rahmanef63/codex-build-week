@@ -54,8 +54,7 @@
 
 :root {
   /* Dashboard tokens are available to Tailwind utilities on every route.
-     next-themes applies .dark for the workspace default; public routes opt
-     into the local .light override below. */
+     Workspace routes apply .dark; public routes use the .light override. */
   color-scheme: light;
   --card: oklch(1 0 0);
   --card-hover: #191919;
@@ -109,8 +108,7 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-/* Public routes intentionally retain their light product treatment even when
-   the workspace has a saved theme preset. */
+/* Public routes intentionally retain their light product treatment. */
 .light {
   color-scheme: light;
   --background: #fafafa;
@@ -474,9 +472,8 @@ tbody tr:last-child > * { border-bottom: 0; }
    DASHBOARD (/dashboard) — starter design system, ported as plain CSS.
    Everything below is scoped under .dash-root so the warung styling above
    stays untouched. Neutral surfaces + ONE warm amber accent, used only for
-   the eyebrow, focus rings, and active states. Dark is the default, toggled
-   by a hand-rolled localStorage("dash-theme") switch (adds/removes .light),
-   no next-themes. Tokens themselves now live at :root/.light above so
+   the eyebrow, focus rings, and active states. Dark is the workspace default
+   through next-themes. Tokens themselves now live at :root/.light above so
    bg-background/text-foreground utilities resolve outside .dash-root too.
    ========================================================================== */
 
@@ -513,19 +510,6 @@ tbody tr:last-child > * { border-bottom: 0; }
 }
 .dash-center { min-height: 100vh; display: grid; place-items: center; padding: 32px 16px; }
 
-/* Topbar */
-.dash-topbar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 16px;
-  padding-bottom: 20px;
-  border-bottom: 1px solid var(--border);
-}
-.dash-topbar h1 { margin-top: 8px; font-size: 1.45rem; font-weight: 600; letter-spacing: -.02em; }
-.dash-topbar-actions { display: flex; flex-wrap: wrap; gap: 8px; }
-.dash-date { margin-top: 4px; font-size: .82rem; }
-
 /* Eyebrow — the accent pill from the starter hero. */
 .dash-eyebrow {
   display: inline-flex;
@@ -543,17 +527,11 @@ tbody tr:last-child > * { border-bottom: 0; }
 
 /* Cards */
 .dash-card { border: 1px solid var(--border); border-radius: 16px; background: var(--card); padding: 22px; }
-.dash-card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; margin-bottom: 14px; }
-.dash-card-head h2,
-.dash-card-head h3 { font-size: .95rem; font-weight: 600; }
-.dash-card-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
 .dash-muted { color: var(--muted-foreground); }
 .dash-small { display: block; font-size: .78rem; }
 
-/* Stat cards */
+/* Loading skeleton */
 .dash-stat-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 12px; }
-.dash-stat span { display: block; font-size: .8rem; color: var(--muted-foreground); }
-.dash-stat strong { display: block; margin-top: 8px; font-size: 1.5rem; font-weight: 600; letter-spacing: -.02em; font-variant-numeric: tabular-nums; }
 
 /* Buttons */
 .dash-btn-primary {
@@ -574,23 +552,6 @@ tbody tr:last-child > * { border-bottom: 0; }
 }
 .dash-btn-primary:hover { opacity: .9; }
 .dash-btn-primary:disabled { opacity: .5; cursor: default; }
-.dash-btn-ghost {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  border: 1px solid var(--border);
-  border-radius: 8px;
-  background: transparent;
-  color: var(--muted-foreground);
-  padding: 8px 16px;
-  font: inherit;
-  font-size: .875rem;
-  font-weight: 500;
-  cursor: pointer;
-  transition: color .15s ease, border-color .15s ease;
-}
-.dash-btn-ghost:hover { border-color: var(--border-hover); color: var(--foreground); }
 .dash-link {
   border: 0;
   background: none;
@@ -648,52 +609,6 @@ tbody tr:last-child > * { border-bottom: 0; }
 }
 .dash-badge-danger { border-color: color-mix(in srgb, var(--destructive) 40%, transparent); color: var(--destructive); }
 
-/* Tabs — segmented control, amber marks the active segment. */
-.dash-tabs { display: inline-flex; gap: 4px; border: 1px solid var(--border); border-radius: 10px; background: var(--card); padding: 4px; }
-.dash-tab {
-  border: 0;
-  border-radius: 6px;
-  background: transparent;
-  color: var(--muted-foreground);
-  padding: 6px 12px;
-  font: inherit;
-  font-size: .875rem;
-  cursor: pointer;
-  transition: color .15s ease, background .15s ease;
-}
-.dash-tab:hover { color: var(--foreground); }
-.dash-tab[aria-selected="true"],
-.dash-tab.is-active { color: var(--accent); background: var(--card-hover); }
-
-/* Table */
-.dash-table-scroll { overflow-x: auto; }
-.dash-table { width: 100%; border-collapse: collapse; font-size: .875rem; }
-.dash-table th,
-.dash-table td { padding: 10px 12px; text-align: left; vertical-align: top; border-bottom: 1px solid var(--border); }
-.dash-table thead th { font-size: .75rem; font-weight: 500; color: var(--muted-foreground); }
-.dash-table tbody th { font-weight: 600; }
-.dash-table tbody tr:last-child th,
-.dash-table tbody tr:last-child td { border-bottom: 0; }
-.dash-money { text-align: right !important; white-space: nowrap; font-variant-numeric: tabular-nums; }
-.dash-order-items { list-style: none; margin: 0; padding: 0; display: grid; gap: 2px; }
-
-/* Row lists (low stock, activity) */
-.dash-list { list-style: none; margin: 0; padding: 0; display: grid; }
-.dash-list > li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 11px 0; border-bottom: 1px solid var(--border); }
-.dash-list > li:first-child { padding-top: 0; }
-.dash-list > li:last-child { border-bottom: 0; padding-bottom: 0; }
-.dash-list strong { font-size: .875rem; font-weight: 600; }
-.dash-item-copy { display: grid; gap: 2px; }
-
-/* Activity entries */
-.dash-activity > li { display: grid; align-items: start; gap: 8px; }
-.dash-activity-meta { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
-.dash-activity dl { margin: 0; display: grid; gap: 6px; }
-.dash-activity dl div { display: grid; gap: 2px; }
-.dash-activity dt { font-size: .72rem; letter-spacing: .06em; text-transform: uppercase; color: var(--muted-foreground); }
-.dash-activity dd { margin: 0; font-size: .85rem; line-height: 1.5; }
-.dash-activity .dash-badge { justify-self: start; }
-
 /* Loading skeleton — size at the call site. */
 .dash-skeleton { border-radius: 8px; background: var(--card-hover); animation: dash-skeleton-pulse 1.6s ease-in-out infinite; }
 @keyframes dash-skeleton-pulse {
@@ -704,54 +619,8 @@ tbody tr:last-child > * { border-bottom: 0; }
 
 @media (max-width: 760px) {
   .dash-shell { width: calc(100% - 28px); }
-  .dash-topbar { flex-direction: column; align-items: flex-start; }
   .dash-stat-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .dash-card-grid { grid-template-columns: 1fr; }
   .dash-product-row { grid-template-columns: 1fr; }
-}
-
-/* =============================================================================
-   MOTION PRIMITIVES (shared/lib/motion/{reveal,marquee}.tsx) — CSS half of the
-   catalog lift from _templates/{wirausaha-os,agency-studio-os}/frontend/app/
-   globals.css, ported so the `[data-reveal]` / `.is-inview` / `--reveal-delay`
-   and `.motion-marquee` / `.motion-marquee-track` classNames those components
-   already render resolve correctly. No consumer wires Reveal/Marquee in yet
-   (see their own doc comments); this section only stops the reference from
-   being orphaned so the primitives work the moment a slice imports them.
-   Gated behind prefers-reduced-motion: reduced-motion users get the static/
-   instant state (no separate `reduce` block needed — the rules simply don't
-   apply outside `no-preference`).
-   ========================================================================== */
-
-@keyframes marquee {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  [data-reveal] {
-    opacity: 0;
-    transition:
-      opacity 0.65s ease-out,
-      transform 0.65s cubic-bezier(0.21, 0.8, 0.35, 1);
-    transition-delay: var(--reveal-delay, 0ms);
-  }
-  [data-reveal="fade-up"] { transform: translateY(24px); }
-  [data-reveal="fade-left"] { transform: translateX(-28px); }
-  [data-reveal="fade-right"] { transform: translateX(28px); }
-  [data-reveal="zoom"] { transform: scale(0.94); }
-  [data-reveal].is-inview,
-  .is-inview [data-reveal] {
-    opacity: 1;
-    transform: none;
-  }
-
-  .motion-marquee-track {
-    animation: marquee 36s linear infinite;
-  }
-  .motion-marquee:hover .motion-marquee-track {
-    animation-play-state: paused;
-  }
 }
 
 .dark {

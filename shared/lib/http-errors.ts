@@ -1,5 +1,5 @@
 // Same intent as errors.ts's errorMessage(), for routes that return plain
-// JSON error bodies instead of throwing a ConvexError (e.g. /api/creative-image).
+// JSON error bodies instead of throwing a ConvexError.
 export async function httpErrorMessage(
   response: Response,
   fallback = "Terjadi kesalahan.",

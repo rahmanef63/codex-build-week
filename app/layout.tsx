@@ -3,7 +3,6 @@ import type { ReactNode } from "react";
 
 import { ToastProvider } from "@/shared/components/toast";
 import { siteUrl } from "@/shared/lib/site";
-import { ThemeProviders } from "@/slices/theme-presets";
 
 import "./globals.css";
 import { Geist } from "next/font/google";
@@ -17,10 +16,10 @@ export const metadata: Metadata = {
     default: "TemanUsaha AI",
     template: "%s | TemanUsaha AI",
   },
-  description: "Asisten operasional AI dengan mode Demo dan Real yang terpisah.",
+  description: "Proyek pembelajaran AI agent berbasis GPTs untuk operasional UMKM.",
   openGraph: {
     title: "TemanUsaha AI",
-    description: "Asisten operasional AI dengan mode Demo dan Real yang terpisah.",
+    description: "Proyek pembelajaran AI agent berbasis GPTs untuk operasional UMKM.",
     type: "website",
     locale: "id_ID",
   },
@@ -30,9 +29,7 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
   return (
     <html lang="id" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
       <body>
-        <ThemeProviders defaultMode="dark" storageKey="dash-theme">
-          <ToastProvider>{children}</ToastProvider>
-        </ThemeProviders>
+        <ToastProvider>{children}</ToastProvider>
       </body>
     </html>
   );

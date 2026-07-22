@@ -10,10 +10,8 @@ import type { ReactNode } from "react";
  * tweakcn color-preset swapping on top. Mounted high in the root layout
  * so every route (public + dashboard) shares the same theme state.
  *
- * `defaultMode` + `defaultPreset` = the template's build-time look
- * (poster-matching). The owner overrides both at runtime via settings
- * (push with useThemePreset().setSiteDefault + next-themes setTheme);
- * each visitor can still override locally via the switcher.
+ * `defaultMode` + `defaultPreset` define the template's build-time look;
+ * each visitor can override it locally through the switcher.
  */
 export function ThemeProviders({
   children,

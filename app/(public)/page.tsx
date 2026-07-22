@@ -30,6 +30,10 @@ export default function Home() {
             Mode Demo memakai data sintetis. Mode Real terhubung ke usaha Anda sendiri
             secara realtime.
           </p>
+          <p className="mt-3 max-w-2xl text-sm leading-relaxed text-muted-foreground">
+            Proyek ini membantu UMKM mempelajari cara AI agent berbasis GPTs mendukung
+            operasional usaha, dari percakapan sampai tindakan yang dapat diperiksa.
+          </p>
 
           <div className="mt-10 grid gap-4 md:grid-cols-2" aria-label="Pilihan Mode Demo dan Mode Real">
             <article className="flex min-h-72 flex-col rounded-xl border border-border bg-card p-6">

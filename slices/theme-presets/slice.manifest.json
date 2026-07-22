@@ -10,7 +10,6 @@
   },
   "files": [
     "HOST-SETUP.md",
-    "components/ThemeColorSync.tsx",
     "components/ThemePresetProvider.tsx",
     "components/ThemePresetSwitcher.tsx",
     "components/ThemeProviders.tsx",

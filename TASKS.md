@@ -23,6 +23,7 @@
 | Alpha (`Codex session`) | Orchestrator/UI integration | GPT-5 Codex | Done | Install rr `theme-presets` and replace the dashboard's binary theme toggle with its unified preset switcher | `slices/theme-presets/**`, `components/ui/**`, `app/layout.tsx`, `app/globals.css`, `slices/real-dashboard/**`, root config | `npm run check` passed (35 tests, typecheck, production build); `/dashboard` local smoke returned 200 |
 | Alpha (`Codex session`) | Orchestrator/UI integration | GPT-5 Codex | Done | Adapt the `template-convex-starter` workspace shell for TemanUsaha Mode Real without importing template assets or placeholder content | `slices/real-dashboard/**`, `app/globals.css`, `TASKS.md`, Git | `npm run check` passed (35 tests, typecheck, production build); local `/dashboard` smoke returned 200 |
 | Alpha (`Codex session`) | Orchestrator/UI integration | GPT-5 Codex | Done | Align the public mode selector with the workspace token system while preserving TemanUsaha assets and copy | `app/(public)/page.tsx`, `app/globals.css`, `TASKS.md`, Git | `npm run check` passed (35 tests, typecheck, production build); local `/` smoke returned 200 |
+| Alpha (`Codex session`) | Orchestrator/UI integration | GPT-5 Codex | Done | Remove audited unused UI/media code, simplify theme preset state, and clarify GPTs learning positioning on landing | `app/**`, `slices/**`, `shared/**`, `rr.json`, `TASKS.md`, Git | `npm run check` passed (33 tests, typecheck, production build); landing/dashboard smoke passed and deleted media endpoints return 404 |
 
 ## Workspace quarantine
 

@@ -52,8 +52,7 @@
       ],
       "components": [
         "ThemePresetSwitcher",
-        "ThemePresetProvider",
-        "ThemeColorSync"
+        "ThemePresetProvider"
       ],
       "utils": [
         "applyTweakcnPreset",
