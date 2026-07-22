@@ -6,6 +6,7 @@ import { read } from "../shared/testing/read-file.ts";
 const jsonText = () => read("GPTs", "action-schema.json");
 const yamlText = () => read("GPTs", "temanusaha-actions.yaml");
 const httpText = () => read("convex", "http.ts");
+const workspaceAgentText = () => read("slices", "real-dashboard", "components", "agent-setup.tsx");
 
 type Operation = { method: string; operationId: string; consequential: unknown };
 
@@ -86,4 +87,18 @@ test("every Demo schema route is registered in Convex HTTP", () => {
   const yamlPaths = collectYamlPaths(yamlText());
   expect(yamlPaths.length).toBeGreaterThan(0);
   expect(httpPaths).toEqual(expect.arrayContaining(yamlPaths));
+});
+
+test("workspace schema exposes the complete safe profile and catalog CRUD set", () => {
+  const source = workspaceAgentText();
+  for (const operationId of ["get_business_profile", "update_business_profile", "list_products", "create_product", "update_product", "delete_product"]) {
+    expect(source).toContain(`operationId: "${operationId}"`);
+  }
+  expect(source).toContain("components: { schemas: {}, securitySchemes");
+});
+
+test("workspace profile and catalog reads are visible in AI Activity", () => {
+  const source = httpText();
+  expect(source).toContain('action: "get_business_profile"');
+  expect(source).toContain('action: "list_products"');
 });

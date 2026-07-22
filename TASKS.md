@@ -30,6 +30,7 @@
 | Alpha (`Codex session`) | Orchestrator/full-stack integration | GPT-5 Codex | Done | Configure isolated per-business Agent Actions and align the Custom GPT package with the presentation token exception | `AGENTS.md`, `TASKS.md`, `convex/**`, `slices/real-dashboard/**`, `GPTs/**`, tests, Git | Workspace HTTP Actions derive tenant only from the per-business token; dynamic Builder fields and schema verified locally; `npm run check` passed |
 | Alpha (`Codex session`) | Orchestrator/full-stack integration | GPT-5 Codex | Done | Improve Workspace GPT setup, safe Action diagnostics, AI activity filters, and responsive dashboard shell | `TASKS.md`, `convex/**`, `slices/real-dashboard/**`, `shared/**`, tests, Git | Safe GPT read logs, dynamic Knowledge Base, activity filters, and responsive Agent tabs shipped; BYOK excluded by secret policy |
 | Alpha (`Codex session`) | Orchestrator/full-stack integration | GPT-5 Codex | Done | Expand Workspace GPT schema and instructions for profile and catalog management | `TASKS.md`, `convex/**`, `slices/real-dashboard/**`, tests, Git | Profile and catalog Actions added with tenant isolation and mutation confirmation preserved |
+| Alpha (`Codex session`) | Orchestrator/full-stack audit | GPT-5 Codex | Done | Audit the full project, record 20 actionable findings, and apply focused reliability and UX fixes | `TASKS.md`, `convex/**`, `slices/real-dashboard/**`, tests, root Git | GPT profile/catalog reads now log activity; mobile setup and dashboard error states verified; 37 checks passed |
 
 ## Workspace quarantine
 
