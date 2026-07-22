@@ -24,9 +24,24 @@
   },
   "features": [],
   "slices": [
-    { "slug": "demo-dashboard", "version": "1.0.0" },
-    { "slug": "real-dashboard", "version": "1.0.0" },
-    { "slug": "creative-studio", "version": "1.0.0" }
+    {
+      "slug": "demo-dashboard",
+      "version": "1.0.0"
+    },
+    {
+      "slug": "real-dashboard",
+      "version": "1.0.0"
+    },
+    {
+      "slug": "creative-studio",
+      "version": "1.0.0"
+    },
+    {
+      "slug": "theme-presets",
+      "version": "0.4.0",
+      "category": "ui",
+      "addedAt": "2026-07-22"
+    }
   ],
   "skills": [],
   "auth": {

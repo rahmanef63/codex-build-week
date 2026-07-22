@@ -2,7 +2,7 @@
 
 import type { DashboardData } from "@/shared/types/dashboard";
 import { formatAction, formatDate, formatDateTime, formatRupiah } from "@/shared/lib/format";
-import { ThemeToggle } from "./theme-toggle";
+import { ThemePresetSwitcher } from "@/slices/theme-presets";
 import { StatusBadge } from "./status-badge";
 
 export function ConnectedDashboard({
@@ -28,7 +28,7 @@ export function ConnectedDashboard({
           <p className="dash-date dash-muted">{formatDate(data.summary.date)}</p>
         </div>
         <div className="dash-topbar-actions">
-          <ThemeToggle />
+          <ThemePresetSwitcher />
           <button className="dash-btn-ghost" onClick={onSignOut} type="button">
             Keluar
           </button>

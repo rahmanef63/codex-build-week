@@ -3,9 +3,13 @@ import type { ReactNode } from "react";
 
 import { ToastProvider } from "@/shared/components/toast";
 import { siteUrl } from "@/shared/lib/site";
-import { ThemeProvider } from "@/slices/real-dashboard";
+import { ThemeProviders } from "@/slices/theme-presets";
 
 import "./globals.css";
+import { Geist } from "next/font/google";
+import { cn } from "@/lib/utils";
+
+const geist = Geist({subsets:['latin'],variable:'--font-sans'});
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl()),
@@ -24,11 +28,11 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="id" suppressHydrationWarning>
+    <html lang="id" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
       <body>
-        <ThemeProvider>
+        <ThemeProviders defaultMode="dark" storageKey="dash-theme">
           <ToastProvider>{children}</ToastProvider>
-        </ThemeProvider>
+        </ThemeProviders>
       </body>
     </html>
   );
