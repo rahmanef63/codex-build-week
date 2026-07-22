@@ -1,4 +1,3 @@
-export { CreativeStudio } from "./components/creative-studio";
 export {
   buildCreativePrompt,
   getOnboardingScript,

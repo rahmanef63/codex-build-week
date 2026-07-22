@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 
 import { ConvexClientProvider } from "@/shared/components/convex-provider";
 import { ModeNavBar } from "@/shared/components/mode-nav-bar";
-import { CreativeStudio, isOpenAIMediaEnabled } from "@/slices/creative-studio";
 import { DashboardApp } from "@/slices/real-dashboard";
 
 export const metadata: Metadata = {
@@ -19,7 +18,6 @@ export default function DashboardPage() {
       <ConvexClientProvider variant="dash">
         <DashboardApp />
       </ConvexClientProvider>
-      <CreativeStudio enabled={isOpenAIMediaEnabled()} />
     </div>
   );
 }

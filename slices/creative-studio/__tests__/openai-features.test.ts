@@ -40,7 +40,4 @@ test("paid OpenAI media stays local-only and guarded", () => {
   expect(audioRoute).toMatch(/isOpenAIMediaEnabled\(\)/);
   expect(audioRoute).toMatch(/s-maxage=604800/);
 
-  const studio = read("slices", "creative-studio", "components", "creative-studio.tsx");
-  expect(studio).toMatch(/Jangan masukkan data pelanggan/);
-  expect(studio).toMatch(/disabled={!enabled \|\| pending}/);
 });
