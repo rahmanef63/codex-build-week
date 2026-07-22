@@ -124,8 +124,11 @@ http.route({
 http.route({
   path: "/api/agent/orders",
   method: "GET",
-  handler: agentSecured(async (ctx, _request, businessId) =>
-    json({ orders: await ctx.runQuery(internal.orders.listPending, { businessId }) })),
+  handler: agentSecured(async (ctx, _request, businessId) => {
+    const orders = await ctx.runQuery(internal.orders.listPending, { businessId });
+    await ctx.runMutation(internal.agent.logRead, { businessId, action: "list_pending_orders" });
+    return json({ orders });
+  }),
 });
 
 http.route({
@@ -181,15 +184,21 @@ http.route({
 http.route({
   path: "/api/agent/inventory/low-stock",
   method: "GET",
-  handler: agentSecured(async (ctx, _request, businessId) =>
-    json({ items: await ctx.runQuery(internal.inventory.lowStock, { businessId }) })),
+  handler: agentSecured(async (ctx, _request, businessId) => {
+    const items = await ctx.runQuery(internal.inventory.lowStock, { businessId });
+    await ctx.runMutation(internal.agent.logRead, { businessId, action: "get_low_stock_items" });
+    return json({ items });
+  }),
 });
 
 http.route({
   path: "/api/agent/summary/today",
   method: "GET",
-  handler: agentSecured(async (ctx, _request, businessId) =>
-    json(await ctx.runQuery(internal.business.summaryToday, { businessId }))),
+  handler: agentSecured(async (ctx, _request, businessId) => {
+    const summary = await ctx.runQuery(internal.business.summaryToday, { businessId });
+    await ctx.runMutation(internal.agent.logRead, { businessId, action: "get_daily_summary" });
+    return json(summary);
+  }),
 });
 
 export default http;
