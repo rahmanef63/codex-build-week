@@ -22,6 +22,7 @@
 | GPTs (`019f7370…`) | Custom GPT package/testing | Thread model not reported | Done | Add the sixth Action plus explicit Demo/Real conversation modes | `GPTs/**` and GPT Builder only | Six Actions and mode tests passed; local identity neutral, final two-field Builder autosave unverified due active user input |
 | Alpha (`Codex session`) | Orchestrator/UI integration | GPT-5 Codex | Done | Install rr `theme-presets` and replace the dashboard's binary theme toggle with its unified preset switcher | `slices/theme-presets/**`, `components/ui/**`, `app/layout.tsx`, `app/globals.css`, `slices/real-dashboard/**`, root config | `npm run check` passed (35 tests, typecheck, production build); `/dashboard` local smoke returned 200 |
 | Alpha (`Codex session`) | Orchestrator/UI integration | GPT-5 Codex | Done | Adapt the `template-convex-starter` workspace shell for TemanUsaha Mode Real without importing template assets or placeholder content | `slices/real-dashboard/**`, `app/globals.css`, `TASKS.md`, Git | `npm run check` passed (35 tests, typecheck, production build); local `/dashboard` smoke returned 200 |
+| Alpha (`Codex session`) | Orchestrator/UI integration | GPT-5 Codex | Done | Align the public mode selector with the workspace token system while preserving TemanUsaha assets and copy | `app/(public)/page.tsx`, `app/globals.css`, `TASKS.md`, Git | `npm run check` passed (35 tests, typecheck, production build); local `/` smoke returned 200 |
 
 ## Workspace quarantine
 
@@ -88,5 +89,6 @@ Contract source: `AGENTS.md`. Only one active writer may own a file scope. Alpha
 | Done | Remove the disabled Creative Studio UI from `/dashboard` so Mode Real renders one auth/onboarding/dashboard state at a time; retain its development-only server endpoints. `npm run check` passed (34 tests, typecheck, production build). | Alpha (Codex session) | GPT-5 Codex |
 | Done | Install rr `theme-presets` and replace the dashboard's binary theme toggle with its unified preset switcher. `npm run check` passed (35 tests, typecheck, production build); local `/dashboard` smoke returned 200. | Alpha (Codex session) | GPT-5 Codex |
 | Done | Adapt the `template-convex-starter` workspace shell for TemanUsaha Mode Real while preserving this project's assets, copy, and Convex data. `npm run check` passed (35 tests, typecheck, production build); local `/dashboard` smoke returned 200. | Alpha (Codex session) | GPT-5 Codex |
+| Done | Align the public mode selector with the workspace token system while preserving TemanUsaha assets and copy. `npm run check` passed (35 tests, typecheck, production build); local `/` smoke returned 200. | Alpha (Codex session) | GPT-5 Codex |
 
 Status values: `Todo`, `In progress`, `Blocked`, `Done`.
