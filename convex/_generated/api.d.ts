@@ -12,6 +12,7 @@ import type * as _shared_auth from "../_shared/auth.js";
 import type * as _shared_errors from "../_shared/errors.js";
 import type * as _shared_http from "../_shared/http.js";
 import type * as _shared_log from "../_shared/log.js";
+import type * as agent from "../agent.js";
 import type * as auth from "../auth.js";
 import type * as business from "../business.js";
 import type * as domain from "../domain.js";
@@ -34,6 +35,7 @@ declare const fullApi: ApiFromModules<{
   "_shared/errors": typeof _shared_errors;
   "_shared/http": typeof _shared_http;
   "_shared/log": typeof _shared_log;
+  agent: typeof agent;
   auth: typeof auth;
   business: typeof business;
   domain: typeof domain;
