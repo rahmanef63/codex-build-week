@@ -22,7 +22,7 @@ function actionSchema(businessName: string, serverUrl: string) {
       "/api/agent/inventory/low-stock": { get: { operationId: "get_low_stock_items", summary: "Daftar stok rendah", description: "Membaca produk dengan stok pada atau di bawah ambang usaha pemilik token.", "x-openai-isConsequential": false, responses: { "200": { description: "Produk stok rendah." }, "401": error } } },
       "/api/agent/summary/today": { get: { operationId: "get_daily_summary", summary: "Ringkasan bisnis hari ini", description: "Membaca ringkasan hari ini dalam zona Asia/Jakarta untuk usaha pemilik token.", "x-openai-isConsequential": false, responses: { "200": { description: "Ringkasan hari ini." }, "401": error } } },
     },
-    components: { securitySchemes: { ApiKeyAuth: { type: "apiKey", in: "header", name: "X-Action-API-Key", description: "Token Agent Setup usaha ini." } } },
+    components: { schemas: {}, securitySchemes: { ApiKeyAuth: { type: "apiKey", in: "header", name: "X-Action-API-Key", description: "Token Agent Setup usaha ini." } } },
   };
 }
 
