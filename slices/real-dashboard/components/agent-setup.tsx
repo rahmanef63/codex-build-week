@@ -1,4 +1,5 @@
 "use client";
+
 import { Check, Copy, KeyRound } from "lucide-react";
 import { useMutation, useQuery } from "convex/react";
 import { useState } from "react";
@@ -26,10 +27,42 @@ function actionSchema(businessName: string, serverUrl: string) {
   };
 }
 
+function builderDetails(businessName: string) {
+  return {
+    name: `Asisten ${businessName}`,
+    description: `Asisten operasional untuk ${businessName}. Membantu mencatat pesanan, mengecek stok, dan merangkum kondisi usaha dari data milik usaha ini.`,
+    instructions: `# Peran\n\nKamu adalah asisten operasional untuk ${businessName}. Jawab singkat, ramah, dan konkret dalam Bahasa Indonesia.\n\n# Ruang lingkup\n\nKamu hanya bekerja untuk ${businessName}. Gunakan Action untuk membaca pesanan pending, stok rendah, dan ringkasan hari ini; gunakan Action mutasi hanya untuk membuat pesanan atau mengubah status pesanan. Jangan memakai data demo atau menyebut usaha lain.\n\n# Sumber kebenaran\n\nHarga, stok, total, dan status harus berasal dari Action terbaru. Jangan menebak atau mengklaim perubahan sebelum Action berhasil. Jangan meminta, menampilkan, atau menaruh API key/token di percakapan maupun respons.\n\n# Mutasi\n\nSebelum membuat atau mengubah pesanan, tampilkan ringkasan perubahan dan tunggu konfirmasi eksplisit pengguna. Untuk membuat pesanan, kumpulkan nama pelanggan, item, jumlah bulat positif, waktu ambil, dan status pembayaran. Buat requestId UUID baru setelah konfirmasi; bila timeout, ulangi payload identik dengan requestId yang sama.\n\n# Respons\n\nSetelah Action sukses, rangkum tindakan dan hasilnya secara ringkas. Jika Action gagal, jelaskan pesan aman dari API dan minta koreksi minimum. Jangan menjanjikan pembayaran, pengiriman pesan, pembatalan, perubahan stok manual, akuntansi, atau operasi lain di luar Action.`,
+    starters: [
+      `Bagaimana ringkasan ${businessName} hari ini?`,
+      "Pesanan mana yang masih pending?",
+      "Stok apa yang perlu segera diperiksa?",
+      "Saya ingin mencatat pesanan baru.",
+    ],
+    settings: "Knowledge: kosong\nRecommended model: No Recommended Model\nCapabilities: Web Search off, Canvas off, Image Generation off, Code Interpreter & Data Analysis off\nAuthentication: API Key → Custom header → X-Action-API-Key",
+  };
+}
+
 export function AgentSetup() {
-  const config = useQuery(api.agent.configuration); const issue = useMutation(api.agent.issue); const [token, setToken] = useState(""); const [copied, setCopied] = useState(false);
+  const config = useQuery(api.agent.configuration);
+  const issue = useMutation(api.agent.issue);
+  const [token, setToken] = useState("");
+  const [copied, setCopied] = useState("");
   if (!config) return <p className="text-sm text-muted-foreground">Memuat setup agent / Loading agent setup…</p>;
+
+  const details = builderDetails(config.businessName);
   const schema = JSON.stringify(actionSchema(config.businessName, config.serverUrl), null, 2);
-  const copy = async (value: string) => { await navigator.clipboard.writeText(value); setCopied(true); };
-  return <section className="max-w-3xl rounded-md border border-border bg-card p-6"><div className="flex items-start justify-between gap-4"><div><p className="text-xs font-medium uppercase tracking-widest text-accent">Agent setup / Setup agen</p><h2 className="mt-2 text-xl font-semibold">Custom GPT untuk {config.businessName}</h2><p className="mt-2 text-sm text-muted-foreground">Salin schema dan token untuk GPT Builder Anda.</p></div><KeyRound className="text-accent" /></div><div className="mt-6 flex gap-2"><Button onClick={async () => setToken((await issue()).token)}>Buat / rotasi token</Button><Button onClick={() => void copy(schema)} variant="outline">{copied ? <Check /> : <Copy />}Salin schema</Button></div>{token && <div className="mt-4 rounded-md border border-accent bg-secondary p-4"><p className="text-sm font-semibold">Token satu-kali / One-time token</p><code className="mt-2 block break-all text-xs">{token}</code><Button className="mt-3" onClick={() => void copy(token)} size="sm">Salin token</Button></div>}<pre className="mt-5 max-h-72 overflow-auto rounded-md bg-muted p-4 text-xs">{schema}</pre></section>;
+  const copy = async (id: string, value: string) => { await navigator.clipboard.writeText(value); setCopied(id); };
+  const fields = [
+    ["name", "Name", details.name],
+    ["description", "Description", details.description],
+    ["instructions", "Instructions", details.instructions],
+    ["starters", "Conversation starters", details.starters.join("\n")],
+    ["settings", "Pengaturan Builder", details.settings],
+  ] as const;
+
+  return <section className="max-w-3xl rounded-md border border-border bg-card p-6">
+    <div className="flex items-start justify-between gap-4"><div><p className="text-xs font-medium uppercase tracking-widest text-accent">Agent setup / Setup agen</p><h2 className="mt-2 text-xl font-semibold">Custom GPT untuk {config.businessName}</h2><p className="mt-2 text-sm text-muted-foreground">Salin tiap detail ke tab Configure GPT Builder. Semua teks disesuaikan dengan nama usaha Anda.</p></div><KeyRound className="text-accent" /></div>
+    <div className="mt-6 space-y-4">{fields.map(([id, label, value]) => <div key={id} className="rounded-md border border-border bg-muted/30 p-4"><div className="flex items-center justify-between gap-3"><h3 className="text-sm font-semibold">{label}</h3><Button size="sm" variant="outline" onClick={() => void copy(id, value)}>{copied === id ? <Check /> : <Copy />}{copied === id ? "Tersalin" : "Salin"}</Button></div><pre className="mt-3 max-h-52 overflow-auto whitespace-pre-wrap break-words text-xs text-muted-foreground">{value}</pre></div>)}</div>
+    <div className="mt-6 rounded-md border border-border p-4"><div className="flex flex-wrap items-center justify-between gap-3"><div><h3 className="text-sm font-semibold">Action schema dan token</h3><p className="mt-1 text-xs text-muted-foreground">Tempel schema ke Action. Token hanya untuk field API Key dengan custom header.</p></div><div className="flex gap-2"><Button size="sm" onClick={async () => setToken((await issue()).token)}>Buat / rotasi token</Button><Button size="sm" variant="outline" onClick={() => void copy("schema", schema)}>{copied === "schema" ? <Check /> : <Copy />}{copied === "schema" ? "Tersalin" : "Salin schema"}</Button></div></div>{token && <div className="mt-4 rounded-md border border-accent bg-secondary p-4"><p className="text-sm font-semibold">Token satu-kali / One-time token</p><code className="mt-2 block break-all text-xs">{token}</code><Button className="mt-3" onClick={() => void copy("token", token)} size="sm">{copied === "token" ? <Check /> : <Copy />}{copied === "token" ? "Tersalin" : "Salin token"}</Button></div>}<pre className="mt-5 max-h-72 overflow-auto whitespace-pre-wrap break-words rounded-md bg-muted p-4 text-xs">{schema}</pre></div>
+  </section>;
 }
