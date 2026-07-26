@@ -110,4 +110,30 @@ describe("real catalog and profile", () => {
     expect(finalDashboard.products).toHaveLength(0);
     expect(finalDashboard.activity.map((item) => item.action)).toEqual(expect.arrayContaining(["create_business", "update_business", "create_product", "update_product", "delete_product"]));
   });
+
+  test("a signed-in owner cannot update or delete another owner's product (cross-tenant guard)", async () => {
+    const t = setup();
+    const { asUser: asA } = await signUp(t, "owner-a@example.com");
+    await asA.mutation(api.real.createBusiness, { name: "Toko A", products: [] });
+    await asA.mutation(api.real.createProduct, { name: "Kopi A", price: 10_000, stock: 5, lowStockThreshold: 2 });
+    const dashA = await asA.query(api.real.dashboard, {});
+    if (!dashA || !dashA.business) throw new Error("Expected A dashboard");
+    const productId = dashA.products[0]._id;
+
+    const { asUser: asB } = await signUp(t, "owner-b@example.com");
+    await asB.mutation(api.real.createBusiness, { name: "Toko B", products: [] });
+
+    await expect(
+      asB.mutation(api.real.updateProduct, { productId, name: "Hijack", price: 1, stock: 1, lowStockThreshold: 0 }),
+    ).rejects.toMatchObject({ data: { code: "PRODUCT_NOT_FOUND" } });
+    await expect(
+      asB.mutation(api.real.removeProduct, { productId }),
+    ).rejects.toMatchObject({ data: { code: "PRODUCT_NOT_FOUND" } });
+
+    // A's product is untouched by B's attempts.
+    const dashA2 = await asA.query(api.real.dashboard, {});
+    if (!dashA2 || !dashA2.business) throw new Error("Expected A dashboard");
+    expect(dashA2.products).toHaveLength(1);
+    expect(dashA2.products[0].name).toBe("Kopi A");
+  });
 });
