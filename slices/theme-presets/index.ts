@@ -8,9 +8,9 @@ export {
   ThemePresetProvider,
   useThemePreset,
   DEFAULT_PRESET_NAME,
-} from "./components/ThemePresetProvider";
-export { ThemePresetSwitcher } from "./components/ThemePresetSwitcher";
-export { ThemeProviders } from "./components/ThemeProviders";
+} from "./components/theme-preset-provider";
+export { ThemePresetSwitcher } from "./components/theme-preset-switcher";
+export { ThemeProviders } from "./components/theme-providers";
 
 export {
   applyTweakcnPreset,

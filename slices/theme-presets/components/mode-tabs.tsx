@@ -1,7 +1,7 @@
 "use client";
 
 /** Sticky display-mode row (light / dark / system) for the switcher
- *  Popover. Extracted to keep ThemePresetSwitcher.tsx ≤200 LOC. */
+ *  Popover. Extracted to keep theme-preset-switcher.tsx ≤200 LOC. */
 
 import { Monitor, Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";

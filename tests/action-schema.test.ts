@@ -6,6 +6,7 @@ import { read } from "../shared/testing/read-file.ts";
 const jsonText = () => read("GPTs", "action-schema.json");
 const yamlText = () => read("GPTs", "temanusaha-actions.yaml");
 const httpText = () => read("convex", "http.ts");
+const agentRoutesText = () => read("convex", "agent-routes.ts");
 const workspaceAgentText = () => read("slices", "real-dashboard", "components", "agent-setup.tsx");
 
 type Operation = { method: string; operationId: string; consequential: unknown };
@@ -98,7 +99,7 @@ test("workspace schema exposes the complete safe profile and catalog CRUD set", 
 });
 
 test("workspace profile and catalog reads are visible in AI Activity", () => {
-  const source = httpText();
+  const source = agentRoutesText();
   expect(source).toContain('action: "get_business_profile"');
   expect(source).toContain('action: "list_products"');
 });

@@ -23,7 +23,7 @@ import {
   groupTweakcnPresets, tweakcnSwatches,
   type TweakcnPresetGroup, type TweakcnPresetItem,
 } from "../lib/tweakcn";
-import { useThemePreset } from "./ThemePresetProvider";
+import { useThemePreset } from "./theme-preset-provider";
 import { ModeTabs, type ModeId } from "./mode-tabs";
 
 interface ThemePresetSwitcherProps {

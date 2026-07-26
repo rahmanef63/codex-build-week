@@ -1,7 +1,7 @@
 "use client";
 
 import { ThemeProvider } from "next-themes";
-import { ThemePresetProvider } from "./ThemePresetProvider";
+import { ThemePresetProvider } from "./theme-preset-provider";
 import type { ReactNode } from "react";
 
 /**

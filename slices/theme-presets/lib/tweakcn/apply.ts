@@ -1,5 +1,5 @@
 import { STORAGE_KEY, STYLE_ID } from "./types";
-import { buildBlock, buildBrandBridge } from "./cssBuilder";
+import { buildBlock, buildBrandBridge } from "./css-builder";
 import { findTweakcnPreset, loadTweakcnRegistry } from "./registry";
 
 function injectStyleTag(css: string): void {
