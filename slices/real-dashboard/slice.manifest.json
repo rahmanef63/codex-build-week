@@ -5,10 +5,13 @@
     "barrel": "index.ts",
     "types": "types.ts",
     "components": [
+      "components/account-settings.tsx",
+      "components/agent-setup.tsx",
       "components/auth-card.tsx",
       "components/connected-dashboard.tsx",
       "components/dashboard-activity.tsx",
       "components/dashboard-app.tsx",
+      "components/dashboard-catalog.tsx",
       "components/dashboard-orders.tsx",
       "components/dashboard-overview.tsx",
       "components/dashboard-shell.tsx",
@@ -17,6 +20,6 @@
       "components/status-badge.tsx"
     ],
     "lib": [],
-    "tests": []
+    "tests": ["__tests__/barrel.test.ts"]
   }
 }

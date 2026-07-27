@@ -2,7 +2,7 @@ import { expect, test } from "vitest";
 // @ts-expect-error tsc needs allowImportingTsExtensions for the .ts extension import; vitest resolves it directly.
 import { dashboardError, dashboardImageOptions, parseDashboardView } from "../api/view.ts";
 // @ts-expect-error tsc needs allowImportingTsExtensions for the .ts extension import; vitest resolves it directly.
-import { read } from "../../../shared/testing/read-file.ts";
+import { read } from "@/shared/testing/read-file.ts";
 
 test("dashboard card accepts only its three public views", () => {
   expect(parseDashboardView(null)).toBe("today");

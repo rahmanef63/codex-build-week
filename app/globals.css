@@ -288,7 +288,7 @@ a { color: inherit; }
 .tabs button:hover { color: var(--ink); background: #edf2ed; }
 .tabs button[aria-selected="true"] { color: white; background: var(--ink); box-shadow: 0 5px 14px rgba(23, 33, 27, .18); }
 .tabs button:focus-visible,
-.primary-button:focus-visible { outline: 3px solid #68b889; outline-offset: 2px; }
+.primary-button:focus-visible { outline: 3px solid var(--focus-ring); outline-offset: 2px; }
 
 .panel { animation: reveal .18s ease-out; }
 .section-heading { align-items: end; margin-bottom: 20px; }

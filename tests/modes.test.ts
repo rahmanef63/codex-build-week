@@ -25,7 +25,7 @@ test("Demo owns synthetic business wiring while the workspace runs its own live 
   expect(demo).toMatch(/ConvexClientProvider/);
   expect(demo).toMatch(/<Dashboard \/>/);
 
-  expect(real).toMatch(/redirect\("\/dashboard"\)/);
+  expect(real).toMatch(/permanentRedirect\("\/dashboard"\)/);
   expect(dashboard).toMatch(/ConvexClientProvider/);
   expect(dashboard).toMatch(/Terhubung langsung/);
   expect(dashboardApp).not.toMatch(/Bu Sari/);

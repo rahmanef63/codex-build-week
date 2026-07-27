@@ -7,6 +7,10 @@ import { body, json, secured as securedRoute } from "./_shared/http";
 // businessId — never client-supplied). Split out of http.ts to keep each file
 // under the rr 200-line cap; registered onto the shared router by http.ts.
 const agentSecured = (handler: (ctx: any, request: Request, businessId: string) => Promise<Response>) =>
+  // securedRoute's authorize is intentionally `() => true`: the real gate is the
+  // token->businessId resolve on the next lines, which MUST run before any handler
+  // work. Any new agent route must keep that resolve — never call handler() with a
+  // client-supplied businessId.
   securedRoute(() => true, async (ctx: any, request: Request) => {
     const token = request.headers.get("X-Action-API-Key") ?? "";
     const identity = await ctx.runQuery(internal.agent.resolve, { token });
