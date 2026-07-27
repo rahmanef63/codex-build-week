@@ -2,11 +2,9 @@
 
 import Link from "next/link";
 
+import { Button } from "@/components/ui/button";
+
 export default function DashboardErrorPage({ reset }: { reset: () => void }) {
-  // Wrapped in .dash-root: (workspace)/layout.tsx is a plain passthrough, so
-  // this boundary can't rely on an ancestor to supply the dark dash-token
-  // shell — without it, .setup-card's light-warung styling rendered a white
-  // card on Convex misconfig/error inside what's otherwise a dark route.
   return (
     <div className="dash-root">
       <main className="dash-center">
@@ -17,9 +15,9 @@ export default function DashboardErrorPage({ reset }: { reset: () => void }) {
             Jika ini terjadi setelah masuk atau mendaftar, coba keluar lalu masuk kembali. Jika
             berlanjut, coba beberapa saat lagi.
           </p>
-          <button className="dash-btn-primary" type="button" onClick={reset}>
+          <Button className="dash-btn-primary h-auto" onClick={reset} type="button" variant="ghost">
             Coba lagi
-          </button>
+          </Button>
           <p className="dash-muted dash-small">
             <Link href="/">← Pilih mode</Link>
           </p>

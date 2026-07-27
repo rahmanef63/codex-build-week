@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 
+import { Button } from "@/components/ui/button";
+
 export default function DemoErrorPage({ reset }: { reset: () => void }) {
   return (
     <main className="setup-shell">
@@ -9,9 +11,9 @@ export default function DemoErrorPage({ reset }: { reset: () => void }) {
         <span className="eyebrow">Mode Demo · Terjadi kendala</span>
         <h1>Dashboard demo belum dapat dimuat</h1>
         <p>Coba beberapa saat lagi, atau kembali ke pemilih mode.</p>
-        <button className="primary-button" type="button" onClick={reset}>
+        <Button className="primary-button h-auto" onClick={reset} type="button" variant="ghost">
           Coba lagi
-        </button>
+        </Button>
         <p className="setup-note">
           <Link href="/">← Pilih mode</Link>
         </p>
