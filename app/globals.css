@@ -460,6 +460,18 @@ tbody tr:last-child > * { border-bottom: 0; }
   .activity-meta { align-items: flex-start; flex-direction: column; gap: 6px; }
   .dashboard-footer { align-items: flex-start; flex-direction: column; }
   .setup-illustration { float: none; display: block; width: 160px; height: 160px; margin: 0 auto 18px; }
+
+  /* Orders table -> one card per order on phones: no sideways swipe to reach Total. */
+  .table-scroll { overflow-x: visible; }
+  table { min-width: 0; }
+  thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  tbody tr { display: grid; gap: 6px; margin-bottom: 12px; padding: 14px; border: 1px solid var(--line); border-radius: 14px; }
+  tbody tr:last-child { margin-bottom: 0; }
+  tbody th,
+  tbody td { padding: 0; border: 0; font-size: .9rem; }
+  tbody th[scope="row"] { font-size: 1rem; }
+  tbody td[data-label] { display: grid; grid-template-columns: 6.5rem 1fr; gap: 10px; align-items: center; }
+  tbody td[data-label]::before { content: attr(data-label); color: var(--muted-foreground); font-size: .72rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
 }
 
 @media (prefers-reduced-motion: reduce) {

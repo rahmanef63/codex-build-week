@@ -40,7 +40,7 @@ export function OrdersPanel({ hidden, orders }: { hidden: boolean; orders: Dashb
                 {orders.map((order) => (
                   <tr key={order._id}>
                     <th scope="row">{order.customerName}</th>
-                    <td>
+                    <td data-label="Item">
                       <ul className="order-items">
                         {order.items.map((item) => (
                           <li key={item.productName}>
@@ -50,10 +50,10 @@ export function OrdersPanel({ hidden, orders }: { hidden: boolean; orders: Dashb
                         ))}
                       </ul>
                     </td>
-                    <td>{formatDateTime(order.pickupTime)}</td>
-                    <td><StatusBadge status={order.paymentStatus} /></td>
-                    <td><StatusBadge status={order.fulfillmentStatus} /></td>
-                    <td className="money">{formatRupiah(order.total)}</td>
+                    <td data-label="Ambil">{formatDateTime(order.pickupTime)}</td>
+                    <td data-label="Pembayaran"><StatusBadge status={order.paymentStatus} /></td>
+                    <td data-label="Status"><StatusBadge status={order.fulfillmentStatus} /></td>
+                    <td className="money" data-label="Total">{formatRupiah(order.total)}</td>
                   </tr>
                 ))}
               </tbody>

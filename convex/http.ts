@@ -1,9 +1,9 @@
-import { httpRouter } from "convex/server";
+import { httpActionGeneric, httpRouter } from "convex/server";
 import { ConvexError } from "convex/values";
 import { internal } from "./_generated/api";
 import { auth } from "./auth";
 import { registerAgentRoutes } from "./agent-routes";
-import { body, json, secured as securedRoute, timingSafeEqualString } from "./_shared/http";
+import { body, json, safeError, secured as securedRoute, timingSafeEqualString } from "./_shared/http";
 
 const http = httpRouter();
 auth.addHttpRoutes(http);
@@ -111,6 +111,23 @@ http.route({
       altText,
       generatedAt,
     });
+  }),
+});
+
+// On-demand demo reset so the shared Bu Sari tenant self-heals between judges.
+// Gated by DEMO_RESET_KEY (the mutation authorizes); own key, not ACTION_API_KEY,
+// since reset is destructive. A cron could automate this but would risk wiping a
+// judge mid-interaction — on-demand is the safer default.
+http.route({
+  path: "/api/demo/reset",
+  method: "POST",
+  handler: httpActionGeneric(async (ctx, request) => {
+    try {
+      const resetKey = request.headers.get("X-Demo-Reset-Key") ?? "";
+      return json(await ctx.runMutation(internal.seed.reset, { resetKey }));
+    } catch (error) {
+      return safeError(error);
+    }
   }),
 });
 

@@ -131,3 +131,26 @@ describe("Agent HTTP surface (token-derived tenancy)", () => {
     expect((await res.json()).error.code).toBe("VALIDATION_ERROR");
   });
 });
+
+describe("Demo reset HTTP route", () => {
+  test("a wrong reset key is rejected with 401", async () => {
+    const t = setup();
+    const res = await t.fetch("/api/demo/reset", {
+      method: "POST",
+      headers: { "X-Demo-Reset-Key": "nope" },
+    });
+    expect(res.status).toBe(401);
+  });
+
+  test("the correct reset key reseeds the demo tenant (200)", async () => {
+    const t = setup();
+    const res = await t.fetch("/api/demo/reset", {
+      method: "POST",
+      headers: { "X-Demo-Reset-Key": KEY },
+    });
+    expect(res.status).toBe(200);
+    const body = await res.json();
+    expect(body.productCount).toBe(5);
+    expect(body.orderCount).toBe(2);
+  });
+});
