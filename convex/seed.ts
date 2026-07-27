@@ -22,7 +22,7 @@ export const reset = internalMutation({
       const oldRows = [
         ...(await ctx.db.query("aiActionLogs").withIndex("by_business_created", (q) => q.eq("businessId", BUSINESS_ID)).take(1000)),
         ...(await ctx.db.query("orders").withIndex("by_business_created", (q) => q.eq("businessId", BUSINESS_ID)).take(1000)),
-        ...(await ctx.db.query("products").withIndex("by_business_id", (q) => q.eq("businessId", BUSINESS_ID)).take(1000)),
+        ...(await ctx.db.query("products").withIndex("by_business_slug", (q) => q.eq("businessId", BUSINESS_ID)).take(1000)),
         ...(await ctx.db.query("businesses").withIndex("by_business_id", (q) => q.eq("businessId", BUSINESS_ID)).take(1000)),
       ];
       for (const row of oldRows) await ctx.db.delete(row._id);

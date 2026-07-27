@@ -53,7 +53,7 @@ export const createOrder = internalMutation({
 
       const products = await ctx.db
         .query("products")
-        .withIndex("by_business_id", (q) => q.eq("businessId", businessId))
+        .withIndex("by_business_slug", (q) => q.eq("businessId", businessId))
         .take(MAX_PRODUCTS_PER_BUSINESS);
 
       // ponytail: linear scan fits five demo products; add a normalized-name index if the catalog grows.

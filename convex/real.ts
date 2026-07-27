@@ -115,7 +115,7 @@ export const createProduct = mutation({
     const userId = await requireUserId(ctx);
     const name = args.name.trim();
     if (!name || !Number.isFinite(args.price) || !Number.isFinite(args.stock) || !Number.isFinite(args.lowStockThreshold) || args.price < 0 || args.stock < 0 || args.lowStockThreshold < 0) fail("VALIDATION_ERROR", "Data produk tidak valid.");
-    const products = await ctx.db.query("products").withIndex("by_business_id", (q) => q.eq("businessId", userId)).take(51);
+    const products = await ctx.db.query("products").withIndex("by_business_slug", (q) => q.eq("businessId", userId)).take(51);
     if (products.length >= 50) fail("TOO_MANY_PRODUCTS", "Maksimal 50 produk.");
     const base = slugify(name);
     let slug = base;

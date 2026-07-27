@@ -20,7 +20,7 @@ export async function readDashboard(ctx: QueryCtx, businessId: string = BUSINESS
       .unique(),
     ctx.db
       .query("products")
-      .withIndex("by_business_id", (q) => q.eq("businessId", businessId))
+      .withIndex("by_business_slug", (q) => q.eq("businessId", businessId))
       .take(MAX_PRODUCTS_PER_BUSINESS) as Promise<Doc<"products">[]>,
     ctx.db
       .query("orders")
@@ -42,6 +42,8 @@ export async function readDashboard(ctx: QueryCtx, businessId: string = BUSINESS
       .order("desc")
       .take(100),
   ]);
+  // by_business_slug orders rows by slug; the catalog UI expects insertion order.
+  products.sort((a, b) => a.sortOrder - b.sortOrder);
   const lowStock = selectLowStock(products);
   return {
     business,

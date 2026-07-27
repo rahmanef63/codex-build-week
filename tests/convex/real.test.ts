@@ -136,4 +136,17 @@ describe("real catalog and profile", () => {
     expect(dashA2.products).toHaveLength(1);
     expect(dashA2.products[0].name).toBe("Kopi A");
   });
+
+  test("catalog keeps insertion order, not slug-alphabetical (guards the by_business_slug repoint)", async () => {
+    const t = setup();
+    const { asUser } = await signUp(t, "order@example.com");
+    await asUser.mutation(api.real.createBusiness, { name: "Toko Urut", products: [] });
+    // Insert Zebra then Anggur: by slug it would be [Anggur, Zebra], by insertion [Zebra, Anggur].
+    await asUser.mutation(api.real.createProduct, { name: "Zebra", price: 1000, stock: 1, lowStockThreshold: 1 });
+    await asUser.mutation(api.real.createProduct, { name: "Anggur", price: 1000, stock: 1, lowStockThreshold: 1 });
+
+    const dash = await asUser.query(api.real.dashboard, {});
+    if (!dash || !dash.business) throw new Error("Expected dashboard");
+    expect(dash.products.map((p) => p.name)).toEqual(["Zebra", "Anggur"]);
+  });
 });

@@ -9,7 +9,7 @@ export const lowStock = internalQuery({
     try {
       const products = await ctx.db
         .query("products")
-        .withIndex("by_business_id", (q) => q.eq("businessId", args.businessId ?? BUSINESS_ID))
+        .withIndex("by_business_slug", (q) => q.eq("businessId", args.businessId ?? BUSINESS_ID))
         .take(MAX_PRODUCTS_PER_BUSINESS);
       return selectLowStock(products);
     } catch (error) {
