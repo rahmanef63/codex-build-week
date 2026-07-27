@@ -41,3 +41,13 @@ test("Demo owns synthetic business wiring while the workspace runs its own live 
   expect(descriptionText).toMatch(/Workspace Usaha/);
   expect(descriptionText).toMatch(/kini live/);
 });
+
+// The workspace group is dark; its error/loading/not-found boundaries must render
+// in the dash-token shell, never fall back to the light public setup-* tokens.
+test("every workspace boundary uses the dark dash shell, never light public tokens", () => {
+  for (const file of ["error.tsx", "loading.tsx", "not-found.tsx"]) {
+    const source = read("app", "(workspace)", file);
+    expect(source, `${file} must use the dark dash shell`).toMatch(/dash-(root|shell|center)/);
+    expect(source, `${file} must not use light public tokens`).not.toMatch(/setup-(shell|card)|primary-button/);
+  }
+});
