@@ -1,6 +1,7 @@
 "use client";
 
 import { ConvexAuthProvider } from "@convex-dev/auth/react";
+import { ConvexAuthNextjsProvider } from "@convex-dev/auth/nextjs";
 import { ConvexReactClient } from "convex/react";
 import { ConvexHttpClient } from "convex/browser";
 import type { ReactNode } from "react";
@@ -66,5 +67,11 @@ export function ConvexClientProvider({
     );
   }
 
+  // Mode Real (dash) uses the cookie-based Next.js provider so proxy.ts sees the
+  // session server-side; the demo (setup) keeps the client-only provider — it
+  // never signs in, and this keeps /demo statically optimizable.
+  if (variant === "dash") {
+    return <ConvexAuthNextjsProvider client={convex}>{children}</ConvexAuthNextjsProvider>;
+  }
   return <ConvexAuthProvider client={convex}>{children}</ConvexAuthProvider>;
 }
