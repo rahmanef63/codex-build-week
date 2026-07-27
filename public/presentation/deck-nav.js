@@ -98,15 +98,7 @@ document.addEventListener("touchend", (event) => {
   if (Math.abs(distance) > 70) go(current + (distance < 0 ? 1 : -1));
 }, { passive: true });
 
-if (!reduceMotion && matchMedia("(pointer: fine)").matches) {
-  document.addEventListener("pointermove", (event) => {
-    const x = (event.clientX / innerWidth - .5) * 2;
-    const y = (event.clientY / innerHeight - .5) * 2;
-    document.querySelectorAll("[data-tilt]").forEach((node) => {
-      node.style.translate = `${x * 7}px ${y * 5}px`;
-    });
-  });
-}
+// Cursor-tilt parallax removed — decorative motion; the deck stays calm to match the product.
 
 const wait = (ms) => new Promise((resolve) => setTimeout(resolve, reduceMotion ? 20 : ms));
 

@@ -68,7 +68,7 @@ export function Dashboard({ initialView = "today" }: { initialView?: DashboardVi
           />
           <div className="live-badge">
             <span aria-hidden="true" />
-            Data langsung dari Convex
+            Data langsung
           </div>
         </div>
       </header>
