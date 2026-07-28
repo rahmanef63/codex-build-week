@@ -3,6 +3,7 @@ import Link from "next/link";
 import { ArrowRight, Bot, Building2, CheckCircle2, PlayCircle } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { ThemePresetSwitcher } from "@/slices/theme-presets";
 import { AgentFlowPreview } from "./agent-flow-preview";
 
@@ -31,7 +32,7 @@ export default function Home() {
         </header>
 
         <section className="py-12 sm:py-16 lg:py-20" aria-labelledby="mode-title">
-          <div className="grid items-end gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(24rem,0.95fr)] lg:gap-16">
+          <div className="grid items-center gap-10 lg:grid-cols-[minmax(0,1.05fr)_minmax(24rem,0.95fr)] lg:gap-16">
             <div>
               <span className="inline-flex items-center gap-2 text-xs font-medium text-accent">
                 <Bot aria-hidden className="size-4" />
@@ -44,11 +45,11 @@ export default function Home() {
                 Latih cara menilai AI agent: beri instruksi, lihat tindakan pada data usaha, lalu periksa hasilnya.
               </p>
               <div className="mt-7 flex flex-col gap-3 sm:flex-row">
-                <Link className={buttonVariants({ className: "w-full sm:w-fit", size: "lg" })} href="/demo">
+                <Link className={cn(buttonVariants({ size: "lg" }), "h-11 w-full px-5 text-base sm:w-fit")} href="/demo">
                   Coba mode Demo
                   <ArrowRight aria-hidden />
                 </Link>
-                <Link className={buttonVariants({ className: "w-full sm:w-fit", size: "lg", variant: "outline" })} href="/dashboard">
+                <Link className={cn(buttonVariants({ size: "lg", variant: "outline" }), "h-11 w-full px-5 text-base sm:w-fit")} href="/dashboard">
                   Buka workspace usaha
                 </Link>
               </div>
@@ -60,7 +61,7 @@ export default function Home() {
             aria-label="Pilihan Demo dan Workspace usaha"
             className="mt-14 grid gap-4 lg:grid-cols-[minmax(0,1.35fr)_minmax(18rem,0.85fr)]"
           >
-            <article className="overflow-hidden rounded-md border border-border bg-card">
+            <article className="overflow-hidden rounded-md border border-border bg-card shadow-sm">
               <div className="relative aspect-[16/7] border-b border-border bg-muted">
                 <Image
                   alt="Hidangan usaha untuk skenario Demo TemanUsaha AI"
@@ -98,14 +99,14 @@ export default function Home() {
                     </li>
                   ))}
                 </ol>
-                <Link className={buttonVariants({ className: "w-full sm:w-fit", size: "lg" })} href="/demo">
+                <Link className={cn(buttonVariants({ size: "lg" }), "h-11 w-full px-5 text-base sm:w-fit")} href="/demo">
                   Buka mode Demo
                   <ArrowRight aria-hidden />
                 </Link>
               </div>
             </article>
 
-            <article className="flex min-h-full flex-col rounded-md border border-border bg-card p-6 sm:p-8">
+            <article className="flex min-h-full flex-col rounded-md border border-border bg-card p-6 sm:p-8 shadow-sm">
               <div className="flex items-center justify-between gap-4">
                 <span className="grid size-10 place-items-center rounded-md bg-secondary text-secondary-foreground">
                   <Building2 aria-hidden />
@@ -132,7 +133,7 @@ export default function Home() {
                   </li>
                 ))}
               </ul>
-              <Link className={buttonVariants({ className: "mt-auto w-full sm:w-fit", variant: "outline", size: "lg" })} href="/dashboard">
+              <Link className={cn(buttonVariants({ variant: "outline", size: "lg" }), "mt-auto h-11 w-full px-5 text-base sm:w-fit")} href="/dashboard">
                 Buka workspace usaha
                 <ArrowRight aria-hidden />
               </Link>

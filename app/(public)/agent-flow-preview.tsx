@@ -33,7 +33,7 @@ export function AgentFlowPreview() {
   const Icon = active.icon;
 
   return (
-    <section aria-label="Contoh alur tindakan AI" className="relative overflow-hidden rounded-md border border-border bg-card p-5 sm:p-6">
+    <section aria-label="Contoh alur tindakan AI" className="group relative overflow-hidden rounded-md border border-border bg-card p-5 shadow-sm sm:p-6">
       <div className="absolute inset-x-0 top-0 h-1 bg-accent" />
       <div className="flex items-center justify-between gap-4">
         <p className="text-xs font-medium text-muted-foreground">Simulasi tindakan GPTs</p>
@@ -57,7 +57,7 @@ export function AgentFlowPreview() {
         {actions.map(({ icon: ActionIcon, label }, index) => (
           <Button
             aria-pressed={activeIndex === index}
-            className={cn("h-auto justify-start px-3 py-2 text-left", activeIndex === index && "bg-secondary")}
+            className={cn("h-auto justify-start border-border px-3 py-2 text-left", activeIndex === index && "bg-secondary")}
             key={label}
             onClick={() => setActiveIndex(index)}
             variant="ghost"

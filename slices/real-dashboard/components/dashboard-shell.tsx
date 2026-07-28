@@ -5,6 +5,7 @@ import { Bot, ClipboardList, LayoutDashboard, LogOut, Package, Settings, Sparkle
 import type { ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
 import { ThemePresetSwitcher } from "@/slices/theme-presets";
 import type { DashboardView } from "../types";
 
@@ -45,7 +46,7 @@ export function DashboardShell({
           </p>
           {navigation.map(({ icon: Icon, label, view: itemView }) => (
             <Button
-              className="justify-start"
+              className={cn("justify-start", view === itemView && "text-accent")}
               key={itemView}
               onClick={() => onViewChange(itemView)}
               variant={view === itemView ? "secondary" : "ghost"}
@@ -90,7 +91,7 @@ export function DashboardShell({
       >
         {navigation.map(({ icon: Icon, label, view: itemView }) => (
           <Button
-            className="h-auto flex-col gap-1 px-1 py-2 text-[10px]"
+            className={cn("h-auto flex-col gap-1 whitespace-normal px-1 py-2 text-center text-[10px] leading-tight", view === itemView && "text-accent")}
             key={itemView}
             onClick={() => onViewChange(itemView)}
             variant={view === itemView ? "secondary" : "ghost"}
