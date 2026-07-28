@@ -73,6 +73,8 @@ export function Dashboard({ initialView = "today" }: { initialView?: DashboardVi
         </div>
       </header>
 
+      {/* TODO(rr): pill-in-track tabs styled entirely via `.tabs button` in globals.css;
+          a shadcn Button injects competing cva utilities. Kept raw by design. */}
       <nav aria-label="Bagian dashboard" className="tabs" role="tablist">
         {tabs.map((tab) => (
           <button

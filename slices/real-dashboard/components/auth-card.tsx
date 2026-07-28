@@ -74,15 +74,14 @@ export function AuthCard() {
             {busy ? "Memproses…" : flow === "signUp" ? "Daftar" : "Masuk"}
           </Button>
         </form>
-        {/* TODO(rr): .dash-link stays a raw <button> — a text-link role; shadcn Button
-            (ghost) would add padding/hover-bg. Convert once a link-styled variant exists. */}
-        <button
-          className="dash-link"
+        <Button
+          className="dash-link h-auto"
           onClick={() => setFlow(flow === "signUp" ? "signIn" : "signUp")}
           type="button"
+          variant="link"
         >
           {flow === "signUp" ? "Sudah punya akun? Masuk" : "Belum punya akun? Daftar"}
-        </button>
+        </Button>
       </section>
     </div>
   );

@@ -95,16 +95,15 @@ export function OnboardingCard() {
                 />
               </div>
             ))}
-            {/* TODO(rr): .dash-link stays a raw <button> — a text-link role; shadcn Button
-                (ghost) would add padding/hover-bg. Convert once a link-styled variant exists. */}
             {products.length < 5 ? (
-              <button
-                className="dash-link"
+              <Button
+                className="dash-link h-auto"
                 onClick={() => setProducts((current) => [...current, emptyProduct()])}
                 type="button"
+                variant="link"
               >
                 + Tambah produk
-              </button>
+              </Button>
             ) : null}
           </fieldset>
           {error ? (

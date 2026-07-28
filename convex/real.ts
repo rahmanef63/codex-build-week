@@ -46,6 +46,7 @@ export const createBusiness = mutation({
       }),
     ),
   },
+  returns: v.object({ ok: v.boolean() }),
   handler: async (ctx, args) => {
     try {
       const userId = await requireUserId(ctx);
@@ -98,6 +99,7 @@ export const createBusiness = mutation({
 
 export const updateBusiness = mutation({
   args: { name: v.string() },
+  returns: v.null(),
   handler: async (ctx, args) => {
     const userId = await requireUserId(ctx);
     const name = args.name.trim();
@@ -111,6 +113,7 @@ export const updateBusiness = mutation({
 
 export const createProduct = mutation({
   args: { name: v.string(), price: v.number(), stock: v.number(), lowStockThreshold: v.number() },
+  returns: v.null(),
   handler: async (ctx, args) => {
     const userId = await requireUserId(ctx);
     const name = args.name.trim();
@@ -128,6 +131,7 @@ export const createProduct = mutation({
 
 export const updateProduct = mutation({
   args: { productId: v.id("products"), name: v.string(), price: v.number(), stock: v.number(), lowStockThreshold: v.number() },
+  returns: v.null(),
   handler: async (ctx, args) => {
     const userId = await requireUserId(ctx);
     const name = args.name.trim();
@@ -141,6 +145,7 @@ export const updateProduct = mutation({
 
 export const removeProduct = mutation({
   args: { productId: v.id("products") },
+  returns: v.null(),
   handler: async (ctx, args) => {
     const userId = await requireUserId(ctx);
     const product = await ctx.db.get(args.productId);
