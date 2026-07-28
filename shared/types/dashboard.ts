@@ -1,3 +1,5 @@
+import type { Id } from "@/convex/_generated/dataModel";
+
 export type OrderItem = { productName: string; quantity: number };
 
 export type DashboardData = {
@@ -10,7 +12,7 @@ export type DashboardData = {
     pendingOrderCount: number;
   };
   orders: Array<{
-    _id: string;
+    _id: Id<"orders">;
     customerName: string;
     total: number;
     paymentStatus: string;
@@ -19,20 +21,20 @@ export type DashboardData = {
     items: OrderItem[];
   }>;
   lowStock: Array<{
-    _id: string;
+    _id: Id<"products">;
     name: string;
     stock: number;
     lowStockThreshold: number;
   }>;
   products: Array<{
-    _id: string;
+    _id: Id<"products">;
     name: string;
     price: number;
     stock: number;
     lowStockThreshold: number;
   }>;
   activity: Array<{
-    _id: string;
+    _id: Id<"aiActionLogs">;
     action: string;
     inputSummary: string;
     outputSummary: string;

@@ -41,6 +41,36 @@ export async function body(request: Request) {
   }
 }
 
+export type OrderInput = {
+  requestId: string;
+  customerName: string;
+  pickupTime: string;
+  paymentStatus: "UNPAID" | "PAID" | "PARTIAL";
+  notes?: string;
+  items: Array<{ product: string; quantity: number }>;
+};
+
+// Order-input shape + caps — shared by the demo (/api/orders) and Agent
+// (/api/agent/orders) POST routes. A type predicate so callers get the narrowed
+// OrderInput after the check. Caps stop an authorized caller from bloating the
+// tenant or tripping a Convex document-size 500 with an oversized payload.
+export function validOrderInput(input: Record<string, unknown>): input is OrderInput {
+  const items = input.items;
+  const notes = input.notes;
+  return (
+    typeof input.requestId === "string" && input.requestId.trim().length > 0 && input.requestId.length <= 200 &&
+    typeof input.customerName === "string" && input.customerName.trim().length > 0 && input.customerName.length <= 120 &&
+    typeof input.pickupTime === "string" && !Number.isNaN(Date.parse(input.pickupTime)) &&
+    ["UNPAID", "PAID", "PARTIAL"].includes(String(input.paymentStatus)) &&
+    (notes === undefined || (typeof notes === "string" && notes.length <= 500)) &&
+    Array.isArray(items) && items.length > 0 && items.length <= 50 &&
+    items.every((item) =>
+      !!item && typeof item === "object" &&
+      typeof (item as { product?: unknown }).product === "string" && (item as { product: string }).product.trim().length > 0 && (item as { product: string }).product.length <= 120 &&
+      Number.isInteger((item as { quantity?: unknown }).quantity) && (item as { quantity: number }).quantity > 0)
+  );
+}
+
 export const secured = (
   authorize: (request: Request) => boolean,
   handler: (ctx: any, request: Request) => Promise<Response>,

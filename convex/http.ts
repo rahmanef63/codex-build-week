@@ -3,7 +3,7 @@ import { ConvexError } from "convex/values";
 import { internal } from "./_generated/api";
 import { auth } from "./auth";
 import { registerAgentRoutes } from "./agent-routes";
-import { body, json, safeError, secured as securedRoute, timingSafeEqualString } from "./_shared/http";
+import { body, json, safeError, secured as securedRoute, timingSafeEqualString, validOrderInput } from "./_shared/http";
 
 const http = httpRouter();
 auth.addHttpRoutes(http);
@@ -27,17 +27,8 @@ http.route({
   method: "POST",
   handler: secured(async (ctx, request) => {
     const input = await body(request);
+    if (!validOrderInput(input)) throw new ConvexError({ code: "VALIDATION_ERROR", message: "Field order tidak lengkap atau tidak valid." });
     const items = input.items;
-    if (
-      typeof input.requestId !== "string" || !input.requestId.trim() ||
-      typeof input.customerName !== "string" || !input.customerName.trim() ||
-      typeof input.pickupTime !== "string" || Number.isNaN(Date.parse(input.pickupTime)) ||
-      !["UNPAID", "PAID", "PARTIAL"].includes(String(input.paymentStatus)) ||
-      !Array.isArray(items) || !items.length || items.some((item) =>
-        !item || typeof item !== "object" ||
-        typeof (item as any).product !== "string" || !(item as any).product.trim() ||
-        !Number.isInteger((item as any).quantity) || (item as any).quantity <= 0)
-    ) throw new ConvexError({ code: "VALIDATION_ERROR", message: "Field order tidak lengkap atau tidak valid." });
     const result = await ctx.runMutation(internal.orders.createOrder, {
       requestId: input.requestId.trim(),
       customerName: input.customerName.trim(),
