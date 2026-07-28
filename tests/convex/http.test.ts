@@ -81,6 +81,20 @@ describe("Demo HTTP body/validation -> HTTP status", () => {
     expect(res.status).toBe(400);
     expect((await res.json()).error.code).toBe("VALIDATION_ERROR");
   });
+
+  test("an oversized item list (>50) maps to 400 VALIDATION_ERROR", async () => {
+    const t = setup();
+    const items = Array.from({ length: 51 }, () => ({ product: "x", quantity: 1 }));
+    const res = await t.fetch(
+      "/api/orders",
+      authed(KEY, {
+        method: "POST",
+        body: JSON.stringify({ requestId: "big", customerName: "X", pickupTime: "2026-07-28T10:00:00.000Z", paymentStatus: "UNPAID", items }),
+      }),
+    );
+    expect(res.status).toBe(400);
+    expect((await res.json()).error.code).toBe("VALIDATION_ERROR");
+  });
 });
 
 describe("Agent HTTP surface (token-derived tenancy)", () => {
@@ -129,6 +143,77 @@ describe("Agent HTTP surface (token-derived tenancy)", () => {
     );
     expect(res.status).toBe(400);
     expect((await res.json()).error.code).toBe("VALIDATION_ERROR");
+  });
+});
+
+describe("Agent HTTP surface — full route coverage", () => {
+  const orderBody = (requestId: string, product: string) =>
+    JSON.stringify({
+      requestId,
+      customerName: "Bu Uji",
+      pickupTime: "2026-07-28T10:00:00.000Z",
+      paymentStatus: "UNPAID",
+      items: [{ product, quantity: 1 }],
+    });
+
+  test("orders: POST creates, GET lists, PATCH updates — all token-scoped", async () => {
+    const t = setup();
+    const { token } = await issueTokenFor(t, "orders@example.com", "Kopi Orders");
+
+    const created = await t.fetch("/api/agent/orders", authed(token, { method: "POST", body: orderBody("o1", "Kopi Orders") }));
+    expect(created.status).toBe(201);
+
+    const list = await t.fetch("/api/agent/orders", authed(token));
+    expect(list.status).toBe(200);
+    const { orders } = await list.json();
+    expect(orders).toHaveLength(1);
+
+    const patched = await t.fetch(`/api/agent/orders/${orders[0]._id}`, authed(token, { method: "PATCH", body: JSON.stringify({ fulfillmentStatus: "COMPLETED" }) }));
+    expect(patched.status).toBe(200);
+  });
+
+  test("read routes (inventory, summary, business) respond 200 for a valid token", async () => {
+    const t = setup();
+    const { token } = await issueTokenFor(t, "reads@example.com", "Kopi Reads");
+    for (const path of ["/api/agent/inventory/low-stock", "/api/agent/summary/today", "/api/agent/business"]) {
+      const res = await t.fetch(path, authed(token));
+      expect(res.status, path).toBe(200);
+    }
+  });
+
+  test("business PATCH renames, reflected in the next GET", async () => {
+    const t = setup();
+    const { token } = await issueTokenFor(t, "biz@example.com", "Kopi Biz");
+    const res = await t.fetch("/api/agent/business", authed(token, { method: "PATCH", body: JSON.stringify({ name: "Toko Baru" }) }));
+    expect(res.status).toBe(200);
+    const { business } = await (await t.fetch("/api/agent/business", authed(token))).json();
+    expect(business.name).toBe("Toko Baru");
+  });
+
+  test("products PATCH then DELETE via token", async () => {
+    const t = setup();
+    const { token } = await issueTokenFor(t, "prod@example.com", "Kopi Prod");
+    const { products } = await (await t.fetch("/api/agent/products", authed(token))).json();
+    const productId = products[0]._id;
+
+    const patched = await t.fetch(`/api/agent/products/${productId}`, authed(token, { method: "PATCH", body: JSON.stringify({ name: "Kopi Ubah", price: 9000, stock: 3, lowStockThreshold: 1 }) }));
+    expect(patched.status).toBe(200);
+
+    const del = await t.fetch(`/api/agent/products/${productId}`, authed(token, { method: "DELETE" }));
+    expect(del.status).toBe(200);
+    const after = await (await t.fetch("/api/agent/products", authed(token))).json();
+    expect(after.products).toHaveLength(0);
+  });
+
+  test("cross-tenant: token A cannot PATCH business B's product (404 PRODUCT_NOT_FOUND)", async () => {
+    const t = setup();
+    const { token: tokenA } = await issueTokenFor(t, "tenant-a@example.com", "Kopi A");
+    const { token: tokenB } = await issueTokenFor(t, "tenant-b@example.com", "Teh B");
+    const { products: bProducts } = await (await t.fetch("/api/agent/products", authed(tokenB))).json();
+
+    const res = await t.fetch(`/api/agent/products/${bProducts[0]._id}`, authed(tokenA, { method: "PATCH", body: JSON.stringify({ name: "Hijack", price: 1, stock: 1, lowStockThreshold: 0 }) }));
+    expect(res.status).toBe(404);
+    expect((await res.json()).error.code).toBe("PRODUCT_NOT_FOUND");
   });
 });
 

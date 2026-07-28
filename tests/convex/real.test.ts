@@ -149,4 +149,12 @@ describe("real catalog and profile", () => {
     if (!dash || !dash.business) throw new Error("Expected dashboard");
     expect(dash.products.map((p) => p.name)).toEqual(["Zebra", "Anggur"]);
   });
+
+  test("updateBusiness before creating one fails BUSINESS_NOT_FOUND (not BUSINESS_EXISTS)", async () => {
+    const t = setup();
+    const { asUser } = await signUp(t, "nobiz@example.com");
+    await expect(
+      asUser.mutation(api.real.updateBusiness, { name: "X" }),
+    ).rejects.toMatchObject({ data: { code: "BUSINESS_NOT_FOUND" } });
+  });
 });
