@@ -625,6 +625,7 @@ tbody tr:last-child > * { border-bottom: 0; }
   white-space: nowrap;
 }
 .dash-badge-danger { border-color: color-mix(in srgb, var(--destructive) 40%, transparent); color: var(--destructive); }
+.dash-badge-warn { border-color: color-mix(in srgb, var(--accent) 40%, transparent); color: var(--accent); }
 
 /* Loading skeleton — size at the call site. */
 .dash-skeleton { border-radius: 8px; background: var(--card-hover); animation: dash-skeleton-pulse 1.6s ease-in-out infinite; }

@@ -3,6 +3,8 @@
 import { useAuthActions } from "@convex-dev/auth/react";
 import { useState } from "react";
 
+import { Button } from "@/components/ui/button";
+
 export function AuthCard() {
   const { signIn } = useAuthActions();
   const [flow, setFlow] = useState<"signIn" | "signUp">("signUp");
@@ -68,10 +70,12 @@ export function AuthCard() {
               {error}
             </p>
           ) : null}
-          <button className="dash-btn-primary" disabled={busy} type="submit">
+          <Button className="dash-btn-primary h-auto" disabled={busy} type="submit" variant="ghost">
             {busy ? "Memproses…" : flow === "signUp" ? "Daftar" : "Masuk"}
-          </button>
+          </Button>
         </form>
+        {/* TODO(rr): .dash-link stays a raw <button> — a text-link role; shadcn Button
+            (ghost) would add padding/hover-bg. Convert once a link-styled variant exists. */}
         <button
           className="dash-link"
           onClick={() => setFlow(flow === "signUp" ? "signIn" : "signUp")}

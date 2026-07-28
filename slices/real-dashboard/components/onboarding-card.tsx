@@ -4,6 +4,7 @@ import { useMutation } from "convex/react";
 import { useState } from "react";
 
 import { api } from "@/convex/_generated/api";
+import { Button } from "@/components/ui/button";
 import type { StarterProduct } from "../types";
 
 const emptyProduct = (): StarterProduct => ({ name: "", price: "", stock: "" });
@@ -94,6 +95,8 @@ export function OnboardingCard() {
                 />
               </div>
             ))}
+            {/* TODO(rr): .dash-link stays a raw <button> — a text-link role; shadcn Button
+                (ghost) would add padding/hover-bg. Convert once a link-styled variant exists. */}
             {products.length < 5 ? (
               <button
                 className="dash-link"
@@ -109,9 +112,9 @@ export function OnboardingCard() {
               {error}
             </p>
           ) : null}
-          <button className="dash-btn-primary" disabled={busy} type="submit">
+          <Button className="dash-btn-primary h-auto" disabled={busy} type="submit" variant="ghost">
             {busy ? "Menyimpan…" : "Buka dashboard saya"}
-          </button>
+          </Button>
         </form>
       </section>
     </div>
