@@ -90,14 +90,14 @@
   --surface-glass: rgba(255, 255, 255, .9); /* translucent card / badge-on-image surface */
   --surface-mist: #edf2ed;                  /* tab hover + inline-code background */
   --tabs-bg: rgba(255, 255, 255, .78);
-  --table-head-bg: #f8faf8;
+  --table-head-bg: var(--surface-mist);
   --status-default-bg: #edf1ed;
   --live-dot: #20a766;
   --header-art-bg: #dfe8dc;
   --header-art-border: rgba(255, 255, 255, .72);
   --header-art-overlay: rgba(18, 30, 23, .26);
   --live-badge-glass-border: rgba(255, 255, 255, .62);
-  --footer-text-on-green: rgba(255, 255, 255, .75);
+  --footer-text-on-green: rgba(255, 255, 255, .85);
   --radius-dash-card: 1rem;                 /* Mode Real entry/boundary card radius (was 16px) */
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
@@ -123,15 +123,18 @@
   --sidebar-ring: oklch(0.708 0 0);
 }
 
-/* Public routes intentionally retain their light product treatment. */
-.light {
+/* Public routes intentionally retain their light product treatment.
+   .demo-page joins .light so the always-light warung demo can't be washed out
+   by a persisted dark toggle leaking .dark's text/surface tokens into it. */
+.light,
+.demo-page {
   color-scheme: light;
   --background: #fafafa;
   --card: #ffffff;
   --card-hover: #f1f1f1;
   --foreground: #171717;
   --muted-foreground: #6b6b6b;
-  --border: #e5e5e5;
+  --border: #d8d8d8;
   --border-hover: #d4d4d4;
   --primary: #171717;
   --primary-foreground: #fafafa;
@@ -309,7 +312,7 @@ a { color: inherit; }
 .section-heading { align-items: end; margin-bottom: 20px; }
 .section-heading h2,
 .card-heading h3 { margin: 5px 0 0; letter-spacing: -.025em; }
-.section-heading h2 { font-size: clamp(1.35rem, 3vw, 1.8rem); }
+.section-heading h2 { font-size: clamp(1.35rem, 3vw, 1.8rem); line-height: 1.15; }
 .section-heading p { margin: 0; color: var(--muted-foreground); }
 
 .metric-grid {
@@ -338,9 +341,9 @@ a { color: inherit; }
 }
 
 .metric-card span { color: var(--muted-foreground); font-size: .88rem; font-weight: 650; }
-.metric-card strong { font-size: clamp(1.55rem, 3vw, 2.15rem); letter-spacing: -.045em; }
-.content-card { padding: 22px; }
-.count-badge { min-width: 30px; justify-content: center; padding: 7px 10px; color: var(--green); background: var(--green-soft); }
+.metric-card strong { font-size: clamp(1.55rem, 3vw, 2.15rem); letter-spacing: -.045em; line-height: 1.1; }
+.content-card { padding: 20px; }
+.count-badge { min-width: 30px; justify-content: center; padding: 7px 10px; color: var(--amber); background: var(--amber-soft); }
 
 .stock-list,
 .activity-list { margin: 18px 0 0; padding: 0; list-style: none; }
@@ -366,13 +369,17 @@ a { color: inherit; }
 
 .table-card { overflow: hidden; }
 .table-scroll { overflow-x: auto; }
-table { width: 100%; min-width: 840px; border-collapse: collapse; }
-th,
-td { padding: 16px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; font-size: .88rem; }
-thead th { color: var(--muted-foreground); background: var(--table-head-bg); font-size: .74rem; letter-spacing: .04em; text-transform: uppercase; }
-tbody th { font-weight: 750; }
-tbody tr:last-child > * { border-bottom: 0; }
-.money { font-weight: 800; white-space: nowrap; }
+/* Table styling is scoped to the Demo warung shell so its bare element rules
+   can't leak onto Mode Real's own Tailwind-built <table> (light header stripe,
+   uppercasing, stray borders). */
+.dashboard-shell table { width: 100%; min-width: 840px; border-collapse: collapse; }
+.dashboard-shell th,
+.dashboard-shell td { padding: 16px; border-bottom: 1px solid var(--line); text-align: left; vertical-align: top; font-size: .88rem; }
+.dashboard-shell thead th { color: var(--muted-foreground); background: var(--table-head-bg); font-size: .74rem; letter-spacing: .04em; text-transform: uppercase; }
+.dashboard-shell thead th:last-child { text-align: right; }
+.dashboard-shell tbody th { font-weight: 750; }
+.dashboard-shell tbody tr:last-child > * { border-bottom: 0; }
+.money { font-weight: 800; white-space: nowrap; text-align: right; }
 
 .status {
   display: inline-block;
@@ -457,25 +464,26 @@ tbody tr:last-child > * { border-bottom: 0; }
   .brand-mark { width: 58px; height: 58px; }
   .header-art { flex-basis: auto; width: 100%; min-height: 150px; }
   .tabs { width: 100%; }
-  .tabs button { flex: 1; padding-inline: 8px; font-size: .84rem; }
+  .tabs button { flex: 1; padding-inline: 6px; padding-block: 12px; font-size: .8rem; white-space: nowrap; }
   .metric-grid { gap: 9px; }
   .metric-card { min-height: 112px; padding: 15px; }
-  .content-card { padding: 17px; }
+  .content-card { padding: 15px; }
   .activity-meta { align-items: flex-start; flex-direction: column; gap: 6px; }
   .dashboard-footer { align-items: flex-start; flex-direction: column; }
   .setup-illustration { float: none; display: block; width: 160px; height: 160px; margin: 0 auto 18px; }
 
-  /* Orders table -> one card per order on phones: no sideways swipe to reach Total. */
+  /* Orders table -> one card per order on phones: no sideways swipe to reach Total.
+     Scoped to .dashboard-shell so it can't restyle Mode Real's own Tailwind table. */
   .table-scroll { overflow-x: visible; }
-  table { min-width: 0; }
-  thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
-  tbody tr { display: grid; gap: 6px; margin-bottom: 12px; padding: 14px; border: 1px solid var(--line); border-radius: 14px; }
-  tbody tr:last-child { margin-bottom: 0; }
-  tbody th,
-  tbody td { padding: 0; border: 0; font-size: .9rem; }
-  tbody th[scope="row"] { font-size: 1rem; }
-  tbody td[data-label] { display: grid; grid-template-columns: 6.5rem 1fr; gap: 10px; align-items: center; }
-  tbody td[data-label]::before { content: attr(data-label); color: var(--muted-foreground); font-size: .72rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
+  .dashboard-shell table { min-width: 0; }
+  .dashboard-shell thead { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+  .dashboard-shell tbody tr { display: grid; gap: 6px; margin-bottom: 12px; padding: 14px; border: 1px solid var(--line); border-radius: 14px; }
+  .dashboard-shell tbody tr:last-child { margin-bottom: 0; }
+  .dashboard-shell tbody th,
+  .dashboard-shell tbody td { padding: 0; border: 0; font-size: .9rem; text-align: left; }
+  .dashboard-shell tbody th[scope="row"] { font-size: 1rem; }
+  .dashboard-shell tbody td[data-label] { display: grid; grid-template-columns: 6.5rem 1fr; gap: 10px; align-items: center; }
+  .dashboard-shell tbody td[data-label]::before { content: attr(data-label); color: var(--muted-foreground); font-size: .72rem; font-weight: 800; letter-spacing: .04em; text-transform: uppercase; }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -560,7 +568,7 @@ tbody tr:last-child > * { border-bottom: 0; }
   border-radius: var(--radius-md);
   background: var(--primary);
   color: var(--primary-foreground);
-  padding: 8px 16px;
+  padding: 12px 16px;
   font: inherit;
   font-size: .875rem;
   font-weight: 500;
@@ -590,7 +598,7 @@ tbody tr:last-child > * { border-bottom: 0; }
   border: 1px solid var(--input);
   border-radius: var(--radius-md);
   background: transparent;
-  padding: 8px 12px;
+  padding: 11px 12px;
   font: inherit;
   font-size: .875rem;
   color: var(--foreground);
@@ -657,9 +665,9 @@ tbody tr:last-child > * { border-bottom: 0; }
   --accent: #f59e0b; /* warm amber for the dark workspace (was grayscale) */
   --accent-foreground: oklch(0.205 0 0);
   --destructive: oklch(0.704 0.191 22.216);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
+  --border: oklch(1 0 0 / 18%);
+  --input: oklch(1 0 0 / 28%);
+  --ring: var(--accent);
   --chart-1: oklch(0.87 0 0);
   --chart-2: oklch(0.556 0 0);
   --chart-3: oklch(0.439 0 0);
