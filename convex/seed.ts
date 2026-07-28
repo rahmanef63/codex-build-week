@@ -20,13 +20,21 @@ export const reset = internalMutation({
       if (!expected) throw new ConvexError({ code: "RESET_DISABLED", message: "Reset demo belum dikonfigurasi." });
       if (!timingSafeEqualString(resetKey, expected)) throw new ConvexError({ code: "UNAUTHORIZED", message: "Reset key salah." });
 
-      const oldRows = [
-        ...(await ctx.db.query("aiActionLogs").withIndex("by_business_created", (q) => q.eq("businessId", BUSINESS_ID)).take(1000)),
-        ...(await ctx.db.query("orders").withIndex("by_business_created", (q) => q.eq("businessId", BUSINESS_ID)).take(1000)),
-        ...(await ctx.db.query("products").withIndex("by_business_slug", (q) => q.eq("businessId", BUSINESS_ID)).take(1000)),
-        ...(await ctx.db.query("businesses").withIndex("by_business_id", (q) => q.eq("businessId", BUSINESS_ID)).take(1000)),
+      // Batch-delete ALL existing demo rows (not just the first 1000) so a shared
+      // tenant that accumulated >1000 orders/logs between resets fully self-heals.
+      const tables = [
+        () => ctx.db.query("aiActionLogs").withIndex("by_business_created", (q) => q.eq("businessId", BUSINESS_ID)),
+        () => ctx.db.query("orders").withIndex("by_business_created", (q) => q.eq("businessId", BUSINESS_ID)),
+        () => ctx.db.query("products").withIndex("by_business_slug", (q) => q.eq("businessId", BUSINESS_ID)),
+        () => ctx.db.query("businesses").withIndex("by_business_id", (q) => q.eq("businessId", BUSINESS_ID)),
       ];
-      for (const row of oldRows) await ctx.db.delete(row._id);
+      for (const build of tables) {
+        for (;;) {
+          const batch = await build().take(200);
+          if (batch.length === 0) break;
+          for (const row of batch) await ctx.db.delete(row._id);
+        }
+      }
 
       await ctx.db.insert("businesses", {
         businessId: BUSINESS_ID,
