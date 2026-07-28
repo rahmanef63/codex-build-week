@@ -2,10 +2,11 @@ import { ConvexError, v } from "convex/values";
 import { internalMutation } from "./_generated/server";
 import { BUSINESS_ID, jakartaDay } from "./domain";
 import { logError } from "./_shared/log";
+import { timingSafeEqualString } from "./_shared/http";
 
 const PRODUCTS = [
-  ["nasi-ayam", "Nasi Ayam", 15_000, 12, 5],
-  ["es-teh", "Es Teh", 5_000, 18, 8],
+  ["nasi-ayam", "Nasi Ayam", 15_000, 60, 5],
+  ["es-teh", "Es Teh", 5_000, 60, 8],
   ["ayam-goreng", "Ayam Goreng", 12_000, 7, 5],
   ["nasi-putih", "Nasi Putih", 5_000, 20, 8],
   ["sambal-extra", "Sambal Extra", 3_000, 6, 10],
@@ -17,7 +18,7 @@ export const reset = internalMutation({
     try {
       const expected = process.env.DEMO_RESET_KEY;
       if (!expected) throw new ConvexError({ code: "RESET_DISABLED", message: "Reset demo belum dikonfigurasi." });
-      if (resetKey !== expected) throw new ConvexError({ code: "UNAUTHORIZED", message: "Reset key salah." });
+      if (!timingSafeEqualString(resetKey, expected)) throw new ConvexError({ code: "UNAUTHORIZED", message: "Reset key salah." });
 
       const oldRows = [
         ...(await ctx.db.query("aiActionLogs").withIndex("by_business_created", (q) => q.eq("businessId", BUSINESS_ID)).take(1000)),

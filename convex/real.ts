@@ -103,7 +103,7 @@ export const updateBusiness = mutation({
     const name = args.name.trim();
     if (!name) fail("INVALID_NAME", "Nama usaha wajib diisi.");
     const business = await ctx.db.query("businesses").withIndex("by_business_id", (q) => q.eq("businessId", userId)).unique();
-    if (!business) fail("BUSINESS_EXISTS", "Buat usaha terlebih dahulu.");
+    if (!business) fail("BUSINESS_NOT_FOUND", "Buat usaha terlebih dahulu.");
     await ctx.db.patch(business._id, { name });
     await logChange(ctx, userId, "update_business", "Profil usaha diperbarui.");
   },
