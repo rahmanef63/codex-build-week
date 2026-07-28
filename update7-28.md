@@ -27,6 +27,23 @@ This tracks the findings from the multi-lens evaluation (judge / non-tech UMKM /
 
 ---
 
+## 1b. Pass 2 outcome — 2026-07-28 (`57129d6`)
+
+Executed the safe, headless-verifiable slice of the plan; deferred the two items whose correctness is only checkable in a browser.
+
+| Item | Outcome |
+|---|---|
+| **R1** shadcn Button | **Partial-done.** The `link` variant exists now → the 2 `.dash-link` text-links (onboarding + auth) are `<Button variant="link">` (gain a real focus ring; `.dash-link` unlayered CSS keeps the look). The 2 tab bars (demo pill-in-track, agent-setup underline) are custom tab styles Button can't wear without fighting cva utilities → kept raw with `TODO(rr)` markers (rr P1 escape hatch). |
+| **R4** return validators | **Done for the write path.** `real.createBusiness/updateBusiness/createProduct/updateProduct/removeProduct` + `agent.issue`. Complex query unions (`real`/`business.dashboard`, `agent.configuration`) left unvalidated on purpose — faithful validator is fragile, TS already types them. |
+| **R5** db.get codemod | **Skip.** convex `1.42.3` supports both forms; ids are already `v.id(...)`-typed → zero behavior/type gain. Not worth the churn. |
+| **R6** cacheComponents | **Skip.** Global Next 16 flag; app is realtime authed Convex → payoff ≈ 0, breakage risk real. |
+| **R7** hex → token | **Done (already clean).** Every remaining hex is a `--token: #hex` definition inside `:root`/`.light`/`.dark`; none used raw in a component selector. |
+| **R8** slice `$schema` | **Moot.** `$schema` already gone from all slice.json/manifest files. |
+| **R2** auth preloadQuery | **Deferred — browser-verify-gated.** Kills the client auth-loading skeleton flash on `/dashboard`; requires refactoring the 4-way auth branch in `dashboard-app.tsx` to `usePreloadedQuery` + server auth state. Only verifiable as "no flash" in a browser; `convex:sync` hangs locally and convex-test doesn't cover SSR hydration → cannot self-verify. Do it in a session with a live dev server, stage on a Vercel preview, verify sign-in/reload/sign-out, then merge. Auth security core (proxy + server provider) already live. |
+| **R3** mobile-first CSS | **Deferred — browser-verify-gated.** Invert the 3 `max-width` blocks to `min-width`; correctness is purely visual at 360/768/1200px. Current responsive CSS works. Own pass with a browser. |
+
+Gate after this pass: 59 tests + tsc + build green.
+
 ## 2. Remaining findings — plan
 
 Ordered by value. Each item is independently shippable; verify each with `npm run check` before push.
