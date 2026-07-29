@@ -72,7 +72,7 @@ export function AgentSetup() {
     const link = document.createElement("a"); link.href = href; link.download = `${config.businessName.toLowerCase().replace(/[^a-z0-9]+/g, "-")}-knowledge.md`; link.click(); URL.revokeObjectURL(href);
   };
 
-  return <section className="max-w-3xl rounded-md border border-border bg-card p-6">
+  return <section className="w-full rounded-md border border-border bg-card p-6">
     <div className="flex items-start justify-between gap-4"><div><p className="text-xs font-medium uppercase tracking-widest text-accent">Siapkan asisten AI</p><h2 className="mt-2 text-xl font-semibold">Hubungkan GPT ke {config.businessName}</h2><p className="mt-2 text-sm text-muted-foreground">Ikuti langkah berikut berurutan. Detail teknis tersedia hanya saat dibutuhkan.</p></div><KeyRound className="text-accent" /></div>
     <ol className="mt-6 grid gap-3 sm:grid-cols-3">
       {["Salin identitas dan instruksi GPT", "Tambahkan Action dan token", "Uji ringkasan serta pesanan"].map((step, index) => <li className="rounded-md border border-border bg-muted/30 p-3 text-sm" key={step}><span className="mr-2 text-accent">{index + 1}.</span>{step}</li>)}

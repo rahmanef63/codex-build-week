@@ -18,15 +18,6 @@ const navigation = [
   { icon: Settings, label: "Pengaturan", view: "settings" },
 ] as const;
 
-const descriptions: Record<DashboardView, string> = {
-  overview: "Pantau kondisi usaha yang perlu ditindaklanjuti hari ini.",
-  orders: "Periksa pesanan terbaru, pembayaran, dan status penyelesaian.",
-  catalog: "Atur harga, stok, dan batas minimum setiap produk.",
-  activity: "Periksa apa yang dibaca atau diubah melalui GPT.",
-  agent: "Ikuti langkah singkat untuk menghubungkan asisten AI ke data usaha.",
-  settings: "Perbarui informasi dasar yang tampil di dashboard dan GPT.",
-};
-
 export function DashboardShell({
   businessName,
   children,
@@ -86,15 +77,9 @@ export function DashboardShell({
         </header>
 
         <div
-          className="mx-auto w-full max-w-6xl [&>*]:mx-auto [&>*]:w-full"
+          className="mx-auto w-full max-w-6xl"
           data-dashboard-content
         >
-          <header className="max-w-3xl pb-7">
-            <p className="text-xs font-medium uppercase tracking-widest text-accent">Dashboard usaha</p>
-            <h1 className="mt-2 text-2xl font-semibold tracking-tight">{active.label}</h1>
-            <p className="mt-1 text-sm text-muted-foreground">{descriptions[view]}</p>
-          </header>
-
           {children}
         </div>
       </main>

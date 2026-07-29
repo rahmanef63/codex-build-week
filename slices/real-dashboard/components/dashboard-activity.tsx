@@ -11,7 +11,7 @@ export function DashboardActivity({ activity }: { activity: DashboardData["activ
   const [query, setQuery] = useState("");
   const visible = activity.filter((item) => matchesActivity(item, filter, period, query));
   return (
-    <section className="max-w-6xl rounded-md border border-border bg-card">
+    <section className="w-full rounded-md border border-border bg-card">
       <div className="flex items-center justify-between gap-4 border-b border-border px-6 py-4">
         <div>
           <h2 className="text-sm font-semibold">Riwayat aktivitas</h2>

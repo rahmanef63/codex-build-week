@@ -45,7 +45,7 @@ export function DashboardCatalog({ products }: { products: DashboardData["produc
   }
 
   return (
-    <div className="max-w-6xl space-y-5">
+    <div className="w-full space-y-5">
       <section className="rounded-md border border-border bg-card p-5">
         <h2 className="text-sm font-semibold">Tambah produk</h2>
         <p className="mt-1 text-xs text-muted-foreground">Masukkan produk baru beserta stok awalnya.</p>

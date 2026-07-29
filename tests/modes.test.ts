@@ -11,6 +11,8 @@ test("Demo owns synthetic business wiring while the workspace runs its own live 
   const real = read("app", "(workspace)", "real", "page.tsx");
   const dashboard = read("app", "(workspace)", "dashboard", "page.tsx");
   const dashboardApp = read("slices", "real-dashboard", "components", "dashboard-app.tsx");
+  const connectedDashboard = read("slices", "real-dashboard", "components", "connected-dashboard.tsx");
+  const dashboardFeature = read("slices", "real-dashboard", "components", "dashboard-feature.tsx");
   const dashboardShell = read("slices", "real-dashboard", "components", "dashboard-shell.tsx");
   const authCard = read("slices", "real-dashboard", "components", "auth-card.tsx");
   const convexProvider = read("shared", "components", "convex-provider.tsx");
@@ -37,10 +39,16 @@ test("Demo owns synthetic business wiring while the workspace runs its own live 
   expect(dashboardApp).toMatch(/useConvexAuth/);
   expect(dashboardApp).toMatch(/api\.real\.dashboard/);
   expect(dashboardApp).not.toMatch(/Mode Real|Workspace/);
-  expect(dashboardShell).toMatch(/Dashboard usaha/);
+  expect(dashboardFeature).toMatch(/Dashboard usaha/);
   expect(dashboardShell).not.toMatch(/Mode Real|Workspace usaha|Agent GPT/);
   expect(dashboardShell).toMatch(/data-dashboard-content/);
-  expect(dashboardShell).toMatch(/mx-auto w-full max-w-6xl \[&>\*\]:mx-auto \[&>\*\]:w-full/);
+  expect(dashboardShell).toMatch(/mx-auto w-full max-w-6xl/);
+  expect(connectedDashboard).toMatch(/<DashboardFeature \{\.\.\.featureCopy\[view\]\}>/);
+  expect(dashboardFeature).toMatch(/data-dashboard-feature/);
+  expect(dashboardFeature).toMatch(/data-dashboard-feature-content/);
+  expect(dashboardFeature).toMatch(/children: ReactNode/);
+  expect(dashboardFeature).toMatch(/description: string/);
+  expect(dashboardFeature).toMatch(/title: string/);
   expect(authCard).not.toMatch(/Mode Real|Workspace/);
 
   expect(gptPackage).toMatch(/## Name\s+```text\s+TemanUsaha AI\s+```/);

@@ -23,7 +23,7 @@ export function DashboardOrders({
   const [busy, setBusy] = useState(false);
 
   return (
-    <div className="max-w-6xl space-y-5">
+    <div className="w-full space-y-5">
       <section className="rounded-md border border-border bg-card p-5">
         <div className="flex items-center justify-between gap-4">
           <div>

@@ -10,7 +10,7 @@ export function DashboardOverview({ data }: { data: DashboardData }) {
   ];
 
   return (
-    <div className="max-w-6xl space-y-6">
+    <div className="w-full space-y-6">
       <section aria-label="Ringkasan hari ini" className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {stats.map(([label, value]) => (
           <article className="rounded-md border border-border bg-card p-4 sm:p-5" key={label}>
