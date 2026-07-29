@@ -57,3 +57,13 @@ test("every workspace boundary uses the dark dash shell, never light public toke
     expect(source, `${file} must not use light public tokens`).not.toMatch(/setup-(shell|card)|primary-button/);
   }
 });
+
+test("next-themes mounts once at the root so client navigation never renders a script subtree", () => {
+  const rootLayout = read("app", "layout.tsx");
+  const publicLayout = read("app", "(public)", "layout.tsx");
+  const workspaceLayout = read("app", "(workspace)", "layout.tsx");
+
+  expect(rootLayout).toMatch(/<ThemeProviders>/);
+  expect(publicLayout).not.toMatch(/ThemeProviders/);
+  expect(workspaceLayout).not.toMatch(/ThemeProviders/);
+});

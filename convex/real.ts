@@ -1,8 +1,11 @@
 import { v } from "convex/values";
+import { getAuthUserId } from "@convex-dev/auth/server";
 import { optionalUserId, requireUserId } from "./_shared/auth";
 import { fail } from "./_shared/errors";
 import { logError } from "./_shared/log";
-import { mutation, query, type MutationCtx } from "./_generated/server";
+import { action, mutation, query, type MutationCtx } from "./_generated/server";
+import { internal } from "./_generated/api";
+import { paymentStatus } from "./lib/order_validation";
 import { readDashboard } from "./business";
 
 // Mode Real: setiap user memiliki satu usaha; businessId = userId sehingga
@@ -152,5 +155,30 @@ export const removeProduct = mutation({
     if (!product || product.businessId !== userId) fail("PRODUCT_NOT_FOUND", "Produk tidak ditemukan.");
     await ctx.db.delete(args.productId);
     await logChange(ctx, userId, "delete_product", `Produk ${product.name} dihapus.`);
+  },
+});
+
+export const authCapabilities = query({
+  args: {},
+  returns: v.object({ emailVerification: v.boolean() }),
+  handler: () => ({ emailVerification: Boolean(process.env.AUTH_RESEND_KEY) }),
+});
+
+export const createOrder = action({
+  args: {
+    customerName: v.string(),
+    items: v.array(v.object({ product: v.string(), quantity: v.number() })),
+    pickupTime: v.string(),
+    paymentStatus,
+    notes: v.optional(v.string()),
+  },
+  handler: async (ctx, args): Promise<unknown> => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) fail("UNAUTHENTICATED", "Masuk terlebih dahulu.");
+    return await ctx.runMutation(internal.orders.createOrder, {
+      ...args,
+      businessId: userId,
+      requestId: crypto.randomUUID(),
+    });
   },
 });

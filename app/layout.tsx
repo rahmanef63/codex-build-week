@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 
 import { ToastProvider } from "@/shared/components/toast";
 import { siteUrl } from "@/shared/lib/site";
+import { ThemeProviders } from "@/slices/theme-presets";
 
 import "./globals.css";
 import { Geist } from "next/font/google";
@@ -29,7 +30,9 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
   return (
     <html lang="id" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
       <body>
-        <ToastProvider>{children}</ToastProvider>
+        <ThemeProviders>
+          <ToastProvider>{children}</ToastProvider>
+        </ThemeProviders>
       </body>
     </html>
   );

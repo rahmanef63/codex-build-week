@@ -21,7 +21,7 @@ export function ModeNavBar({
           paddingBottom: 20,
         }}
       >
-        <Link href="/">← Pilih mode</Link>
+        <Link href="/">← Kembali ke beranda</Link>
         <span className="dash-muted dash-small">{label}</span>
       </nav>
     );
@@ -29,7 +29,7 @@ export function ModeNavBar({
 
   return (
     <nav className="demo-mode-bar" aria-label="Navigasi mode">
-      <Link href="/">← Pilih mode</Link>
+      <Link href="/">← Kembali ke beranda</Link>
       <span>{label}</span>
     </nav>
   );

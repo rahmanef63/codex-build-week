@@ -2,7 +2,7 @@ import { httpActionGeneric, httpRouter } from "convex/server";
 import { ConvexError } from "convex/values";
 import { internal } from "./_generated/api";
 import { auth } from "./auth";
-import { registerAgentRoutes } from "./agent-routes";
+import { registerAgentRoutes } from "./agent_routes";
 import { body, json, safeError, secured as securedRoute, timingSafeEqualString, validOrderInput } from "./_shared/http";
 
 const http = httpRouter();

@@ -3,8 +3,6 @@ import type { ReactNode } from "react";
 
 import { ConvexAuthNextjsServerProvider } from "@convex-dev/auth/nextjs/server";
 
-import { ThemeProviders } from "@/slices/theme-presets";
-
 // Mode Real workspace routes are private-by-default in search engines' eyes —
 // they carry no useful content for anonymous crawlers (auth gate/onboarding).
 export const metadata: Metadata = {
@@ -18,7 +16,7 @@ export const metadata: Metadata = {
 export default function WorkspaceLayout({ children }: { children: ReactNode }) {
   return (
     <ConvexAuthNextjsServerProvider>
-      <ThemeProviders defaultMode="dark" storageKey="theme">{children}</ThemeProviders>
+      {children}
     </ConvexAuthNextjsServerProvider>
   );
 }

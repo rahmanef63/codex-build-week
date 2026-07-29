@@ -19,7 +19,7 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { view } = await params;
   return {
-    title: "Mode Demo",
+    title: "Demo interaktif",
     openGraph: { images: [`/api/dashboard-card-image?view=${view}`] },
   };
 }
@@ -35,7 +35,7 @@ export default async function DemoViewPage({
 
   return (
     <div className="demo-page">
-      <ModeNavBar label="Mode Demo · Data sintetis" />
+      <ModeNavBar label="Demo interaktif · Data sintetis" />
       <ConvexClientProvider>
         <Dashboard initialView={parsedView} />
       </ConvexClientProvider>

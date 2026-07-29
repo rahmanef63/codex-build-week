@@ -4,6 +4,8 @@ import { useEffect, useState } from "react";
 import { useQuery } from "convex/react";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
+import Link from "next/link";
+import { ArrowRight, MessageSquareText } from "lucide-react";
 
 import { api } from "@/convex/_generated/api";
 import type { DashboardData } from "@/shared/types/dashboard";
@@ -53,7 +55,7 @@ export function Dashboard({ initialView = "today" }: { initialView?: DashboardVi
             width={72}
           />
           <div>
-            <span className="eyebrow">TemanUsaha AI</span>
+            <span className="eyebrow">Demo interaktif</span>
             <h1>{data.business.name}</h1>
           </div>
         </div>
@@ -68,7 +70,7 @@ export function Dashboard({ initialView = "today" }: { initialView?: DashboardVi
           />
           <div className="live-badge">
             <span aria-hidden="true" />
-            Data langsung
+            Data demo langsung
           </div>
         </div>
       </header>
@@ -90,6 +92,19 @@ export function Dashboard({ initialView = "today" }: { initialView?: DashboardVi
           </button>
         ))}
       </nav>
+
+      <aside className="demo-guide" aria-label="Skenario demo Bu Rina">
+        <div>
+          <span className="eyebrow">Coba lewat GPT</span>
+          <strong>Jalankan skenario Bu Rina</strong>
+          <p>“Catat 2 nasi ayam dan 1 es teh untuk Bu Rina, ambil pukul 12.00, belum dibayar.”</p>
+        </div>
+        <Link href="/presentation/03-demo.html">
+          <MessageSquareText aria-hidden="true" />
+          Lihat alur terpandu
+          <ArrowRight aria-hidden="true" />
+        </Link>
+      </aside>
 
       <TodayPanel data={data} hidden={activeTab !== "today"} />
       <OrdersPanel hidden={activeTab !== "orders"} orders={data.orders} />

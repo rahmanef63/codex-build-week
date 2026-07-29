@@ -5,12 +5,12 @@ import { ThemePresetProvider } from "./theme-preset-provider";
 import type { ReactNode } from "react";
 
 /**
- * App-wide theme providers. next-themes drives light/dark/system mode;
+ * Single root-level theme provider. next-themes drives light/dark/system mode;
  * ThemePresetProvider (from the theme-presets slice) layers runtime
  * tweakcn color-preset swapping on top. Mounted high in the root layout
  * so every route (public + dashboard) shares the same theme state.
  *
- * `defaultMode` + `defaultPreset` define the template's build-time look;
+ * `defaultMode` + `defaultPreset` define the app's build-time look;
  * each visitor can override it locally through the switcher.
  */
 export function ThemeProviders({

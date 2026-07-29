@@ -1,20 +1,22 @@
-const slides = [
-  "index.html",
-  "01-masalah.html",
-  "02-solusi.html",
-  "03-demo.html",
-  "04-bukti.html",
-  "05-arsitektur.html",
-  "06-kepercayaan.html",
-  "07-build.html",
-  "08-penutup.html",
+const slideDeck = [
+  ["index.html", "TemanUsaha AI"],
+  ["01-masalah.html", "Masalah operasional UMKM"],
+  ["02-solusi.html", "Alur TemanUsaha"],
+  ["03-demo.html", "Demo Bu Rina"],
+  ["04-bukti.html", "Enam Action aktif"],
+  ["05-arsitektur.html", "Arsitektur"],
+  ["06-kepercayaan.html", "Kepercayaan"],
+  ["07-build.html", "Dashboard usaha"],
+  ["08-penutup.html", "Penutup"],
 ];
+const slides = slideDeck.map(([file]) => file);
 const deploymentBaseUrl = "https://codex-build-week.vercel.app";
 const deployedDemoUrl = new URL("/demo", deploymentBaseUrl).href;
 const deployedRealUrl = new URL("/dashboard", deploymentBaseUrl).href;
 const gptUrl = "https://chatgpt.com/g/g-6a5b0a5ef31c819181f8a68b5536d33e-temanusaha-ai-warung-bu-sari";
 
 const current = Math.max(0, Math.min(slides.length - 1, Number(document.body.dataset.slide || 0)));
+document.title = `${slideDeck[current][1]} — TemanUsaha AI`;
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
 
 document.querySelectorAll("[data-current]").forEach((node) => node.textContent = String(current + 1).padStart(2, "0"));

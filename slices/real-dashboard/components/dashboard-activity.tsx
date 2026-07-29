@@ -3,12 +3,13 @@
 import { useState } from "react";
 import type { DashboardData } from "@/shared/types/dashboard";
 import { formatAction, formatDateTime } from "@/shared/lib/format";
+import { matchesActivity } from "../lib/activity-filter";
 
 export function DashboardActivity({ activity }: { activity: DashboardData["activity"] }) {
   const [filter, setFilter] = useState<"all" | "read" | "write">("all");
   const [period, setPeriod] = useState<"all" | "day">("all");
   const [query, setQuery] = useState("");
-  const visible = activity.filter((item) => (filter === "all" || (filter === "read" ? /^(get|list)_/.test(item.action) : !/^(get|list)_/.test(item.action))) && (period === "all" || Date.now() - new Date(item.createdAt).getTime() < 86_400_000) && item.action.toLowerCase().includes(query.toLowerCase()));
+  const visible = activity.filter((item) => matchesActivity(item, filter, period, query));
   return (
     <section className="max-w-6xl rounded-md border border-border bg-card">
       <div className="flex items-center justify-between gap-4 border-b border-border px-6 py-4">

@@ -19,7 +19,7 @@ export default function ErrorPage({ reset }: { reset: () => void }) {
             Coba lagi
           </Button>
           <p className="dash-muted dash-small">
-            <Link href="/">← Pilih mode</Link>
+            <Link href="/">← Kembali ke beranda</Link>
           </p>
         </section>
       </main>

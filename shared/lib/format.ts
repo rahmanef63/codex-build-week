@@ -39,5 +39,17 @@ export function formatStatus(value: string) {
 }
 
 export function formatAction(value: string) {
-  return value.replaceAll("_", " ").replace(/^./, (letter) => letter.toUpperCase());
+  const labels: Record<string, string> = {
+    create_order: "Buat pesanan",
+    update_order: "Perbarui pesanan",
+    create_product: "Tambah produk",
+    update_product: "Perbarui produk",
+    delete_product: "Hapus produk",
+    create_business: "Buat profil usaha",
+    update_business: "Perbarui profil usaha",
+    get_daily_summary: "Baca ringkasan harian",
+    get_low_stock_items: "Baca stok menipis",
+    list_pending_orders: "Baca pesanan tertunda",
+  };
+  return labels[value] ?? value.replaceAll("_", " ").replace(/^./, (letter) => letter.toUpperCase());
 }

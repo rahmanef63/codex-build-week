@@ -2,14 +2,12 @@
 
 TemanUsaha AI mengubah instruksi Bahasa Indonesia menjadi pencatatan pesanan, perubahan stok, dan pekerjaan yang bisa diverifikasi oleh pemilik warung.
 
-Produk memiliki dua mode yang terpisah:
-
-Fokus produk adalah **Demo Bu Sari** untuk membuktikan workflow GPT Actions yang sudah berjalan dan **Mode Real yang kini live** agar UMKM dapat mendaftar, membuat bisnisnya sendiri, dan memakai dashboard realtime tanpa menyentuh data demo.
+Produk memiliki dua pengalaman yang terpisah: **Demo interaktif Bu Sari** untuk membuktikan workflow GPT Actions dan **dashboard usaha** untuk UMKM yang mendaftar dengan datanya sendiri.
 
 - [`/demo`](https://codex-build-week.vercel.app/demo) memakai satu bisnis sintetis, **Warung Nasi Bu Sari**, enam operasi GPT Actions, dan dashboard realtime Today, Orders, serta AI Activity.
 - [`/dashboard`](https://codex-build-week.vercel.app/dashboard) sudah live: registrasi email/kata sandi via `@convex-dev/auth` (provider Password), onboarding pembuatan bisnis (nama + produk awal), dan dashboard Convex realtime milik pengguna sendiri. UI-nya mengikuti design system `template-convex-starter`: dark secara default, aksen amber, dan token-driven. Rute lama `/real` tetap ada sebagai redirect permanen ke `/dashboard`, sehingga tautan lama tetap berfungsi.
 
-Pemilih mode tersedia di [`/`](https://codex-build-week.vercel.app/). Data kedua mode terisolasi penuh (`businessId = userId`). Enam Action Demo tetap khusus Bu Sari; setiap usaha Real memiliki schema dan token Action sendiri yang menentukan tenant di server.
+Pilihan pengalaman tersedia di [`/`](https://codex-build-week.vercel.app/). Data Demo dan dashboard usaha terisolasi penuh (`businessId = userId`). Enam Action Demo tetap khusus Bu Sari; setiap dashboard usaha memiliki schema dan token Action sendiri yang menentukan tenant di server.
 
 ## Arsitektur
 
@@ -64,7 +62,7 @@ npx convex env set DEMO_RESET_KEY "ganti-dengan-secret-reset"
 npx convex run seed:reset '{\"resetKey\":\"ganti-dengan-secret-reset\"}'
 ```
 
-Autentikasi Mode Real membutuhkan tiga environment variable tambahan pada deployment Convex: `JWT_PRIVATE_KEY`, `JWKS`, dan `SITE_URL`. Ketiganya digenerate lalu dipasang via `npx convex env set`; jangan menaruh material kunci di repo, chat, atau screenshot.
+Autentikasi dashboard membutuhkan `JWT_PRIVATE_KEY`, `JWKS`, dan `SITE_URL` pada deployment Convex. Untuk mengaktifkan verifikasi email dan pemulihan kata sandi, tambahkan `AUTH_RESEND_KEY` serta `AUTH_EMAIL_FROM` (alamat pengirim yang sudah diverifikasi di Resend). Jangan menaruh material kunci di repo, chat, atau screenshot.
 
 Setelah Next.js memiliki URL HTTPS publik, hubungkan URL tersebut ke Convex agar Action dapat mengembalikan kartu PNG:
 

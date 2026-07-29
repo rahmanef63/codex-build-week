@@ -13,9 +13,9 @@ const navigation = [
   { icon: LayoutDashboard, label: "Hari ini", view: "overview" },
   { icon: ClipboardList, label: "Pesanan", view: "orders" },
   { icon: Package, label: "Produk & stok", view: "catalog" },
-  { icon: Sparkles, label: "Riwayat AI", view: "activity" },
-  { icon: Bot, label: "Hubungkan GPT", view: "agent" },
-  { icon: Settings, label: "Profil usaha", view: "settings" },
+  { icon: Sparkles, label: "Aktivitas AI", view: "activity" },
+  { icon: Bot, label: "Siapkan asisten", view: "agent" },
+  { icon: Settings, label: "Pengaturan", view: "settings" },
 ] as const;
 
 const descriptions: Record<DashboardView, string> = {
@@ -23,7 +23,7 @@ const descriptions: Record<DashboardView, string> = {
   orders: "Periksa pesanan terbaru, pembayaran, dan status penyelesaian.",
   catalog: "Atur harga, stok, dan batas minimum setiap produk.",
   activity: "Periksa apa yang dibaca atau diubah melalui GPT.",
-  agent: "Siapkan GPT agar dapat membantu operasional usaha ini.",
+  agent: "Ikuti langkah singkat untuk menghubungkan asisten AI ke data usaha.",
   settings: "Perbarui informasi dasar yang tampil di dashboard dan GPT.",
 };
 

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Bot, CheckCircle2, ClipboardList, Package } from "lucide-react";
+import { ArrowRight, Bot, CheckCircle2, ClipboardList, Package, ShieldCheck } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -76,7 +76,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="overflow-hidden rounded-lg border border-border bg-card shadow-sm">
+          <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
             <div className="relative aspect-[4/3] bg-muted">
               <Image
                 alt="Operasional warung yang dibantu TemanUsaha AI"
@@ -86,10 +86,14 @@ export default function Home() {
                 sizes="(max-width: 1024px) calc(100vw - 2.5rem), 42rem"
                 src="/assets/illustrations/warung-dashboard-banner.png"
               />
-              <div className="absolute inset-x-4 bottom-4 grid grid-cols-3 gap-2 rounded-md border border-white/20 bg-background/90 p-3 text-center text-xs font-medium text-foreground shadow-sm backdrop-blur sm:inset-x-6 sm:bottom-6 sm:p-4">
-                <span>Pesanan</span>
-                <span>Stok</span>
-                <span>Aktivitas AI</span>
+              <div className="absolute inset-x-4 bottom-4 rounded-lg border border-white/30 bg-background/95 p-4 shadow-lg backdrop-blur sm:inset-x-6 sm:bottom-6">
+                <p className="text-xs font-medium text-muted-foreground">Pesan pelanggan</p>
+                <p className="mt-1 text-sm font-medium">“Catat 2 nasi ayam dan 1 es teh untuk Bu Rina.”</p>
+                <div className="mt-3 grid grid-cols-3 gap-2 border-t border-border pt-3 text-center text-xs">
+                  <span><strong className="block text-foreground">Rp55.000</strong>Pesanan</span>
+                  <span><strong className="block text-foreground">−3 item</strong>Stok</span>
+                  <span><strong className="block text-foreground">Tercatat</strong>Aktivitas</span>
+                </div>
               </div>
             </div>
           </div>
@@ -115,6 +119,11 @@ export default function Home() {
                 <p className="mt-2 text-sm leading-relaxed text-muted-foreground">{copy}</p>
               </article>
             ))}
+          </div>
+          <div className="mt-4 flex flex-wrap items-center gap-x-6 gap-y-2 rounded-md border border-border bg-muted/40 px-5 py-4 text-xs text-muted-foreground">
+            <span className="flex items-center gap-2"><CheckCircle2 className="size-4 text-accent" />6 Action operasional aktif</span>
+            <span className="flex items-center gap-2"><Package className="size-4 text-accent" />Pesanan dan stok diperbarui bersamaan</span>
+            <span className="flex items-center gap-2"><ShieldCheck className="size-4 text-accent" />Setiap perubahan memiliki jejak aktivitas</span>
           </div>
         </section>
       </div>

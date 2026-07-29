@@ -6,7 +6,7 @@ import { read } from "../shared/testing/read-file.ts";
 const jsonText = () => read("GPTs", "action-schema.json");
 const yamlText = () => read("GPTs", "temanusaha-actions.yaml");
 const httpText = () => read("convex", "http.ts");
-const agentRoutesText = () => read("convex", "agent-routes.ts");
+const agentRoutesText = () => read("convex", "agent_routes.ts");
 const workspaceAgentText = () => read("slices", "real-dashboard", "components", "agent-setup.tsx");
 
 type Operation = { method: string; operationId: string; consequential: unknown };

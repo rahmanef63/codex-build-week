@@ -92,7 +92,7 @@ test("deck presentation is complete and locally linked", () => {
   expect(read("public", "presentation", "08-penutup.html")).toMatch(/data-gpt-link/);
   const onboarding = read("public", "presentation", "07-build.html");
   expect(onboarding).toMatch(/data-real-link/);
-  expect(onboarding).toMatch(/Mode Real[^<]+kini live/);
+  expect(onboarding).toMatch(/Dashboard usaha[^<]+live/);
   expect(deck).not.toMatch(/belum terhubung/);
   expect(onboarding).not.toMatch(/Bu Sari/);
   expect(onboarding).toMatch(/data-interview-play/);

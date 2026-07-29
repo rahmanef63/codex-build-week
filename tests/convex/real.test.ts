@@ -158,3 +158,37 @@ describe("real catalog and profile", () => {
     ).rejects.toMatchObject({ data: { code: "BUSINESS_NOT_FOUND" } });
   });
 });
+
+describe("real.createOrder", () => {
+  test("manual dashboard order updates order, stock, and activity atomically", async () => {
+    const t = setup();
+    const { userId, asUser } = await signUp(t, "manual-order@example.com");
+    await asUser.mutation(api.real.createBusiness, {
+      name: "Warung Manual",
+      products: [{ name: "Kopi Susu", price: 12_000, stock: 5 }],
+    });
+
+    await asUser.action(api.real.createOrder, {
+      customerName: "Rina",
+      items: [{ product: "Kopi Susu", quantity: 2 }],
+      pickupTime: "2026-07-30T05:00:00.000Z",
+      paymentStatus: "UNPAID",
+    });
+
+    const dashboard = await asUser.query(api.real.dashboard, {});
+    if (!dashboard || !dashboard.business) throw new Error("Expected dashboard");
+    expect(dashboard.orders[0]).toMatchObject({ businessId: userId, customerName: "Rina", total: 24_000 });
+    expect(dashboard.products[0].stock).toBe(3);
+    expect(dashboard.activity.some((item) => item.action === "create_order")).toBe(true);
+  });
+
+  test("manual dashboard order rejects unauthenticated callers", async () => {
+    const t = setup();
+    await expect(t.action(api.real.createOrder, {
+      customerName: "Rina",
+      items: [{ product: "Kopi", quantity: 1 }],
+      pickupTime: "2026-07-30T05:00:00.000Z",
+      paymentStatus: "UNPAID",
+    })).rejects.toMatchObject({ data: { code: "UNAUTHENTICATED" } });
+  });
+});

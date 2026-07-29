@@ -3,7 +3,7 @@ import { internalMutation, internalQuery } from "./_generated/server";
 import { BUSINESS_ID, combineResolvedItems, MAX_PRODUCTS_PER_BUSINESS } from "./domain";
 import { fail } from "./lib/errors";
 import { logError } from "./_shared/log";
-import { fulfillmentStatus, orderFingerprint, paymentStatus } from "./lib/order-validation";
+import { fulfillmentStatus, orderFingerprint, paymentStatus } from "./lib/order_validation";
 
 export const listPending = internalQuery({
   args: { businessId: v.optional(v.string()) },

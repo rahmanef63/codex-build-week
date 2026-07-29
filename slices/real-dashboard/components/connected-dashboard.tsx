@@ -29,7 +29,7 @@ export function ConnectedDashboard({
       view={view}
     >
       {view === "overview" ? <DashboardOverview data={data} /> : null}
-      {view === "orders" ? <DashboardOrders orders={data.orders} /> : null}
+      {view === "orders" ? <DashboardOrders orders={data.orders} products={data.products} /> : null}
       {view === "catalog" ? <DashboardCatalog products={data.products} /> : null}
       {view === "activity" ? <DashboardActivity activity={data.activity} /> : null}
       {view === "agent" ? <AgentSetup /> : null}

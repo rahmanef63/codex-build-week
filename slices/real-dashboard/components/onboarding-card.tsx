@@ -29,6 +29,11 @@ export function OnboardingCard() {
         <p className="dash-muted">
           Masukkan nama usaha. Produk dapat ditambahkan sekarang atau nanti dari dashboard.
         </p>
+        <div className="grid w-full grid-cols-3 gap-2 text-center text-xs text-muted-foreground">
+          <span className="rounded-md border border-accent bg-secondary p-2 text-foreground">1 · Profil</span>
+          <span className="rounded-md border border-border p-2">2 · Produk</span>
+          <span className="rounded-md border border-border p-2">3 · Dashboard</span>
+        </div>
         <form
           className="dash-form"
           onSubmit={async (event) => {
@@ -96,14 +101,10 @@ export function OnboardingCard() {
               </div>
             ))}
             {products.length < 5 ? (
-              <Button
-                className="dash-link h-auto"
-                onClick={() => setProducts((current) => [...current, emptyProduct()])}
-                type="button"
-                variant="link"
-              >
-                + Tambah produk
-              </Button>
+              <div className="flex flex-wrap gap-4">
+                <Button className="dash-link h-auto" onClick={() => setProducts((current) => [...current, emptyProduct()])} type="button" variant="link">+ Tambah produk</Button>
+                <Button className="dash-link h-auto" onClick={() => setProducts([{ name: "Produk utama", price: "15000", stock: "20" }])} type="button" variant="link">Isi contoh cepat</Button>
+              </div>
             ) : null}
           </fieldset>
           {error ? (
