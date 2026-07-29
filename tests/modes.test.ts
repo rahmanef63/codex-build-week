@@ -39,6 +39,8 @@ test("Demo owns synthetic business wiring while the workspace runs its own live 
   expect(dashboardApp).not.toMatch(/Mode Real|Workspace/);
   expect(dashboardShell).toMatch(/Dashboard usaha/);
   expect(dashboardShell).not.toMatch(/Mode Real|Workspace usaha|Agent GPT/);
+  expect(dashboardShell).toMatch(/data-dashboard-content/);
+  expect(dashboardShell).toMatch(/mx-auto w-full max-w-6xl \[&>\*\]:mx-auto \[&>\*\]:w-full/);
   expect(authCard).not.toMatch(/Mode Real|Workspace/);
 
   expect(gptPackage).toMatch(/## Name\s+```text\s+TemanUsaha AI\s+```/);

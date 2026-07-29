@@ -72,7 +72,7 @@ export function DashboardShell({
       </aside>
 
       <main className="min-w-0 flex-1 overflow-y-auto p-5 pb-24 sm:p-7 md:pb-7">
-        <header className="mb-6 flex items-center justify-between gap-3 border-b border-border pb-3">
+        <header className="mx-auto mb-6 flex w-full max-w-6xl items-center justify-between gap-3 border-b border-border pb-3">
           <div className="min-w-0 text-sm text-muted-foreground">
             <span className="hidden sm:inline">{businessName} / </span>
             <span className="font-medium text-foreground">{active.label}</span>
@@ -85,13 +85,18 @@ export function DashboardShell({
           </div>
         </header>
 
-        <header className="max-w-3xl pb-7">
-          <p className="text-xs font-medium uppercase tracking-widest text-accent">Dashboard usaha</p>
-          <h1 className="mt-2 text-2xl font-semibold tracking-tight">{active.label}</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{descriptions[view]}</p>
-        </header>
+        <div
+          className="mx-auto w-full max-w-6xl [&>*]:mx-auto [&>*]:w-full"
+          data-dashboard-content
+        >
+          <header className="max-w-3xl pb-7">
+            <p className="text-xs font-medium uppercase tracking-widest text-accent">Dashboard usaha</p>
+            <h1 className="mt-2 text-2xl font-semibold tracking-tight">{active.label}</h1>
+            <p className="mt-1 text-sm text-muted-foreground">{descriptions[view]}</p>
+          </header>
 
-        {children}
+          {children}
+        </div>
       </main>
 
       <nav
