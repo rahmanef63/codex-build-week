@@ -1,50 +1,53 @@
 **Source visual truth**
 
-- Production before fix: `C:\Users\rahma\AppData\Local\Temp\temanusaha-dashboard-center\01-before-wide.png`
+- Production before fix, Siapkan Asisten: `C:\Users\rahma\AppData\Local\Temp\temanusaha-feature-wrapper\01-before-agent.png`
+- Production before fix, Pengaturan: `C:\Users\rahma\AppData\Local\Temp\temanusaha-feature-wrapper\02-before-settings.png`
 
 **Implementation screenshots**
 
-- Production overview after fix: `C:\Users\rahma\AppData\Local\Temp\temanusaha-dashboard-center\03-after-1280.png`
-- Production Agent Setup after fix: `C:\Users\rahma\AppData\Local\Temp\temanusaha-dashboard-center\04-after-agent-wide.png`
-- Production Agent Setup mobile after fix: `C:\Users\rahma\AppData\Local\Temp\temanusaha-dashboard-center\05-after-agent-mobile.png`
+- Production after fix, Pengaturan: `C:\Users\rahma\AppData\Local\Temp\temanusaha-feature-wrapper\07-prod-after-settings.png`
+- Production after fix, Siapkan Asisten: `C:\Users\rahma\AppData\Local\Temp\temanusaha-feature-wrapper\08-prod-after-agent.png`
+- Production after fix, Pengaturan mobile: `C:\Users\rahma\AppData\Local\Temp\temanusaha-feature-wrapper\09-prod-after-settings-mobile.png`
 
 **Viewport and normalization**
 
-- Desktop source and implementation: 1280×720 CSS px, DPR 1.5, 1920×1080 image px.
-- Mobile implementation: 390×844 CSS px, DPR 1.5 source capture normalized from 585×1266 to 390×844 image px.
+- Desktop source and implementation: 1280×720 CSS px, DPR 1, 1280×720 image px.
+- Mobile implementation: 390×844 CSS px, DPR 1, 390×844 image px.
 - Browser chrome is excluded.
 
 **State**
 
-- Signed-in business `waringa`.
-- Desktop full-view comparison: Hari ini.
-- Focused responsive checks: Siapkan asisten at 1920 px wide and 390 px mobile.
+- Signed-in Production business `waringa`.
+- Full-view comparison: Siapkan Asisten and Pengaturan.
+- Responsive measurement: all six dashboard features.
 
 **Full-view comparison evidence**
 
-- Side-by-side: `C:\Users\rahma\AppData\Local\Temp\temanusaha-dashboard-center\compare-before-after.png`
-- Before, max-width children remained anchored to the main panel’s left padding.
-- After, toolbar and the shared 1152 px content wrapper share the main panel center. Wide and narrow child views inherit `width: 100%` plus horizontal auto margins.
+- Side-by-side source/current comparison: `C:\Users\rahma\AppData\Local\Temp\temanusaha-feature-wrapper\compare-before-after.png`
+- Before, Siapkan Asisten was 768 px wide and Pengaturan was 576 px wide inside a 968 px desktop content area.
+- After, both features, their titles, descriptions, and all four other feature roots use the same 968 px desktop wrapper.
 
 **Focused region evidence**
 
-- Agent Setup desktop is centered at the same axis as the main panel: header and section centers both 1088 px.
-- At 390 px, the wrapper is 350 px wide at x=20 with center 195; document scroll width remains 390 px and the bottom navigation remains inside the viewport.
+- Desktop at 1280 px: every feature wrapper, header, content area, and first child has the same x=284 alignment and available width; the Activity view consistently accounts for its vertical scrollbar.
+- Mobile at 390 px: all six feature wrappers, headers, content areas, and first children are 350 px wide at x=20.
+- Mobile document scroll width remains 390 px; bottom navigation is 366 px wide at x=12.
 
 **Findings**
 
 - No actionable P0, P1, or P2 issue remains.
-- Typography and copy are unchanged.
-- Spacing now follows one centered width system: toolbar and content use `max-w-6xl`; view introductions keep `max-w-3xl`; narrower feature panels preserve their existing limits.
-- Colors, image assets, icons, radii, borders, and dashboard shell behavior are unchanged.
-- All six feature views inherit the same direct-child centering rule from `DashboardShell`.
+- `DashboardFeature` is the single prop-driven contract for title, description, and content structure.
+- `DashboardShell` owns only the shared responsive `max-w-6xl` container.
+- Siapkan Asisten and Pengaturan now match every other feature width.
+- The Pengaturan form retains `max-w-xl` internally for readable controls while its feature card remains full width.
+- Typography, colors, icons, radii, borders, navigation, and responsive shell behavior are unchanged.
 - Production browser console is clear.
 
 **Comparison history**
 
-- Pass 1 — P2: `max-w-*` feature roots lacked `mx-auto`, so Agent Setup, Settings, and the introduction header visibly leaned left on wide screens.
-- Fix: added one shared `data-dashboard-content` wrapper with `mx-auto w-full max-w-6xl` and direct-child `mx-auto w-full`; aligned the toolbar to the same width.
-- Pass 2: Production measurements and desktop/mobile screenshots confirm aligned centers, no horizontal overflow, and no new visual drift.
+- Pass 1 — P2: per-view `max-w-3xl` and `max-w-xl` roots made Siapkan Asisten and Pengaturan visibly narrower than other dashboard features.
+- Fix: introduced the shared prop-driven feature wrapper, moved the feature heading contract into it, and normalized all six feature roots to `w-full`.
+- Pass 2: Production desktop/mobile measurements, screenshots, and console checks confirm equal widths, centered content, and no overflow.
 
 **Follow-up polish**
 
