@@ -8,7 +8,7 @@ export function DashboardOrders({ orders }: { orders: DashboardData["orders"] })
       <div className="flex items-center justify-between gap-4 border-b border-border px-6 py-4">
         <div>
           <h2 className="text-sm font-semibold">Pesanan terbaru</h2>
-          <p className="text-xs text-muted-foreground">Status pesanan usaha Anda secara realtime</p>
+          <p className="text-xs text-muted-foreground">Urutkan tindak lanjut dari pembayaran dan status pesanan</p>
         </div>
         <span className="text-xs text-muted-foreground">{orders.length} pesanan</span>
       </div>

@@ -30,7 +30,7 @@ export function DashboardApp() {
 function WithModeNav({ children }: { children: ReactNode }) {
   return (
     <>
-      <ModeNavBar label="Mode Real · Terhubung langsung" variant="dash" />
+      <ModeNavBar label="Dashboard usaha · Data pribadi" variant="dash" />
       {children}
     </>
   );

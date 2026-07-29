@@ -54,7 +54,7 @@ test("deck presentation is complete and locally linked", () => {
   expect(script).toMatch(/setupInteractiveDemo\(\)/);
   expect(script).toMatch(/const deploymentBaseUrl = "https:\/\/codex-build-week\.vercel\.app"/);
   expect(script).toMatch(/const deployedDemoUrl = new URL\("\/demo", deploymentBaseUrl\)\.href/);
-  expect(script).toMatch(/const deployedRealUrl = new URL\("\/real", deploymentBaseUrl\)\.href/);
+  expect(script).toMatch(/const deployedRealUrl = new URL\("\/dashboard", deploymentBaseUrl\)\.href/);
   expect(script.includes(`const gptUrl = "${gptUrl}";`)).toBe(true);
   expect(script).toMatch(/querySelectorAll\("\[data-gpt-link\]"\).*link\.href = gptUrl/);
   expect(script).not.toMatch(/api\.qrserver\.com/);

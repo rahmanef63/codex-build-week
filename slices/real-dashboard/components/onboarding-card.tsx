@@ -24,10 +24,10 @@ export function OnboardingCard() {
   return (
     <div className="dash-center">
       <section aria-labelledby="dash-onboarding-title" className="dash-card dash-onboarding">
-        <span className="dash-eyebrow">Mode Real · Onboarding</span>
-        <h1 id="dash-onboarding-title">Kenalkan usaha Anda</h1>
+        <span className="dash-eyebrow">Siapkan dashboard</span>
+        <h1 id="dash-onboarding-title">Tambahkan informasi usaha</h1>
         <p className="dash-muted">
-          Data ini tersimpan terpisah dari demo dan hanya terlihat oleh akun Anda.
+          Masukkan nama usaha. Produk dapat ditambahkan sekarang atau nanti dari dashboard.
         </p>
         <form
           className="dash-form"
@@ -112,7 +112,7 @@ export function OnboardingCard() {
             </p>
           ) : null}
           <Button className="dash-btn-primary h-auto" disabled={busy} type="submit" variant="ghost">
-            {busy ? "Menyimpan…" : "Buka dashboard saya"}
+            {busy ? "Menyimpan…" : "Simpan dan buka dashboard"}
           </Button>
         </form>
       </section>

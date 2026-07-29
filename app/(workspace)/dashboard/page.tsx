@@ -5,7 +5,7 @@ import { DashboardApp } from "@/slices/real-dashboard";
 
 export const metadata: Metadata = {
   title: "Dashboard",
-  description: "Mode Real · Terhubung langsung: dashboard usaha Anda sendiri, realtime dari Convex dengan akun aman.",
+  description: "Kelola pesanan, stok, dan aktivitas usaha Anda dari satu dashboard pribadi.",
 };
 
 // Mode Real live (AGENTS.md: owner sign-off 2026-07-18): Convex Auth sign-up +

@@ -10,13 +10,22 @@ import { ThemePresetSwitcher } from "@/slices/theme-presets";
 import type { DashboardView } from "../types";
 
 const navigation = [
-  { icon: LayoutDashboard, label: "Ringkasan", view: "overview" },
+  { icon: LayoutDashboard, label: "Hari ini", view: "overview" },
   { icon: ClipboardList, label: "Pesanan", view: "orders" },
-  { icon: Package, label: "Katalog", view: "catalog" },
-  { icon: Sparkles, label: "Aktivitas AI", view: "activity" },
-  { icon: Bot, label: "Agent GPT", view: "agent" },
-  { icon: Settings, label: "Pengaturan", view: "settings" },
+  { icon: Package, label: "Produk & stok", view: "catalog" },
+  { icon: Sparkles, label: "Riwayat AI", view: "activity" },
+  { icon: Bot, label: "Hubungkan GPT", view: "agent" },
+  { icon: Settings, label: "Profil usaha", view: "settings" },
 ] as const;
+
+const descriptions: Record<DashboardView, string> = {
+  overview: "Pantau kondisi usaha yang perlu ditindaklanjuti hari ini.",
+  orders: "Periksa pesanan terbaru, pembayaran, dan status penyelesaian.",
+  catalog: "Atur harga, stok, dan batas minimum setiap produk.",
+  activity: "Periksa apa yang dibaca atau diubah melalui GPT.",
+  agent: "Siapkan GPT agar dapat membantu operasional usaha ini.",
+  settings: "Perbarui informasi dasar yang tampil di dashboard dan GPT.",
+};
 
 export function DashboardShell({
   businessName,
@@ -42,7 +51,7 @@ export function DashboardShell({
         <p className="px-3 pt-1 text-xs text-muted-foreground">{businessName}</p>
         <nav aria-label="Operasional usaha" className="mt-6 flex flex-1 flex-col gap-1">
           <p className="px-3 pb-1 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground">
-            Workspace usaha
+            Menu usaha
           </p>
           {navigation.map(({ icon: Icon, label, view: itemView }) => (
             <Button
@@ -65,7 +74,7 @@ export function DashboardShell({
       <main className="min-w-0 flex-1 overflow-y-auto p-5 pb-24 sm:p-7 md:pb-7">
         <header className="mb-6 flex items-center justify-between gap-3 border-b border-border pb-3">
           <div className="min-w-0 text-sm text-muted-foreground">
-            <span className="hidden sm:inline">{businessName} / Operasional / </span>
+            <span className="hidden sm:inline">{businessName} / </span>
             <span className="font-medium text-foreground">{active.label}</span>
           </div>
           <div className="flex shrink-0 items-center gap-2">
@@ -77,9 +86,9 @@ export function DashboardShell({
         </header>
 
         <header className="max-w-3xl pb-7">
-          <p className="text-xs font-medium uppercase tracking-widest text-accent">Mode Real</p>
+          <p className="text-xs font-medium uppercase tracking-widest text-accent">Dashboard usaha</p>
           <h1 className="mt-2 text-2xl font-semibold tracking-tight">{active.label}</h1>
-          <p className="mt-1 text-sm text-muted-foreground">{businessName}</p>
+          <p className="mt-1 text-sm text-muted-foreground">{descriptions[view]}</p>
         </header>
 
         {children}

@@ -9,7 +9,7 @@ export default function DashboardErrorPage({ reset }: { reset: () => void }) {
     <div className="dash-root">
       <main className="dash-center">
         <section className="dash-card" role="alert" style={{ maxWidth: 560, width: "100%" }}>
-          <span className="dash-eyebrow">Mode Real · Terjadi kendala</span>
+          <span className="dash-eyebrow">Dashboard usaha</span>
           <h1>Dashboard usaha Anda belum dapat dimuat</h1>
           <p className="dash-muted">
             Jika ini terjadi setelah masuk atau mendaftar, coba keluar lalu masuk kembali. Jika

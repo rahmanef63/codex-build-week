@@ -13,10 +13,10 @@ export function DashboardActivity({ activity }: { activity: DashboardData["activ
     <section className="max-w-6xl rounded-md border border-border bg-card">
       <div className="flex items-center justify-between gap-4 border-b border-border px-6 py-4">
         <div>
-          <h2 className="text-sm font-semibold">Aktivitas AI</h2>
-          <p className="text-xs text-muted-foreground">Riwayat tindakan yang tercatat untuk usaha ini</p>
+          <h2 className="text-sm font-semibold">Riwayat aktivitas</h2>
+          <p className="text-xs text-muted-foreground">Semua pembacaan dan perubahan data melalui GPT</p>
         </div>
-        <div className="flex flex-wrap items-center justify-end gap-2"><input aria-label="Cari operasi" className="w-28 rounded-md border border-input bg-background px-2.5 py-1.5 text-sm" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Cari operasi" /><select aria-label="Filter aktivitas" className="rounded-md border border-input bg-background px-2.5 py-1.5 text-sm" value={filter} onChange={(event) => setFilter(event.target.value as typeof filter)}><option value="all">Semua</option><option value="read">Baca GPT</option><option value="write">Perubahan</option></select><select aria-label="Rentang waktu" className="rounded-md border border-input bg-background px-2.5 py-1.5 text-sm" value={period} onChange={(event) => setPeriod(event.target.value as typeof period)}><option value="all">Semua waktu</option><option value="day">24 jam</option></select><span className="text-xs text-muted-foreground">{visible.length} aktivitas</span></div>
+        <div className="flex flex-wrap items-center justify-end gap-2"><input aria-label="Cari tindakan" className="w-28 rounded-md border border-input bg-background px-2.5 py-1.5 text-sm" value={query} onChange={(event) => setQuery(event.target.value)} placeholder="Cari tindakan" /><select aria-label="Filter aktivitas" className="rounded-md border border-input bg-background px-2.5 py-1.5 text-sm" value={filter} onChange={(event) => setFilter(event.target.value as typeof filter)}><option value="all">Semua tindakan</option><option value="read">Pembacaan data</option><option value="write">Perubahan data</option></select><select aria-label="Rentang waktu" className="rounded-md border border-input bg-background px-2.5 py-1.5 text-sm" value={period} onChange={(event) => setPeriod(event.target.value as typeof period)}><option value="all">Semua waktu</option><option value="day">24 jam terakhir</option></select><span className="text-xs text-muted-foreground">{visible.length} aktivitas</span></div>
       </div>
       {visible.length ? (
         <ol className="divide-y divide-border">
@@ -34,7 +34,7 @@ export function DashboardActivity({ activity }: { activity: DashboardData["activ
           ))}
         </ol>
       ) : (
-        <p className="px-6 py-8 text-sm text-muted-foreground">Belum ada aktivitas AI.</p>
+        <p className="px-6 py-8 text-sm text-muted-foreground">Belum ada aktivitas yang cocok.</p>
       )}
     </section>
   );
