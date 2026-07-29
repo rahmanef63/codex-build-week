@@ -96,8 +96,8 @@ export function Dashboard({ initialView = "today" }: { initialView?: DashboardVi
       <aside className="demo-guide" aria-label="Skenario demo Bu Rina">
         <div>
           <span className="eyebrow">Coba lewat GPT</span>
-          <strong>Jalankan skenario Bu Rina</strong>
-          <p>“Catat 2 nasi ayam dan 1 es teh untuk Bu Rina, ambil pukul 12.00, belum dibayar.”</p>
+          <strong>Ikuti skenario Bu Rina</strong>
+          <p>“Catat 3 nasi ayam dan 2 es teh untuk Bu Rina, ambil pukul 12.30, belum dibayar.”</p>
         </div>
         <Link href="/presentation/03-demo.html">
           <MessageSquareText aria-hidden="true" />

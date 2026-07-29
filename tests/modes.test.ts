@@ -13,6 +13,7 @@ test("Demo owns synthetic business wiring while the workspace runs its own live 
   const dashboardApp = read("slices", "real-dashboard", "components", "dashboard-app.tsx");
   const dashboardShell = read("slices", "real-dashboard", "components", "dashboard-shell.tsx");
   const authCard = read("slices", "real-dashboard", "components", "auth-card.tsx");
+  const convexProvider = read("shared", "components", "convex-provider.tsx");
 
   expect(root).toMatch(/href="\/demo"/);
   expect(root).toMatch(/href="\/dashboard"/);
@@ -26,6 +27,8 @@ test("Demo owns synthetic business wiring while the workspace runs its own live 
   expect(demo).toMatch(/Warung Nasi Bu Sari/);
   expect(demo).toMatch(/ConvexClientProvider/);
   expect(demo).toMatch(/<Dashboard \/>/);
+  expect(convexProvider).toMatch(/return <ConvexProvider client=\{convex\}>/);
+  expect(convexProvider).toMatch(/variant === "dash"[\s\S]*ConvexAuthNextjsProvider/);
 
   expect(real).toMatch(/permanentRedirect\("\/dashboard"\)/);
   expect(dashboard).toMatch(/ConvexClientProvider/);

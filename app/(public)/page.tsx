@@ -88,10 +88,10 @@ export default function Home() {
               />
               <div className="absolute inset-x-4 bottom-4 rounded-lg border border-white/30 bg-background/95 p-4 shadow-lg backdrop-blur sm:inset-x-6 sm:bottom-6">
                 <p className="text-xs font-medium text-muted-foreground">Pesan pelanggan</p>
-                <p className="mt-1 text-sm font-medium">“Catat 2 nasi ayam dan 1 es teh untuk Bu Rina.”</p>
+                <p className="mt-1 text-sm font-medium">“Catat 3 nasi ayam dan 2 es teh untuk Bu Rina.”</p>
                 <div className="mt-3 grid grid-cols-3 gap-2 border-t border-border pt-3 text-center text-xs">
                   <span><strong className="block text-foreground">Rp55.000</strong>Pesanan</span>
-                  <span><strong className="block text-foreground">−3 item</strong>Stok</span>
+                  <span><strong className="block text-foreground">−5 item</strong>Stok</span>
                   <span><strong className="block text-foreground">Tercatat</strong>Aktivitas</span>
                 </div>
               </div>

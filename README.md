@@ -80,8 +80,8 @@ Seed membuat Warung Nasi Bu Sari dengan lima produk:
 
 | Produk | Harga | Stok | Ambang stok rendah |
 | --- | ---: | ---: | ---: |
-| Nasi Ayam | Rp15.000 | 12 | 5 |
-| Es Teh | Rp5.000 | 18 | 8 |
+| Nasi Ayam | Rp15.000 | 60 | 5 |
+| Es Teh | Rp5.000 | 60 | 8 |
 | Ayam Goreng | Rp12.000 | 7 | 5 |
 | Nasi Putih | Rp5.000 | 20 | 8 |
 | Sambal Extra | Rp3.000 | 6 | 10 |
