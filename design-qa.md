@@ -1,67 +1,53 @@
 **Source visual truth**
 
-- Landing: `C:\Users\rahma\AppData\Local\Temp\temanusaha-product-audit\01-landing.png`
-- Demo: `C:\Users\rahma\AppData\Local\Temp\temanusaha-product-audit\02-demo.png`
-- Dashboard auth: `C:\Users\rahma\AppData\Local\Temp\temanusaha-product-audit\04-dashboard-auth.png`
-- Presentation: `C:\Users\rahma\AppData\Local\Temp\temanusaha-product-audit\03-presentation.png`
+- Production before fix: `C:\Users\rahma\AppData\Local\Temp\temanusaha-dashboard-center\01-before-wide.png`
 
 **Implementation screenshots**
 
-- Landing desktop: `C:\Users\rahma\AppData\Local\Temp\temanusaha-final-qa\landing-desktop.png`
-- Demo desktop: `C:\Users\rahma\AppData\Local\Temp\temanusaha-final-qa\demo-desktop-viewport.png`
-- Dashboard auth desktop: `C:\Users\rahma\AppData\Local\Temp\temanusaha-final-qa\dashboard-auth-desktop.png`
-- Presentation desktop: `C:\Users\rahma\AppData\Local\Temp\temanusaha-final-qa\presentation-desktop.png`
-- Landing mobile: `C:\Users\rahma\AppData\Local\Temp\temanusaha-final-qa\landing-mobile-viewport.png`
-- Demo mobile: `C:\Users\rahma\AppData\Local\Temp\temanusaha-final-qa\demo-mobile-viewport.png`
-- Dashboard auth mobile: `C:\Users\rahma\AppData\Local\Temp\temanusaha-final-qa\dashboard-auth-mobile.png`
+- Production overview after fix: `C:\Users\rahma\AppData\Local\Temp\temanusaha-dashboard-center\03-after-1280.png`
+- Production Agent Setup after fix: `C:\Users\rahma\AppData\Local\Temp\temanusaha-dashboard-center\04-after-agent-wide.png`
+- Production Agent Setup mobile after fix: `C:\Users\rahma\AppData\Local\Temp\temanusaha-dashboard-center\05-after-agent-mobile.png`
 
 **Viewport and normalization**
 
-- Landing source: 1264×1016 px. Implementation: 1248×1075 px full-page capture at a 1264×764 CSS viewport; the 16 px width difference is the browser scrollbar. DPR 1.
-- Demo source: 1264×946 px. Implementation: 1264×764 px viewport capture at a 1264×764 CSS viewport. DPR 1.
-- Dashboard auth source and implementation: 1264×764 px at a 1264×764 CSS viewport. DPR 1.
-- Presentation source and implementation: 1280×780 px at a 1280×780 CSS viewport. DPR 1.
-- Supplemental mobile captures: 390×844 px at a 390×844 CSS viewport. DPR 1.
-- Comparisons preserve aspect ratio and use the content viewport without browser chrome.
+- Desktop source and implementation: 1280×720 CSS px, DPR 1.5, 1920×1080 image px.
+- Mobile implementation: 390×844 CSS px, DPR 1.5 source capture normalized from 585×1266 to 390×844 image px.
+- Browser chrome is excluded.
 
 **State**
 
-- Landing: dark theme selected by the current browser; source uses the equivalent light preset.
-- Demo: seeded synthetic data after the canonical Bu Rina order (3 Nasi Ayam + 2 Es Teh, Rp55.000).
-- Dashboard: signed-out authentication state. The signed-in responsive shell was verified earlier in the same release task; this pass changed only the Demo provider.
-- Presentation: opening slide, presenter notes closed.
+- Signed-in business `waringa`.
+- Desktop full-view comparison: Hari ini.
+- Focused responsive checks: Siapkan asisten at 1920 px wide and 390 px mobile.
 
 **Full-view comparison evidence**
 
-- `C:\Users\rahma\AppData\Local\Temp\temanusaha-final-qa\compare-landing.png`
-- `C:\Users\rahma\AppData\Local\Temp\temanusaha-final-qa\compare-demo.png`
-- `C:\Users\rahma\AppData\Local\Temp\temanusaha-final-qa\compare-dashboard.png`
-- `C:\Users\rahma\AppData\Local\Temp\temanusaha-final-qa\compare-presentation.png`
-
-The landing preserves the source hierarchy, grid, imagery, CTA order, and restrained surfaces while adding useful order/stock/activity proof. The Demo keeps the source visual language but uses space more efficiently and exposes the guided scenario. The dashboard auth state adds a concise value proposition without changing the form hierarchy. The presentation remains visually equivalent apart from corrected event labeling.
+- Side-by-side: `C:\Users\rahma\AppData\Local\Temp\temanusaha-dashboard-center\compare-before-after.png`
+- Before, max-width children remained anchored to the main panel’s left padding.
+- After, toolbar and the shared 1152 px content wrapper share the main panel center. Wide and narrow child views inherit `width: 100%` plus horizontal auto margins.
 
 **Focused region evidence**
 
-- Mobile landing, Demo, and dashboard captures above verify wrapping, tap targets, card stacking, and absence of horizontal overflow.
-- The normal viewport captures keep headings, controls, imagery, and form labels readable; no additional crop was required.
+- Agent Setup desktop is centered at the same axis as the main panel: header and section centers both 1088 px.
+- At 390 px, the wrapper is 350 px wide at x=20 with center 195; document scroll width remains 390 px and the bottom navigation remains inside the viewport.
 
 **Findings**
 
-- No actionable P0, P1, or P2 visual differences remain.
-- Typography: Geist hierarchy, weights, wrapping, and line height remain coherent across desktop and mobile.
-- Spacing/layout: no horizontal overflow at 390 px or 1264 px; cards, tabs, and forms retain clear rhythm.
-- Colors/tokens: both light Demo/presentation and dark workspace/landing presets retain contrast and semantic accent usage.
-- Images/assets: original brand and warung imagery remain sharp, correctly cropped, and are not replaced by CSS or inline-SVG approximations.
-- Copy/content: the Bu Rina example now consistently states 3 Nasi Ayam + 2 Es Teh, Rp55.000, and a five-item stock reduction.
-- Interactions: Demo tabs for Hari ini, Pesanan, and Aktivitas AI were exercised; dashboard auth fields and presentation navigation rendered; browser console warnings/errors were empty after the provider fix.
+- No actionable P0, P1, or P2 issue remains.
+- Typography and copy are unchanged.
+- Spacing now follows one centered width system: toolbar and content use `max-w-6xl`; view introductions keep `max-w-3xl`; narrower feature panels preserve their existing limits.
+- Colors, image assets, icons, radii, borders, and dashboard shell behavior are unchanged.
+- All six feature views inherit the same direct-child centering rule from `DashboardShell`.
+- Production browser console is clear.
 
 **Comparison history**
 
-- Pass 1: normalized side-by-side comparisons found no P0/P1/P2 visual mismatch. No visual fix iteration was required.
-- During functional QA, Demo authentication produced a stale-refresh-token console error. The Demo provider was changed from the authenticated provider to plain `ConvexProvider`; post-fix Demo desktop/mobile captures and console checks are clean.
+- Pass 1 — P2: `max-w-*` feature roots lacked `mx-auto`, so Agent Setup, Settings, and the introduction header visibly leaned left on wide screens.
+- Fix: added one shared `data-dashboard-content` wrapper with `mx-auto w-full max-w-6xl` and direct-child `mx-auto w-full`; aligned the toolbar to the same width.
+- Pass 2: Production measurements and desktop/mobile screenshots confirm aligned centers, no horizontal overflow, and no new visual drift.
 
 **Follow-up polish**
 
-- P3: a light-theme landing capture could be added later for an exact palette-to-palette comparison; the current dark preset is an intentional supported state.
+- None required for this scope.
 
 final result: passed
