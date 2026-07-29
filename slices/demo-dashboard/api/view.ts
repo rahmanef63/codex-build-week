@@ -5,7 +5,7 @@ export type DashboardView = (typeof dashboardViews)[number];
 export const dashboardImageOptions = {
   width: 1200,
   height: 630,
-  headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" },
+  headers: { "Cache-Control": "no-store" },
 } as const;
 
 export function parseDashboardView(value: string | null): DashboardView | null {

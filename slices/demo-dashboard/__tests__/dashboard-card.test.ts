@@ -18,7 +18,7 @@ test("dashboard card keeps safe image and error contracts", async () => {
   expect(dashboardImageOptions).toEqual({
     width: 1200,
     height: 630,
-    headers: { "Cache-Control": "public, s-maxage=60, stale-while-revalidate=300" },
+    headers: { "Cache-Control": "no-store" },
   });
   const upstreamError = dashboardError(502);
   expect(upstreamError.status).toBe(502);
