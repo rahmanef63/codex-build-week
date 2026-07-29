@@ -8,7 +8,7 @@ export default function WorkspaceNotFound() {
     <div className="dash-root">
       <main className="dash-center">
         <section className="dash-card" style={{ maxWidth: 560, width: "100%" }}>
-          <span className="dash-eyebrow">Mode Real · Tidak ditemukan</span>
+          <span className="dash-eyebrow">Dashboard usaha</span>
           <h1>404 — Halaman ini tidak ada</h1>
           <p className="dash-muted">Periksa kembali tautannya, atau kembali ke dashboard usaha Anda.</p>
           <Link className="dash-btn-primary" href="/dashboard">

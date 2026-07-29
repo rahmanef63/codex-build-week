@@ -1,6 +1,6 @@
 import { ImageResponse } from "next/og";
 
-export const alt = "TemanUsaha AI - pilih Mode Demo atau Mode Real";
+export const alt = "TemanUsaha AI - demo interaktif dan dashboard usaha";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -27,7 +27,7 @@ export default function OpenGraphImage() {
           Asisten usaha, dengan batas data yang jelas.
         </div>
         <div style={{ color: "#d8e8e1", display: "flex", fontSize: "32px" }}>
-          Pilih pengalaman Demo atau siapkan koneksi Real.
+          Coba demo interaktif atau kelola usaha Anda sendiri.
         </div>
       </div>
       <div style={{ display: "flex", flexDirection: "column", gap: "22px", width: "280px" }}>
@@ -55,8 +55,8 @@ export default function OpenGraphImage() {
             padding: "28px",
           }}
         >
-          <span style={{ fontSize: "30px", fontWeight: 800 }}>Real</span>
-          <span style={{ color: "#d8e8e1", fontSize: "20px" }}>Onboarding sebelum koneksi</span>
+          <span style={{ fontSize: "30px", fontWeight: 800 }}>Dashboard</span>
+          <span style={{ color: "#d8e8e1", fontSize: "20px" }}>Data usaha pribadi</span>
         </div>
       </div>
     </div>,

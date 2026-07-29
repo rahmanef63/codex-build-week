@@ -3,10 +3,10 @@ import { formatRupiah } from "@/shared/lib/format";
 
 export function DashboardOverview({ data }: { data: DashboardData }) {
   const stats = [
-    ["Pesanan hari ini", data.summary.orderCount],
-    ["Omzet tercatat", formatRupiah(data.summary.recordedRevenue)],
+    ["Pesanan", data.summary.orderCount],
+    ["Omzet", formatRupiah(data.summary.recordedRevenue)],
     ["Belum dibayar", data.summary.unpaidOrderCount],
-    ["Belum selesai", data.summary.pendingOrderCount],
+    ["Perlu diselesaikan", data.summary.pendingOrderCount],
   ];
 
   return (
@@ -23,8 +23,8 @@ export function DashboardOverview({ data }: { data: DashboardData }) {
       <section className="rounded-md border border-border bg-card p-5 sm:p-6">
         <div className="flex items-center justify-between gap-4 pb-4">
           <div>
-            <h2 className="text-sm font-semibold">Stok menipis</h2>
-            <p className="text-xs text-muted-foreground">Produk yang perlu diperiksa hari ini</p>
+            <h2 className="text-sm font-semibold">Stok perlu perhatian</h2>
+            <p className="text-xs text-muted-foreground">Segera isi ulang produk berikut</p>
           </div>
           <span className="text-xs text-muted-foreground">{data.lowStock.length} produk</span>
         </div>

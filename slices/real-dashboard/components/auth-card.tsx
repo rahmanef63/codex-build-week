@@ -14,13 +14,14 @@ export function AuthCard() {
   return (
     <div className="dash-center">
       <section aria-labelledby="dash-auth-title" className="dash-card dash-auth">
-        <span className="dash-eyebrow">Mode Real · Akun pemilik</span>
+        <span className="dash-eyebrow">Dashboard usaha</span>
         <h1 id="dash-auth-title">
-          {flow === "signUp" ? "Buat akun usaha Anda" : "Masuk ke usaha Anda"}
+          {flow === "signUp" ? "Mulai kelola usaha Anda" : "Selamat datang kembali"}
         </h1>
         <p className="dash-muted">
-          Data usaha Anda tersimpan terpisah dari demo dan hanya bisa diakses oleh
-          akun Anda.
+          {flow === "signUp"
+            ? "Buat akun untuk menyimpan pesanan, stok, dan aktivitas usaha Anda."
+            : "Masuk untuk melanjutkan pengelolaan usaha Anda."}
         </p>
         <form
           className="dash-form"
@@ -71,7 +72,7 @@ export function AuthCard() {
             </p>
           ) : null}
           <Button className="dash-btn-primary h-auto" disabled={busy} type="submit" variant="ghost">
-            {busy ? "Memproses…" : flow === "signUp" ? "Daftar" : "Masuk"}
+            {busy ? "Memproses…" : flow === "signUp" ? "Buat akun" : "Masuk ke dashboard"}
           </Button>
         </form>
         <Button

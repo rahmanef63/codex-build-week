@@ -11,12 +11,14 @@ test("Demo owns synthetic business wiring while the workspace runs its own live 
   const real = read("app", "(workspace)", "real", "page.tsx");
   const dashboard = read("app", "(workspace)", "dashboard", "page.tsx");
   const dashboardApp = read("slices", "real-dashboard", "components", "dashboard-app.tsx");
+  const dashboardShell = read("slices", "real-dashboard", "components", "dashboard-shell.tsx");
+  const authCard = read("slices", "real-dashboard", "components", "auth-card.tsx");
 
   expect(root).toMatch(/href="\/demo"/);
   expect(root).toMatch(/href="\/dashboard"/);
-  expect(root).toMatch(/Pilihan Demo dan Workspace usaha/);
-  expect(root).toMatch(/Demo · Data sintetis/);
-  expect(root).toMatch(/Workspace usaha · Terhubung langsung/);
+  expect(root).toMatch(/Coba demo interaktif/);
+  expect(root).toMatch(/Buka dashboard usaha/);
+  expect(root).not.toMatch(/Mode Real|Workspace usaha|Hackathon project/);
   expect(root).not.toMatch(/Bu Sari|ConvexClientProvider|Dashboard/);
   expect(globalError).not.toMatch(/Bu Sari|Convex|Dashboard/);
   expect(globalSocialCard).not.toMatch(/Bu Sari|Warung Nasi/);
@@ -27,10 +29,14 @@ test("Demo owns synthetic business wiring while the workspace runs its own live 
 
   expect(real).toMatch(/permanentRedirect\("\/dashboard"\)/);
   expect(dashboard).toMatch(/ConvexClientProvider/);
-  expect(dashboard).toMatch(/Terhubung langsung/);
+  expect(dashboard).toMatch(/dashboard pribadi/);
   expect(dashboardApp).not.toMatch(/Bu Sari/);
   expect(dashboardApp).toMatch(/useConvexAuth/);
   expect(dashboardApp).toMatch(/api\.real\.dashboard/);
+  expect(dashboardApp).not.toMatch(/Mode Real|Workspace/);
+  expect(dashboardShell).toMatch(/Dashboard usaha/);
+  expect(dashboardShell).not.toMatch(/Mode Real|Workspace usaha|Agent GPT/);
+  expect(authCard).not.toMatch(/Mode Real|Workspace/);
 
   expect(gptPackage).toMatch(/## Name\s+```text\s+TemanUsaha AI\s+```/);
   const description = gptPackage.match(/## Description\s+```text\s+([\s\S]*?)```/);

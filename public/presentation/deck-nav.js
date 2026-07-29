@@ -11,7 +11,7 @@ const slides = [
 ];
 const deploymentBaseUrl = "https://codex-build-week.vercel.app";
 const deployedDemoUrl = new URL("/demo", deploymentBaseUrl).href;
-const deployedRealUrl = new URL("/real", deploymentBaseUrl).href;
+const deployedRealUrl = new URL("/dashboard", deploymentBaseUrl).href;
 const gptUrl = "https://chatgpt.com/g/g-6a5b0a5ef31c819181f8a68b5536d33e-temanusaha-ai-warung-bu-sari";
 
 const current = Math.max(0, Math.min(slides.length - 1, Number(document.body.dataset.slide || 0)));
