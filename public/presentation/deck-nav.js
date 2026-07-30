@@ -10,6 +10,7 @@ const slideDeck = [
   ["08-penutup.html", "Penutup"],
 ];
 const slides = slideDeck.map(([file]) => file);
+const exportNames = ["00-cover", "01-masalah", "02-solusi", "03-demo", "04-bukti", "05-arsitektur", "06-kepercayaan", "07-build", "08-penutup"];
 const deploymentBaseUrl = "https://codex-build-week.vercel.app";
 const deployedDemoUrl = new URL("/demo", deploymentBaseUrl).href;
 const deployedRealUrl = new URL("/dashboard", deploymentBaseUrl).href;
@@ -18,10 +19,32 @@ const gptUrl = "https://chatgpt.com/g/g-6a5b0a5ef31c819181f8a68b5536d33e-temanus
 const current = Math.max(0, Math.min(slides.length - 1, Number(document.body.dataset.slide || 0)));
 document.title = `${slideDeck[current][1]} — TemanUsaha AI`;
 const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+const exportMode = new URLSearchParams(location.search).has("export");
+if (exportMode) document.body.classList.add("export-mode");
 
 document.querySelectorAll("[data-current]").forEach((node) => node.textContent = String(current + 1).padStart(2, "0"));
 document.querySelectorAll("[data-total]").forEach((node) => node.textContent = String(slides.length).padStart(2, "0"));
 document.querySelectorAll("[data-progress]").forEach((node) => node.style.setProperty("--progress", `${((current + 1) / slides.length) * 100}%`));
+
+document.querySelectorAll(".deck-nav").forEach((nav) => {
+  const name = `temanusaha-ai-${exportNames[current]}`;
+  const menu = document.createElement("details");
+  menu.className = "download-menu";
+  menu.innerHTML = `
+    <summary aria-label="Unduh presentasi" title="Unduh presentasi">↓</summary>
+    <div class="download-options">
+      <strong>Unduh slide ${String(current + 1).padStart(2, "0")}</strong>
+      <a download href="exports/${name}.jpg">JPEG · 1600 × 900</a>
+      <a download href="exports/${name}.pdf">PDF · satu slide</a>
+      <span></span>
+      <a download href="exports/temanusaha-ai-presentation.pdf">PDF lengkap · 9 slide</a>
+      <a download href="exports/temanusaha-ai-presentation-jpeg.zip">Semua JPEG · ZIP</a>
+    </div>`;
+  menu.addEventListener("click", (event) => {
+    if (event.target.closest("a")) menu.open = false;
+  });
+  nav.prepend(menu);
+});
 
 const qrCard = document.querySelector("[data-qr-card]");
 const gptCard = document.querySelector("[data-gpt-card]");

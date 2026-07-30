@@ -1,4 +1,4 @@
-import { existsSync } from "node:fs";
+import { existsSync, statSync } from "node:fs";
 import { join } from "node:path";
 import { expect, test } from "vitest";
 // @ts-expect-error tsc needs allowImportingTsExtensions for the .ts extension import; vitest resolves it directly.
@@ -28,6 +28,10 @@ test("deck presentation is complete and locally linked", () => {
     expect(html).toMatch(/src=["']deck-nav\.js["']/);
     expect(html).toMatch(/src=["']deck-order-demo\.js["']/);
     expect(html).toMatch(/src=["']deck-onboarding-demo\.js["']/);
+    expect(html).toMatch(/<meta name="description" content="[^"]+">/);
+    expect(html).toMatch(/<a class="skip-link" href="#slide-content">Lewati ke isi slide<\/a>/);
+    expect(html).toMatch(/<a class="mini-brand" href="\/" aria-label="Kembali ke beranda">/);
+    expect(html).toMatch(/<section class="slide-body[^"]*" id="slide-content">/);
 
     for (const [image] of html.matchAll(/<img\b[^>]*>/g)) expect(image).toMatch(/\balt=["'][^"']*["']/);
     for (const [button] of html.matchAll(/<button\b[^>]*>/g)) expect(button).toMatch(/\btype=["']button["']/);
@@ -52,6 +56,10 @@ test("deck presentation is complete and locally linked", () => {
     read("public", "presentation", "deck-order-demo.js") +
     read("public", "presentation", "deck-onboarding-demo.js");
   expect(script).toMatch(/setupInteractiveDemo\(\)/);
+  expect(script).toMatch(/JPEG · 1600 × 900/);
+  expect(script).toMatch(/PDF lengkap · 9 slide/);
+  expect(script).toMatch(/temanusaha-ai-presentation-jpeg\.zip/);
+  expect(script).toMatch(/new URLSearchParams\(location\.search\)\.has\("export"\)/);
   expect(script).toMatch(/const deploymentBaseUrl = "https:\/\/codex-build-week\.vercel\.app"/);
   expect(script).toMatch(/const deployedDemoUrl = new URL\("\/demo", deploymentBaseUrl\)\.href/);
   expect(script).toMatch(/const deployedRealUrl = new URL\("\/dashboard", deploymentBaseUrl\)\.href/);
@@ -77,6 +85,23 @@ test("deck presentation is complete and locally linked", () => {
   expect(styles).toMatch(/@media \(max-width: 390px\)/);
   expect(styles).toMatch(/safe-area-inset-bottom/);
   expect(styles).toMatch(/scroll-snap-type: x mandatory/);
+  expect(styles).toMatch(/\.download-options/);
+
+  for (const name of [
+    "00-cover", "01-masalah", "02-solusi", "03-demo", "04-bukti",
+    "05-arsitektur", "06-kepercayaan", "07-build", "08-penutup",
+  ]) {
+    for (const extension of ["jpg", "pdf"]) {
+      const file = join(root, "exports", `temanusaha-ai-${name}.${extension}`);
+      expect(existsSync(file), `missing ${file}`).toBe(true);
+      expect(statSync(file).size, `${file} is unexpectedly small`).toBeGreaterThan(50_000);
+    }
+  }
+  for (const file of ["temanusaha-ai-presentation.pdf", "temanusaha-ai-presentation-jpeg.zip"]) {
+    const output = join(root, "exports", file);
+    expect(existsSync(output), `missing ${output}`).toBe(true);
+    expect(statSync(output).size, `${output} is unexpectedly small`).toBeGreaterThan(500_000);
+  }
 
   const opening = read("public", "presentation", "index.html");
   expect(deck).not.toMatch(/(?:70|30)%/);

@@ -8,7 +8,7 @@ export default function NotFound() {
         <h1>404 — Halaman ini tidak ada</h1>
         <p>Periksa kembali tautan yang Anda gunakan, atau kembali ke pemilih mode.</p>
         <Link className="primary-button" href="/">
-          Kembali ke pemilih mode
+          Ke beranda
         </Link>
       </section>
     </main>

@@ -16,6 +16,7 @@ test("Demo owns synthetic business wiring while the workspace runs its own live 
   const dashboardShell = read("slices", "real-dashboard", "components", "dashboard-shell.tsx");
   const authCard = read("slices", "real-dashboard", "components", "auth-card.tsx");
   const convexProvider = read("shared", "components", "convex-provider.tsx");
+  const modeNav = read("shared", "components", "mode-nav-bar.tsx");
 
   expect(root).toMatch(/href="\/demo"/);
   expect(root).toMatch(/href="\/dashboard"/);
@@ -50,6 +51,9 @@ test("Demo owns synthetic business wiring while the workspace runs its own live 
   expect(dashboardFeature).toMatch(/description: string/);
   expect(dashboardFeature).toMatch(/title: string/);
   expect(authCard).not.toMatch(/Mode Real|Workspace/);
+  expect(modeNav).toMatch(/aria-label="Kembali ke beranda"/);
+  expect(modeNav).toMatch(/TemanUsaha AI/);
+  expect(modeNav).not.toMatch(/← Kembali ke beranda/);
 
   expect(gptPackage).toMatch(/## Name\s+```text\s+TemanUsaha AI\s+```/);
   const description = gptPackage.match(/## Description\s+```text\s+([\s\S]*?)```/);

@@ -15,7 +15,7 @@ export default function DemoErrorPage({ reset }: { reset: () => void }) {
           Coba lagi
         </Button>
         <p className="setup-note">
-          <Link href="/">← Kembali ke beranda</Link>
+          <Link aria-label="Kembali ke beranda" href="/">Beranda</Link>
         </p>
       </section>
     </main>

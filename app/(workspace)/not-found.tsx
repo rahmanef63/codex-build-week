@@ -15,7 +15,7 @@ export default function WorkspaceNotFound() {
             Ke dashboard
           </Link>
           <p className="dash-muted dash-small">
-            <Link href="/">← Kembali ke beranda</Link>
+            <Link aria-label="Kembali ke beranda" href="/">Beranda</Link>
           </p>
         </section>
       </main>

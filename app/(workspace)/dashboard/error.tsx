@@ -19,7 +19,7 @@ export default function DashboardErrorPage({ reset }: { reset: () => void }) {
             Coba lagi
           </Button>
           <p className="dash-muted dash-small">
-            <Link href="/">← Kembali ke beranda</Link>
+            <Link aria-label="Kembali ke beranda" href="/">Beranda</Link>
           </p>
         </section>
       </main>

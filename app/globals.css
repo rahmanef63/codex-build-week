@@ -196,6 +196,9 @@ a { color: inherit; }
 
 .demo-mode-bar a { color: var(--green); text-decoration: none; }
 .demo-mode-bar a:hover { text-decoration: underline; text-underline-offset: 4px; }
+.mode-home-link { display: inline-flex; align-items: center; gap: 9px; font-weight: 850; text-decoration: none; }
+.mode-home-link img { width: 28px; height: 28px; object-fit: contain; }
+.mode-home-link:focus-visible { border-radius: 6px; outline: 3px solid var(--accent); outline-offset: 4px; }
 .demo-page .dashboard-shell { padding-top: 18px; }
 .demo-page .setup-shell { min-height: calc(100vh - 52px); }
 
@@ -493,7 +496,8 @@ a { color: inherit; }
 }
 
 @media (max-width: 560px) {
-  .demo-mode-bar { width: min(100% - 24px, 1180px); align-items: flex-start; flex-direction: column; gap: 6px; }
+  .demo-mode-bar { width: min(100% - 24px, 1180px); gap: 12px; }
+  .demo-mode-bar > span { line-height: 1.35; text-align: right; }
   .dashboard-shell { width: min(100% - 24px, 1180px); padding-top: 24px; }
   .topbar,
   .section-heading { align-items: flex-start; flex-direction: column; gap: 12px; }

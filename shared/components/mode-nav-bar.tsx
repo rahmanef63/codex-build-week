@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 // variant="dash" reads correctly inside the dark .dash-root shell (no
 // .demo-mode-bar background/border, dash-muted label) — used on /dashboard.
@@ -21,7 +22,10 @@ export function ModeNavBar({
           paddingBottom: 20,
         }}
       >
-        <Link href="/">← Kembali ke beranda</Link>
+        <Link aria-label="Kembali ke beranda" className="mode-home-link" href="/">
+          <Image alt="" height={28} src="/assets/brand/temanusaha-mark.png" width={28} />
+          <span>TemanUsaha AI</span>
+        </Link>
         <span className="dash-muted dash-small">{label}</span>
       </nav>
     );
@@ -29,7 +33,10 @@ export function ModeNavBar({
 
   return (
     <nav className="demo-mode-bar" aria-label="Navigasi mode">
-      <Link href="/">← Kembali ke beranda</Link>
+      <Link aria-label="Kembali ke beranda" className="mode-home-link" href="/">
+        <Image alt="" height={28} src="/assets/brand/temanusaha-mark.png" width={28} />
+        <span>TemanUsaha AI</span>
+      </Link>
       <span>{label}</span>
     </nav>
   );
