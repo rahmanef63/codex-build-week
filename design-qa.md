@@ -1,53 +1,58 @@
 **Source visual truth**
 
-- Production before fix, Siapkan Asisten: `C:\Users\rahma\AppData\Local\Temp\temanusaha-feature-wrapper\01-before-agent.png`
-- Production before fix, Pengaturan: `C:\Users\rahma\AppData\Local\Temp\temanusaha-feature-wrapper\02-before-settings.png`
+- Production before polish, Hari ini: `C:\Users\rahma\AppData\Local\Temp\temanusaha-anti-slop-audit\01-today.png`
+- Production before polish, Pesanan: `C:\Users\rahma\AppData\Local\Temp\temanusaha-anti-slop-audit\02-orders-normalized.png`
 
 **Implementation screenshots**
 
-- Production after fix, Pengaturan: `C:\Users\rahma\AppData\Local\Temp\temanusaha-feature-wrapper\07-prod-after-settings.png`
-- Production after fix, Siapkan Asisten: `C:\Users\rahma\AppData\Local\Temp\temanusaha-feature-wrapper\08-prod-after-agent.png`
-- Production after fix, Pengaturan mobile: `C:\Users\rahma\AppData\Local\Temp\temanusaha-feature-wrapper\09-prod-after-settings-mobile.png`
+- Production after polish, Hari ini: `C:\Users\rahma\AppData\Local\Temp\temanusaha-anti-slop-audit\09-after-today-production.png`
+- Local production build after polish, Pesanan: `C:\Users\rahma\AppData\Local\Temp\temanusaha-anti-slop-audit\06-after-orders-local.png`
+- Local production build after polish, Pengaturan: `C:\Users\rahma\AppData\Local\Temp\temanusaha-anti-slop-audit\08-after-settings-local.png`
 
 **Viewport and normalization**
 
-- Desktop source and implementation: 1280×720 CSS px, DPR 1, 1280×720 image px.
-- Mobile implementation: 390×844 CSS px, DPR 1, 390×844 image px.
+- Desktop comparison: 1280×720 CSS px.
+- Hari ini source: 1280×720 image px at DPR 1.
+- Pesanan source and implementation captures: 1920×1080 image px at DPR 1.5, normalized to 1280×720.
+- Production Hari ini implementation: 1920×1080 image px at DPR 1.5, normalized to 1280×720.
+- Mobile measurements: 390×844 CSS px at DPR 1.5.
 - Browser chrome is excluded.
 
 **State**
 
-- Signed-in Production business `waringa`.
-- Full-view comparison: Siapkan Asisten and Pengaturan.
-- Responsive measurement: all six dashboard features.
+- Signed-in business `waringa`.
+- Full-view comparison: Hari ini and Pesanan.
+- Focused checks: Pengaturan desktop; Aktivitas AI and Pengaturan at 390 px mobile.
 
 **Full-view comparison evidence**
 
-- Side-by-side source/current comparison: `C:\Users\rahma\AppData\Local\Temp\temanusaha-feature-wrapper\compare-before-after.png`
-- Before, Siapkan Asisten was 768 px wide and Pengaturan was 576 px wide inside a 968 px desktop content area.
-- After, both features, their titles, descriptions, and all four other feature roots use the same 968 px desktop wrapper.
+- Side-by-side source/current comparison: `C:\Users\rahma\AppData\Local\Temp\temanusaha-anti-slop-audit\compare-before-after.png`
+- Hari ini replaces four equal cards with one divided data band, removes the repeated eyebrow and breadcrumb label, and preserves the existing low-stock panel.
+- Pesanan replaces the secondary action card with a compact action rail while keeping the order table as the primary data surface.
 
 **Focused region evidence**
 
-- Desktop at 1280 px: every feature wrapper, header, content area, and first child has the same x=284 alignment and available width; the Activity view consistently accounts for its vertical scrollbar.
-- Mobile at 390 px: all six feature wrappers, headers, content areas, and first children are 350 px wide at x=20.
-- Mobile document scroll width remains 390 px; bottom navigation is 366 px wide at x=12.
+- Pengaturan uses a two-column information/form layout at desktop and reflows to one 350 px column at x=20 on mobile.
+- Aktivitas AI controls use the available mobile width, wrap into two rows, and remain inside the 350 px feature wrapper.
+- At 390 px, both tested views report document scroll width 390 px; no horizontal overflow is present.
 
 **Findings**
 
 - No actionable P0, P1, or P2 issue remains.
-- `DashboardFeature` is the single prop-driven contract for title, description, and content structure.
-- `DashboardShell` owns only the shared responsive `max-w-6xl` container.
-- Siapkan Asisten and Pengaturan now match every other feature width.
-- The Pengaturan form retains `max-w-xl` internally for readable controls while its feature card remains full width.
-- Typography, colors, icons, radii, borders, navigation, and responsive shell behavior are unchanged.
+- Typography now inherits the project’s existing Geist family instead of overriding it with a generic system stack.
+- Page titles are the sole feature heading; decorative `Dashboard usaha` labels and duplicate active-view breadcrumbs are removed.
+- Spacing uses the existing scale and one consistent border/radius system.
+- Existing dark neutral and amber semantic tokens are unchanged.
+- No imagery or visible asset was added, removed, or approximated.
+- Copy remains task-specific; `Catat pesanan tanpa GPT` is simplified to `Catat pesanan manual`.
+- Order-form disclosure, mobile navigation, theme control, and all six feature routes remain functional.
 - Production browser console is clear.
 
 **Comparison history**
 
-- Pass 1 — P2: per-view `max-w-3xl` and `max-w-xl` roots made Siapkan Asisten and Pengaturan visibly narrower than other dashboard features.
-- Fix: introduced the shared prop-driven feature wrapper, moved the feature heading contract into it, and normalized all six feature roots to `w-full`.
-- Pass 2: Production desktop/mobile measurements, screenshots, and console checks confirm equal widths, centered content, and no overflow.
+- Pass 1 — P2: repeated context labels, four uniform metric cards, secondary action cards, and cramped mobile activity filters made the dashboard read like a generated template rather than an operational tool.
+- Fix: removed redundant labels, consolidated metrics into a divided data band, converted create panels to action rails, normalized the setup steps, split settings content by purpose, and added responsive filter reflow.
+- Pass 2: same-state side-by-side comparison, Production screenshot, desktop interaction checks, 390 px measurements, and console QA show stronger hierarchy with no regression or overflow.
 
 **Follow-up polish**
 
