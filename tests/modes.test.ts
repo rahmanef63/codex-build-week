@@ -39,7 +39,7 @@ test("Demo owns synthetic business wiring while the workspace runs its own live 
   expect(dashboardApp).toMatch(/useConvexAuth/);
   expect(dashboardApp).toMatch(/api\.real\.dashboard/);
   expect(dashboardApp).not.toMatch(/Mode Real|Workspace/);
-  expect(dashboardFeature).toMatch(/Dashboard usaha/);
+  expect(dashboardFeature).not.toMatch(/Dashboard usaha/);
   expect(dashboardShell).not.toMatch(/Mode Real|Workspace usaha|Agent GPT/);
   expect(dashboardShell).toMatch(/data-dashboard-content/);
   expect(dashboardShell).toMatch(/mx-auto w-full max-w-6xl/);

@@ -24,10 +24,10 @@ export function DashboardOrders({
 
   return (
     <div className="w-full space-y-5">
-      <section className="rounded-md border border-border bg-card p-5">
+      <section className="border-y border-border py-4 sm:py-5">
         <div className="flex items-center justify-between gap-4">
           <div>
-            <h2 className="text-sm font-semibold">Catat pesanan tanpa GPT</h2>
+            <h2 className="text-sm font-semibold">Catat pesanan manual</h2>
             <p className="mt-1 text-xs text-muted-foreground">Pesanan, stok, dan jejak aktivitas diperbarui bersamaan.</p>
           </div>
           <Button onClick={() => setOpen((value) => !value)} size="sm" disabled={!products.length}>

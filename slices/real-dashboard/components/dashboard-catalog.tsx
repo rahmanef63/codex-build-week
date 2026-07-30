@@ -46,7 +46,7 @@ export function DashboardCatalog({ products }: { products: DashboardData["produc
 
   return (
     <div className="w-full space-y-5">
-      <section className="rounded-md border border-border bg-card p-5">
+      <section className="border-y border-border py-4 sm:py-5">
         <h2 className="text-sm font-semibold">Tambah produk</h2>
         <p className="mt-1 text-xs text-muted-foreground">Masukkan produk baru beserta stok awalnya.</p>
         <form
@@ -64,6 +64,7 @@ export function DashboardCatalog({ products }: { products: DashboardData["produc
         >
           {(["name", "price", "stock", "lowStockThreshold"] as const).map((key) => (
             <input
+              aria-label={{ name: "Nama produk", price: "Harga", stock: "Stok awal", lowStockThreshold: "Batas minimum" }[key]}
               className="rounded-md border border-input bg-background px-3 py-2 text-sm"
               key={key}
               min={0}

@@ -11,10 +11,9 @@ export function DashboardFeature({
 }) {
   return (
     <section className="w-full" data-dashboard-feature>
-      <header className="w-full pb-7">
-        <p className="text-xs font-medium uppercase tracking-widest text-accent">Dashboard usaha</p>
-        <h1 className="mt-2 text-2xl font-semibold tracking-tight">{title}</h1>
-        <p className="mt-1 text-sm text-muted-foreground">{description}</p>
+      <header className="w-full pb-6">
+        <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">{title}</h1>
+        <p className="mt-2 max-w-2xl text-sm leading-6 text-muted-foreground">{description}</p>
       </header>
       <div className="w-full" data-dashboard-feature-content>
         {children}

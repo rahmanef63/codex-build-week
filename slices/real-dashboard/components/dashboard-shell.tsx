@@ -31,8 +31,6 @@ export function DashboardShell({
   onViewChange: (view: DashboardView) => void;
   view: DashboardView;
 }) {
-  const active = navigation.find((item) => item.view === view)!;
-
   return (
     <div className="flex min-h-dvh bg-background text-foreground">
       <aside className="hidden w-64 shrink-0 flex-col border-r border-border bg-card/40 p-4 md:flex">
@@ -64,10 +62,7 @@ export function DashboardShell({
 
       <main className="min-w-0 flex-1 overflow-y-auto p-5 pb-24 sm:p-7 md:pb-7">
         <header className="mx-auto mb-6 flex w-full max-w-6xl items-center justify-between gap-3 border-b border-border pb-3">
-          <div className="min-w-0 text-sm text-muted-foreground">
-            <span className="hidden sm:inline">{businessName} / </span>
-            <span className="font-medium text-foreground">{active.label}</span>
-          </div>
+          <span className="min-w-0 truncate text-sm font-medium">{businessName}</span>
           <div className="flex shrink-0 items-center gap-2">
             <ThemePresetSwitcher />
             <Button aria-label="Keluar" className="md:hidden" onClick={onSignOut} size="icon" variant="ghost">

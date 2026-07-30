@@ -11,10 +11,10 @@ export function DashboardOverview({ data }: { data: DashboardData }) {
 
   return (
     <div className="w-full space-y-6">
-      <section aria-label="Ringkasan hari ini" className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        {stats.map(([label, value]) => (
-          <article className="rounded-md border border-border bg-card p-4 sm:p-5" key={label}>
-            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">{label}</p>
+      <section aria-label="Ringkasan hari ini" className="grid grid-cols-2 overflow-hidden rounded-md border border-border bg-card lg:grid-cols-4">
+        {stats.map(([label, value], index) => (
+          <article className={`${index < 2 ? "border-b" : ""} ${index % 2 ? "border-l" : ""} border-border p-4 lg:border-b-0 ${index ? "lg:border-l" : "lg:border-l-0"} sm:p-5`} key={label}>
+            <p className="text-xs font-medium text-muted-foreground">{label}</p>
             <p className="mt-2 text-2xl font-semibold tabular-nums">{value}</p>
           </article>
         ))}
