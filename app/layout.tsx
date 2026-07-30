@@ -4,6 +4,7 @@ import type { ReactNode } from "react";
 import { ToastProvider } from "@/shared/components/toast";
 import { siteUrl } from "@/shared/lib/site";
 import { ThemeProviders } from "@/slices/theme-presets";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 import "./globals.css";
 import { Geist } from "next/font/google";
@@ -31,7 +32,9 @@ export default function RootLayout({ children }: Readonly<{ children: ReactNode 
     <html lang="id" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
       <body>
         <ThemeProviders>
-          <ToastProvider>{children}</ToastProvider>
+          <TooltipProvider>
+            <ToastProvider>{children}</ToastProvider>
+          </TooltipProvider>
         </ThemeProviders>
       </body>
     </html>
