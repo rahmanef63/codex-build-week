@@ -49,8 +49,7 @@ export function DashboardShell({
 }) {
   return (
     <SidebarProvider className="min-h-dvh bg-background text-foreground">
-      <div className="hidden md:contents">
-        <Sidebar collapsible="icon">
+      <Sidebar collapsible="icon">
           <SidebarHeader className="gap-0 px-3 py-4">
             <Link className="truncate text-sm font-semibold" href="/">TemanUsaha AI</Link>
             <p className="truncate pt-1 text-xs text-muted-foreground">{businessName}</p>
@@ -87,8 +86,7 @@ export function DashboardShell({
             </SidebarMenu>
           </SidebarFooter>
           <SidebarRail />
-        </Sidebar>
-      </div>
+      </Sidebar>
 
       <SidebarInset className="min-w-0 overflow-y-auto pb-20 md:pb-0">
         <header className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 border-b border-border px-5 py-3 sm:px-7">
