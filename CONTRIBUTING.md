@@ -35,7 +35,8 @@ Pull request harus:
 - Mutasi order harus menjaga atomisitas order, stok, dan `aiActionLogs`.
 - Handler Agent harus menurunkan `businessId` dari token terverifikasi.
 - Pertahankan operation ID Demo yang didokumentasikan di README.
-- Gunakan Bahasa Indonesia yang ringkas untuk copy pengguna.
+- Gunakan Bahasa Indonesia yang ringkas untuk alur operasional. Jika mengubah
+  landing, perbarui keempat locale di `app/(public)/landing-copy.ts`.
 
 ## Commit
 

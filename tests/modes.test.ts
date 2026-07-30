@@ -4,6 +4,7 @@ import { read } from "../shared/testing/read-file.ts";
 
 test("Demo owns synthetic business wiring while the workspace runs its own live connected app (owner sign-off 2026-07-18)", () => {
   const root = read("app", "(public)", "page.tsx");
+  const landingCopy = read("app", "(public)", "landing-copy.ts");
   const demo = read("app", "(public)", "demo", "page.tsx");
   const gptPackage = read("GPTs", "alfa.md");
   const globalError = read("app", "error.tsx");
@@ -21,8 +22,8 @@ test("Demo owns synthetic business wiring while the workspace runs its own live 
   expect(root).toMatch(/href="\/demo"/);
   expect(root).toMatch(/href="\/dashboard"/);
   expect(root).toMatch(/href="\/setup"/);
-  expect(root).toMatch(/Coba demo interaktif/);
-  expect(root).toMatch(/Buka dashboard usaha/);
+  expect(landingCopy).toMatch(/Coba demo interaktif/);
+  expect(landingCopy).toMatch(/Buka dashboard usaha/);
   expect(root).not.toMatch(/Mode Real|Workspace usaha|Hackathon project/);
   expect(root).not.toMatch(/Bu Sari|ConvexClientProvider|Dashboard/);
   expect(globalError).not.toMatch(/Bu Sari|Convex|Dashboard/);

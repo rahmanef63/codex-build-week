@@ -6,6 +6,7 @@
 [![Convex](https://img.shields.io/badge/Convex-realtime-orange)](https://www.convex.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
+[![CI](https://github.com/rahmanef63/codex-build-week/actions/workflows/ci.yml/badge.svg)](https://github.com/rahmanef63/codex-build-week/actions/workflows/ci.yml)
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/rahmanef63/codex-build-week&env=NEXT_PUBLIC_CONVEX_URL,CONVEX_DEPLOY_KEY&envDescription=Hubungkan%20deployment%20Convex%20Anda.&envLink=https://github.com/rahmanef63/codex-build-week%23deploy-your-own)
 
@@ -24,6 +25,11 @@ TemanUsaha mengubah percakapan Bahasa Indonesia menjadi pekerjaan operasional ya
 | **Dashboard usaha** | Dipakai UMKM dengan katalog, pesanan, aktivitas, dan konfigurasi Agent miliknya sendiri | Terisolasi per pengguna | Authenticated di `/dashboard` |
 
 Rute lama `/real` dipertahankan sebagai redirect permanen ke `/dashboard`.
+
+Landing tersedia dalam Bahasa Indonesia, English, Français, dan 日本語. Demo,
+dashboard operasional, GPT Actions, mata uang, serta zona waktu tetap
+Indonesia-first (`IDR`, `Asia/Jakarta`); project ini belum mengklaim lokalisasi
+produk penuh di luar Indonesia.
 
 ## Mengapa project ini ada?
 

@@ -1,4 +1,5 @@
 import { ConvexError, v } from "convex/values";
+import type { Id } from "./_generated/dataModel";
 import { internalMutation, type MutationCtx } from "./_generated/server";
 import { BUSINESS_ID, jakartaDay } from "./domain";
 import { logError } from "./_shared/log";
@@ -19,7 +20,7 @@ async function seedDemo(ctx: MutationCtx) {
     currency: "IDR",
     timezone: "Asia/Jakarta",
   });
-  const productIds = new Map<string, any>();
+  const productIds = new Map<string, Id<"products">>();
   for (const [sortOrder, [slug, name, price, stock, lowStockThreshold]] of PRODUCTS.entries()) {
     const productId = await ctx.db.insert("products", {
       businessId: BUSINESS_ID,
@@ -38,8 +39,8 @@ async function seedDemo(ctx: MutationCtx) {
       requestId: `seed-${day.date}-pak-budi`,
       customerName: "Pak Budi",
       items: [
-        { productId: productIds.get("nasi-ayam"), slug: "nasi-ayam", productName: "Nasi Ayam", quantity: 1, unitPrice: 15_000, lineTotal: 15_000 },
-        { productId: productIds.get("es-teh"), slug: "es-teh", productName: "Es Teh", quantity: 1, unitPrice: 5_000, lineTotal: 5_000 },
+        { productId: productIds.get("nasi-ayam")!, slug: "nasi-ayam", productName: "Nasi Ayam", quantity: 1, unitPrice: 15_000, lineTotal: 15_000 },
+        { productId: productIds.get("es-teh")!, slug: "es-teh", productName: "Es Teh", quantity: 1, unitPrice: 5_000, lineTotal: 5_000 },
       ],
       total: 20_000,
       paymentStatus: "PAID" as const,
@@ -51,8 +52,8 @@ async function seedDemo(ctx: MutationCtx) {
       requestId: `seed-${day.date}-dita`,
       customerName: "Dita Pramesti",
       items: [
-        { productId: productIds.get("ayam-goreng"), slug: "ayam-goreng", productName: "Ayam Goreng", quantity: 1, unitPrice: 12_000, lineTotal: 12_000 },
-        { productId: productIds.get("nasi-putih"), slug: "nasi-putih", productName: "Nasi Putih", quantity: 1, unitPrice: 5_000, lineTotal: 5_000 },
+        { productId: productIds.get("ayam-goreng")!, slug: "ayam-goreng", productName: "Ayam Goreng", quantity: 1, unitPrice: 12_000, lineTotal: 12_000 },
+        { productId: productIds.get("nasi-putih")!, slug: "nasi-putih", productName: "Nasi Putih", quantity: 1, unitPrice: 5_000, lineTotal: 5_000 },
       ],
       total: 17_000,
       paymentStatus: "UNPAID" as const,
