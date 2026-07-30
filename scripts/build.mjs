@@ -12,7 +12,9 @@ const key = process.env.CONVEX_DEPLOY_KEY;
 const url = process.env.NEXT_PUBLIC_CONVEX_URL;
 
 if (key && !(process.env.VERCEL_ENV === "preview" && !key.startsWith("preview:"))) {
+  run(join(process.cwd(), "scripts", "setup-auth.mjs"), []);
   run(convexBin, ["deploy", "--cmd", "npm run build"]);
+  run(convexBin, ["run", "seed:ensure"]);
 } else if (url || process.env.VERCEL !== "1") {
   if (key) console.log("[build] Preview uses the existing Convex deployment.");
   nextBuild();

@@ -66,3 +66,16 @@ describe("seed.reset", () => {
     expect(await rowCounts(t)).toEqual(before);
   });
 });
+
+describe("seed.ensure", () => {
+  test("seeds an empty deployment once without resetting existing Demo data", async () => {
+    const t = setup();
+
+    const first = await t.mutation(internal.seed.ensure, {});
+    const second = await t.mutation(internal.seed.ensure, {});
+
+    expect(first.created).toBe(true);
+    expect(second).toEqual({ created: false, businessId: BUSINESS_ID });
+    expect(await rowCounts(t)).toEqual({ businesses: 1, products: 5, orders: 2 });
+  });
+});

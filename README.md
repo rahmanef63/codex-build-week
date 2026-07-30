@@ -7,9 +7,12 @@
 [![TypeScript](https://img.shields.io/badge/TypeScript-strict-blue?logo=typescript)](https://www.typescriptlang.org/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/rahmanef63/codex-build-week&env=NEXT_PUBLIC_CONVEX_URL,CONVEX_DEPLOY_KEY&envDescription=Hubungkan%20deployment%20Convex%20Anda.&envLink=https://github.com/rahmanef63/codex-build-week%23deploy-your-own)
+
 [Produk](https://codex-build-week.vercel.app/) ·
 [Demo interaktif](https://codex-build-week.vercel.app/demo) ·
 [Dashboard usaha](https://codex-build-week.vercel.app/dashboard) ·
+[Setup deployment](https://codex-build-week.vercel.app/setup) ·
 [Presentasi](https://codex-build-week.vercel.app/presentation) ·
 [Paket Custom GPT](GPTs/alfa.md)
 
@@ -206,6 +209,32 @@ slices/
 tests/                   unit, integration, boundary, dan contract tests
 ```
 
+## Deploy your own
+
+TemanUsaha menggunakan pola **clone-to-own**: Vercel, repository hasil clone, deployment Convex, dan seluruh data berada di akun Anda.
+
+1. Buat project di [Convex Dashboard](https://dashboard.convex.dev).
+2. Dari deployment Production, salin URL `.convex.cloud` dan buat deploy key dengan izin `deployment:deploy`, `env:view`, serta `env:write`.
+3. Klik tombol **Deploy with Vercel** di atas. Vercel akan membuat clone repository dan meminta:
+
+   ```dotenv
+   NEXT_PUBLIC_CONVEX_URL=https://your-deployment.convex.cloud
+   CONVEX_DEPLOY_KEY=prod:your-deploy-key
+   ```
+
+4. Deploy. `build:auto` kemudian:
+
+   - membuat signing key Convex Auth jika belum ada;
+   - membuat `ACTION_API_KEY` dan `DEMO_RESET_KEY` tanpa mencetak nilainya;
+   - menyelaraskan `SITE_URL` dan `DASHBOARD_PUBLIC_URL`;
+   - mendeploy schema dan functions Convex;
+   - mengisi data Demo hanya jika tenant Demo masih kosong; dan
+   - membangun aplikasi Next.js.
+
+5. Buka `/dashboard`, daftar sebagai pemilik, lalu isi profil dan katalog usaha.
+
+Semua langkah idempotent. Redeploy tidak merotasi auth key, tidak membuat seed ganda, dan tidak menghapus data usaha. Checklist yang sama tersedia di [`/setup`](https://codex-build-week.vercel.app/setup).
+
 ## Menjalankan secara lokal
 
 ### Prasyarat
@@ -257,12 +286,13 @@ Buka [http://localhost:3000](http://localhost:3000).
 | Variable | Wajib | Keterangan |
 | --- | --- | --- |
 | `NEXT_PUBLIC_CONVEX_URL` | Ya | URL client deployment Convex |
-| `CONVEX_DEPLOYMENT` | Build terhubung | Nama deployment yang dipakai Convex CLI |
+| `CONVEX_DEPLOY_KEY` | Deploy clone | Production key untuk deploy backend dan bootstrap env |
+| `CONVEX_DEPLOYMENT` | Lokal | Ditulis otomatis oleh `npx convex dev` |
 | `SITE_URL` | Opsional | Fallback metadata URL di luar Vercel |
 
 ### Environment Convex
 
-Set melalui `npx convex env set`, bukan melalui file yang di-commit.
+Pada clone Vercel, `scripts/setup-auth.mjs` mengisi variable berikut secara otomatis. Set manual melalui `npx convex env set` hanya diperlukan sebagai fallback.
 
 | Variable | Wajib | Keterangan |
 | --- | --- | --- |

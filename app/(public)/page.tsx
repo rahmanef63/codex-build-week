@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, Bot, CheckCircle2, ClipboardList, Package, ShieldCheck } from "lucide-react";
+import { ArrowRight, Bot, CheckCircle2, ClipboardList, Package, Rocket, ShieldCheck } from "lucide-react";
 
 import { buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -68,6 +68,10 @@ export default function Home() {
               </Link>
               <Link className={cn(buttonVariants({ size: "lg", variant: "outline" }), "h-11 w-full px-5 text-base sm:w-fit")} href="/dashboard">
                 Buka dashboard usaha
+              </Link>
+              <Link className={cn(buttonVariants({ size: "lg", variant: "ghost" }), "h-11 w-full px-5 text-base sm:w-fit")} href="/setup">
+                Deploy sendiri
+                <Rocket aria-hidden />
               </Link>
             </div>
             <p className="mt-4 flex items-center gap-2 text-xs text-muted-foreground">

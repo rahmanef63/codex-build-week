@@ -20,6 +20,7 @@ test("Demo owns synthetic business wiring while the workspace runs its own live 
 
   expect(root).toMatch(/href="\/demo"/);
   expect(root).toMatch(/href="\/dashboard"/);
+  expect(root).toMatch(/href="\/setup"/);
   expect(root).toMatch(/Coba demo interaktif/);
   expect(root).toMatch(/Buka dashboard usaha/);
   expect(root).not.toMatch(/Mode Real|Workspace usaha|Hackathon project/);
