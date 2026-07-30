@@ -50,6 +50,16 @@ export function formatAction(value: string) {
     get_daily_summary: "Baca ringkasan harian",
     get_low_stock_items: "Baca stok menipis",
     list_pending_orders: "Baca pesanan tertunda",
+    list_products: "Baca daftar produk",
+    get_business_profile: "Baca profil usaha",
+    issue_agent_token: "Perbarui akses asisten",
   };
   return labels[value] ?? value.replaceAll("_", " ").replace(/^./, (letter) => letter.toUpperCase());
+}
+
+export function formatActivitySummary(value: string) {
+  return value
+    .replace(/^Order [a-z0-9_-]+ dibuat, total Rp(\d+)\.$/i, (_, total: string) => `Pesanan dibuat dengan total ${formatRupiah(Number(total))}.`)
+    .replace(/^Status order [a-z0-9_-]+ diperbarui\.$/i, "Status pesanan diperbarui.")
+    .replace(/\bRp(\d{4,})\b/g, (_, total: string) => formatRupiah(Number(total)));
 }

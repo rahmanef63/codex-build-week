@@ -39,7 +39,7 @@ export function ConnectedDashboard({
       view={view}
     >
       <DashboardFeature {...featureCopy[view]}>
-        {view === "overview" ? <DashboardOverview data={data} /> : null}
+        {view === "overview" ? <DashboardOverview data={data} onNavigate={setView} /> : null}
         {view === "orders" ? <DashboardOrders orders={data.orders} products={data.products} /> : null}
         {view === "catalog" ? <DashboardCatalog products={data.products} /> : null}
         {view === "activity" ? <DashboardActivity activity={data.activity} /> : null}

@@ -26,7 +26,7 @@ const benefits = [
 
 export default function Home() {
   return (
-    <main className="min-h-dvh bg-background text-foreground">
+    <main className="dark min-h-dvh bg-[#0b0b0b] text-foreground">
       <div className="mx-auto flex min-h-dvh max-w-7xl flex-col px-5 py-5 sm:px-8 sm:py-8">
         <header className="flex items-center justify-between gap-4">
           <Link className="flex items-center gap-3 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" href="/">
@@ -76,7 +76,7 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="overflow-hidden rounded-xl border border-border bg-card shadow-sm">
+          <div className="overflow-hidden rounded-md border border-border bg-card">
             <div className="relative aspect-[4/3] bg-muted">
               <Image
                 alt="Operasional warung yang dibantu TemanUsaha AI"
@@ -86,7 +86,7 @@ export default function Home() {
                 sizes="(max-width: 1024px) calc(100vw - 2.5rem), 42rem"
                 src="/assets/illustrations/warung-dashboard-banner.png"
               />
-              <div className="absolute inset-x-4 bottom-4 rounded-lg border border-white/30 bg-background/95 p-4 shadow-lg backdrop-blur sm:inset-x-6 sm:bottom-6">
+              <div className="absolute inset-x-4 bottom-4 rounded-md border border-white/20 bg-background/95 p-4 sm:inset-x-6 sm:bottom-6">
                 <p className="text-xs font-medium text-muted-foreground">Pesan pelanggan</p>
                 <p className="mt-1 text-sm font-medium">“Catat 3 nasi ayam dan 2 es teh untuk Bu Rina.”</p>
                 <div className="mt-3 grid grid-cols-3 gap-2 border-t border-border pt-3 text-center text-xs">

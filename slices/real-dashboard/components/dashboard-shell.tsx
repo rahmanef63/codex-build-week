@@ -1,8 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { Bot, ClipboardList, LayoutDashboard, LogOut, Package, Settings, Sparkles } from "lucide-react";
-import type { ReactNode } from "react";
+import { Bot, ClipboardList, LayoutDashboard, LogOut, MoreHorizontal, Package, Settings, Sparkles } from "lucide-react";
+import { useState, type ReactNode } from "react";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -26,12 +26,12 @@ import { ThemePresetSwitcher } from "@/slices/theme-presets";
 import type { DashboardView } from "../types";
 
 const navigation = [
-  { icon: LayoutDashboard, label: "Hari ini", view: "overview" },
-  { icon: ClipboardList, label: "Pesanan", view: "orders" },
-  { icon: Package, label: "Produk & stok", view: "catalog" },
-  { icon: Sparkles, label: "Aktivitas AI", view: "activity" },
-  { icon: Bot, label: "Siapkan asisten", view: "agent" },
-  { icon: Settings, label: "Pengaturan", view: "settings" },
+  { icon: LayoutDashboard, label: "Hari ini", mobileLabel: "Hari ini", view: "overview" },
+  { icon: ClipboardList, label: "Pesanan", mobileLabel: "Pesanan", view: "orders" },
+  { icon: Package, label: "Produk & stok", mobileLabel: "Produk", view: "catalog" },
+  { icon: Sparkles, label: "Aktivitas AI", mobileLabel: "Aktivitas", view: "activity" },
+  { icon: Bot, label: "Siapkan asisten", mobileLabel: "Asisten", view: "agent" },
+  { icon: Settings, label: "Pengaturan", mobileLabel: "Pengaturan", view: "settings" },
 ] as const;
 
 export function DashboardShell({
@@ -47,12 +47,16 @@ export function DashboardShell({
   onViewChange: (view: DashboardView) => void;
   view: DashboardView;
 }) {
+  const [moreOpen, setMoreOpen] = useState(false);
+  const primaryNavigation = navigation.slice(0, 4);
+  const secondaryNavigation = navigation.slice(4);
+
   return (
     <SidebarProvider className="min-h-dvh bg-background text-foreground">
       <Sidebar collapsible="icon">
-          <SidebarHeader className="gap-0 px-3 py-4">
+          <SidebarHeader className="gap-0 border-b border-sidebar-border px-3 py-4">
             <Link className="truncate text-sm font-semibold" href="/">TemanUsaha AI</Link>
-            <p className="truncate pt-1 text-xs text-muted-foreground">{businessName}</p>
+            <p className="truncate pt-1 text-xs text-muted-foreground">Operasional {businessName}</p>
           </SidebarHeader>
           <SidebarContent>
             <SidebarGroup>
@@ -88,11 +92,11 @@ export function DashboardShell({
           <SidebarRail />
       </Sidebar>
 
-      <SidebarInset className="min-w-0 overflow-y-auto pb-20 md:pb-0">
-        <header className="mx-auto flex w-full max-w-6xl items-center justify-between gap-3 border-b border-border px-5 py-3 sm:px-7">
+      <SidebarInset className="w-0 min-w-0 flex-1 overflow-y-auto pb-20 md:pb-0">
+        <header className="flex w-full items-center justify-between gap-3 border-b border-border px-5 py-3 sm:px-7">
           <div className="flex min-w-0 items-center gap-2">
             <SidebarTrigger className="hidden md:inline-flex" />
-          <span className="min-w-0 truncate text-sm font-medium">{businessName}</span>
+            <span className="min-w-0 truncate text-sm font-medium">{businessName}</span>
           </div>
           <div className="flex shrink-0 items-center gap-2">
             <ThemePresetSwitcher />
@@ -109,21 +113,48 @@ export function DashboardShell({
 
       <nav
         aria-label="Navigasi operasional"
-        className="fixed inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+0.5rem)] z-40 grid grid-cols-6 rounded-lg border border-border bg-card/95 p-1 shadow-lg backdrop-blur md:hidden"
+        className="fixed inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+0.5rem)] z-40 grid grid-cols-5 rounded-xl border border-border bg-card/95 p-1 shadow-lg backdrop-blur md:hidden"
       >
-        {navigation.map(({ icon: Icon, label, view: itemView }) => (
+        {primaryNavigation.map(({ icon: Icon, label, mobileLabel, view: itemView }) => (
           <Button
             aria-label={label}
-            className={cn("h-11 flex-col gap-0.5 px-0.5 py-1.5 text-center text-[9px] leading-tight", view === itemView && "text-accent")}
+            className={cn("h-12 min-w-0 flex-col gap-1 px-1 py-1.5 text-center text-[10px] leading-none", view === itemView && "text-accent")}
             key={itemView}
             onClick={() => onViewChange(itemView)}
             variant={view === itemView ? "secondary" : "ghost"}
           >
             <Icon />
-            {label}
+            {mobileLabel}
           </Button>
         ))}
+        <Button
+          aria-expanded={moreOpen}
+          aria-label="Menu lainnya"
+          className={cn("h-12 min-w-0 flex-col gap-1 px-1 py-1.5 text-center text-[10px] leading-none", secondaryNavigation.some((item) => item.view === view) && "text-accent")}
+          onClick={() => setMoreOpen((open) => !open)}
+          variant={secondaryNavigation.some((item) => item.view === view) ? "secondary" : "ghost"}
+        >
+          <MoreHorizontal />
+          Lainnya
+        </Button>
       </nav>
+      {moreOpen ? (
+        <div className="fixed inset-0 z-30 bg-black/40 md:hidden" onClick={() => setMoreOpen(false)}>
+          <div className="absolute inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+4.5rem)] rounded-xl border border-border bg-popover p-2 shadow-xl" onClick={(event) => event.stopPropagation()}>
+            {secondaryNavigation.map(({ icon: Icon, label, view: itemView }) => (
+              <Button
+                className="h-12 w-full justify-start"
+                key={itemView}
+                onClick={() => { onViewChange(itemView); setMoreOpen(false); }}
+                variant={view === itemView ? "secondary" : "ghost"}
+              >
+                <Icon />
+                {label}
+              </Button>
+            ))}
+          </div>
+        </div>
+      ) : null}
     </SidebarProvider>
   );
 }

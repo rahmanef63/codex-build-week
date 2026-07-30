@@ -1,12 +1,12 @@
 :root {
   color-scheme: light;
   --ink: #10251a;
-  --forest: #0b4f36;
-  --leaf: #176b43; /* aligned to the app brand green (--green) */
-  --lime: #d9ef5b;
-  --cream: #f6f0df;
-  --paper: #fffdf7;
-  --orange: #ff8a43;
+  --forest: #171717;
+  --leaf: #b45309;
+  --lime: #f59e0b;
+  --cream: #f5f5f4;
+  --paper: #fafafa;
+  --orange: #f59e0b;
   --coral: #f45d48;
   --muted: #66776d;
   --line: rgba(16, 37, 26, .14);
@@ -48,29 +48,14 @@ button { color: inherit; }
   min-height: 100dvh;
   padding: clamp(20px, 3vw, 42px) clamp(22px, 5vw, 76px) clamp(18px, 2.5vw, 34px);
   overflow: hidden;
-  background:
-    radial-gradient(circle at 85% 12%, rgba(217, 239, 91, .34), transparent 24rem),
-    radial-gradient(circle at 8% 92%, rgba(255, 138, 67, .18), transparent 22rem),
-    var(--cream);
+  background: var(--cream);
 }
 
-.slide::before {
-  position: absolute;
-  z-index: -2;
-  inset: 0;
-  content: "";
-  opacity: .17;
-  background-image: radial-gradient(rgba(16, 37, 26, .4) .7px, transparent .7px);
-  background-size: 18px 18px;
-  mask-image: linear-gradient(90deg, #000, transparent 58%);
-}
+.slide::before { display: none; }
 
 .slide--dark {
   color: var(--paper);
-  background:
-    radial-gradient(circle at 88% 18%, rgba(217, 239, 91, .17), transparent 25rem),
-    radial-gradient(circle at 8% 92%, rgba(255, 138, 67, .18), transparent 22rem),
-    var(--ink);
+  background: var(--ink);
 }
 
 .slide--dark::before { opacity: .12; background-image: radial-gradient(rgba(255, 253, 247, .55) .7px, transparent .7px); }

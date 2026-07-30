@@ -144,16 +144,36 @@
   --destructive: #dc2626;
 }
 
+.demo-page {
+  min-height: 100dvh;
+  color: #f5f5f5;
+  background: #0b0b0b;
+  --ink: #f5f5f5;
+  --muted-foreground: #a3a3a3;
+  --line: #303030;
+  --surface: #171717;
+  --canvas: #0b0b0b;
+  --green: #f59e0b;
+  --green-soft: #262015;
+  --amber: #f59e0b;
+  --amber-soft: #2b2112;
+  --surface-glass: #171717;
+  --surface-mist: #222222;
+  --tabs-bg: #171717;
+  --table-head-bg: #1d1d1d;
+  --status-default-bg: #242424;
+  --header-art-bg: #171717;
+  --header-art-border: #303030;
+  --footer-text-on-green: #171717;
+}
+
 * { box-sizing: border-box; }
 html { background: var(--canvas); }
 
 body {
   margin: 0;
   color: var(--ink);
-  background:
-    url('/assets/brand/temanusaha-pattern.png') center top / 1200px auto repeat-y,
-    radial-gradient(circle at 100% 0, var(--hero-glow), transparent 30rem),
-    var(--canvas);
+  background: var(--canvas);
   -webkit-font-smoothing: antialiased;
 }
 
@@ -317,7 +337,7 @@ a { color: inherit; }
   padding: 16px 18px;
   border: 1px solid var(--line);
   border-radius: var(--radius-2xl);
-  background: var(--green-soft);
+  background: var(--surface);
 }
 .demo-guide strong { display: block; margin-top: 4px; }
 .demo-guide p { margin: 4px 0 0; color: var(--muted-foreground); font-size: .86rem; }
@@ -345,7 +365,7 @@ a { color: inherit; }
   border: 1px solid var(--line);
   border-radius: var(--radius-2xl);
   background: var(--surface-glass);
-  box-shadow: 0 14px 40px rgba(var(--shadow-ink), .055);
+  box-shadow: none;
 }
 
 .metric-card {
@@ -697,6 +717,8 @@ a { color: inherit; }
   --sidebar-border: oklch(1 0 0 / 10%);
   --sidebar-ring: oklch(0.556 0 0);
 }
+
+.dark body { background: #0b0b0b; color: var(--foreground); }
 
 @layer base {
   * {

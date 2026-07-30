@@ -1,5 +1,5 @@
 import type { DashboardData } from "@/shared/types/dashboard";
-import { formatAction, formatDateTime } from "@/shared/lib/format";
+import { formatAction, formatActivitySummary, formatDateTime } from "@/shared/lib/format";
 import { EmptyState } from "./empty-state";
 
 export function ActivityPanel({
@@ -38,11 +38,11 @@ export function ActivityPanel({
               <dl>
                 <div>
                   <dt>Dipahami</dt>
-                  <dd>{item.inputSummary}</dd>
+                  <dd>{formatActivitySummary(item.inputSummary)}</dd>
                 </div>
                 <div>
                   <dt>Dilakukan</dt>
-                  <dd>{item.outputSummary}</dd>
+                  <dd>{formatActivitySummary(item.outputSummary)}</dd>
                 </div>
               </dl>
               {item.requiresVerification && (

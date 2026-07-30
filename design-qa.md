@@ -1,61 +1,41 @@
-**Source visual truth**
+# Design QA — Operational Ledger
 
-- Production before polish, Hari ini: `C:\Users\rahma\AppData\Local\Temp\temanusaha-anti-slop-audit\01-today.png`
-- Production before polish, Pesanan: `C:\Users\rahma\AppData\Local\Temp\temanusaha-anti-slop-audit\02-orders-normalized.png`
+- Source visual truth: `C:\Users\rahma\.codex\generated_images\019faf18-b500-71f0-a05a-06001f2c2726\call_wwiH5iI97T0BOzP9uYgspavT.png`
+- Desktop implementation: `C:\Users\rahma\AppData\Local\Temp\temanusaha-implementation-qa-2026-07-30\dashboard-desktop-cdp.png`
+- Mobile implementation: `C:\Users\rahma\AppData\Local\Temp\temanusaha-implementation-qa-2026-07-30\dashboard-mobile-cdp.png`
+- Combined comparison: `C:\Users\rahma\AppData\Local\Temp\temanusaha-implementation-qa-2026-07-30\dashboard-comparison.png`
+- Viewports: desktop 1440×1024; mobile 390×844
+- Density normalization: CDP capture at scale 1; source and desktop implementation normalized to 1440×1024
+- State: signed-in new-business empty state with zero metrics
 
-**Implementation screenshots**
+## Findings
 
-- Production after polish, Hari ini: `C:\Users\rahma\AppData\Local\Temp\temanusaha-anti-slop-audit\09-after-today-production.png`
-- Local production build after polish, Pesanan: `C:\Users\rahma\AppData\Local\Temp\temanusaha-anti-slop-audit\06-after-orders-local.png`
-- Local production build after polish, Pengaturan: `C:\Users\rahma\AppData\Local\Temp\temanusaha-anti-slop-audit\08-after-settings-local.png`
+No actionable P0, P1, or P2 differences remain.
 
-**Viewport and normalization**
+- Typography: Geist is consistent, readable at 14–16px, and preserves the source hierarchy without clipped desktop copy.
+- Spacing and layout: sidebar/inset/content widths fit within the viewport; the full-width header and centered feature wrapper share one alignment grid.
+- Colors: near-black surfaces, warm white text, restrained amber actions, and neutral dividers match the selected direction.
+- Assets and icons: the screen needs no raster assets; existing library icons are crisp and consistent.
+- Copy: Indonesian labels are direct, contextual, and free of endpoint names or raw operation IDs.
+- Responsive behavior: the mobile dock uses four primary destinations plus “Lainnya”; visible labels fit without overlap and the two secondary destinations remain available in the menu.
 
-- Desktop comparison: 1280×720 CSS px.
-- Hari ini source: 1280×720 image px at DPR 1.
-- Pesanan source and implementation captures: 1920×1080 image px at DPR 1.5, normalized to 1280×720.
-- Production Hari ini implementation: 1920×1080 image px at DPR 1.5, normalized to 1280×720.
-- Mobile measurements: 390×844 CSS px at DPR 1.5.
-- Browser chrome is excluded.
+## Comparison History
 
-**State**
+1. Initial mobile capture found the five dock cells still collided because “Produk & stok” and “Aktivitas AI” exceeded their available width.
+2. Visible labels were shortened to “Produk” and “Aktivitas” while their full accessible names were retained.
+3. The revised 390×844 CDP capture shows five distinct labels with no collision; the menu opens and exposes “Siapkan asisten” and “Pengaturan”.
+4. Initial desktop capture exposed the inherited `w-full` sidebar inset sizing. The shared inset now uses `w-0 min-w-0 flex-1`; measured document width equals viewport width (1440px).
 
-- Signed-in business `waringa`.
-- Full-view comparison: Hari ini and Pesanan.
-- Focused checks: Pengaturan desktop; Aktivitas AI and Pengaturan at 390 px mobile.
+## Browser Verification
 
-**Full-view comparison evidence**
+- Local landing: desktop and mobile captured; both primary links are present and mobile horizontal overflow is zero.
+- Dashboard review state: desktop and mobile captured through the actual shared shell and feature components.
+- Primary interaction: “Lainnya” opens and exposes both secondary destinations.
+- Console: no application warnings or errors were reported during the reviewed landing, dashboard, and presentation states.
+- Focused region: mobile navigation was inspected separately because it was the prior P0 failure.
 
-- Side-by-side source/current comparison: `C:\Users\rahma\AppData\Local\Temp\temanusaha-anti-slop-audit\compare-before-after.png`
-- Hari ini replaces four equal cards with one divided data band, removes the repeated eyebrow and breadcrumb label, and preserves the existing low-stock panel.
-- Pesanan replaces the secondary action card with a compact action rail while keeping the order table as the primary data surface.
+## Follow-up Polish
 
-**Focused region evidence**
-
-- Pengaturan uses a two-column information/form layout at desktop and reflows to one 350 px column at x=20 on mobile.
-- Aktivitas AI controls use the available mobile width, wrap into two rows, and remain inside the 350 px feature wrapper.
-- At 390 px, both tested views report document scroll width 390 px; no horizontal overflow is present.
-
-**Findings**
-
-- No actionable P0, P1, or P2 issue remains.
-- Typography now inherits the project’s existing Geist family instead of overriding it with a generic system stack.
-- Page titles are the sole feature heading; decorative `Dashboard usaha` labels and duplicate active-view breadcrumbs are removed.
-- Spacing uses the existing scale and one consistent border/radius system.
-- Existing dark neutral and amber semantic tokens are unchanged.
-- No imagery or visible asset was added, removed, or approximated.
-- Copy remains task-specific; `Catat pesanan tanpa GPT` is simplified to `Catat pesanan manual`.
-- Order-form disclosure, mobile navigation, theme control, and all six feature routes remain functional.
-- Production browser console is clear.
-
-**Comparison history**
-
-- Pass 1 — P2: repeated context labels, four uniform metric cards, secondary action cards, and cramped mobile activity filters made the dashboard read like a generated template rather than an operational tool.
-- Fix: removed redundant labels, consolidated metrics into a divided data band, converted create panels to action rails, normalized the setup steps, split settings content by purpose, and added responsive filter reflow.
-- Pass 2: same-state side-by-side comparison, Production screenshot, desktop interaction checks, 390 px measurements, and console QA show stronger hierarchy with no regression or overflow.
-
-**Follow-up polish**
-
-- None required for this scope.
+No blocking polish remains. Live authenticated data states should receive a final production smoke test after deployment.
 
 final result: passed
