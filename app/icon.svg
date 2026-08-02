@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" color="#17211b">
+  <!--
+    Asisten Pribadi AI — original mark. Two subpaths, one colour, one <path>.
+
+    Outer: a four-petal rosette. Each petal is an exact semicircle drawn on one
+    side of an inscribed square of half-side s = 7.4 centred at (16,16); the
+    circle through two adjacent square corners has those corners as a diameter,
+    so every arc is a true 180-degree sweep and the four lobes meet without a
+    seam. Drawn from that construction, not traced from anything.
+
+    Inner: the four-point sparkle (the emoji element) knocked out with
+    fill-rule="evenodd" — tips at r = 9.8 on the axes, quadratic control points
+    at 1.6 on the diagonals, which keeps the concave waists sharp enough to read
+    as a sparkle and the surrounding band >= 2.5px wide at a 16x16 render.
+
+    Colour: a favicon is fetched as a standalone document, so there is no parent
+    to inherit from and currentColor would fall back to black on a dark tab
+    strip. The `color` presentation attribute supplies the light-scheme value and
+    the media query below flips it for dark browser chrome. The inline React copy
+    in shared/components/brand-mark.tsx drops both and follows currentColor, so
+    there it tracks the active theme preset.
+  -->
+  <style>
+    @media (prefers-color-scheme: dark) { :root { color: #f5f5f5 } }
+  </style>
+  <path fill="currentColor" fill-rule="evenodd" d="M8.6 8.6A7.4 7.4 0 0 1 23.4 8.6A7.4 7.4 0 0 1 23.4 23.4A7.4 7.4 0 0 1 8.6 23.4A7.4 7.4 0 0 1 8.6 8.6ZM16 6.2Q17.6 14.4 25.8 16Q17.6 17.6 16 25.8Q14.4 17.6 6.2 16Q14.4 14.4 16 6.2Z"/>
+</svg>

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Bawa pola Asisten Pribadi AI ke domain Anda sendiri: contohnya diganti, polanya tetap">
+  <title>Deploy sendiri — Asisten Pribadi AI</title>
+  <link rel="stylesheet" href="deck.css">
+  <script defer src="deck-nav.js"></script>
+  <script defer src="deck-order-demo.js"></script>
+  <script defer src="deck-onboarding-demo.js"></script>
+</head>
+<body data-slide="7">
+  <a class="skip-link" href="#slide-content">Lewati ke isi slide</a>
+  <main class="slide">
+    <header class="deck-top">
+      <a class="mini-brand" href="/" aria-label="Kembali ke beranda"><img src="../assets/brand/mark.svg" alt=""><span>Asisten Pribadi AI</span></a>
+      <span class="section-label">Deploy sendiri</span>
+    </header>
+
+    <section class="slide-body onboarding-grid" id="slide-content">
+      <div>
+        <p class="kicker" data-reveal>Setelah polanya terbukti</p>
+        <h2 data-reveal>Ganti contohnya.<br><span class="highlight">Polanya tetap.</span></h2>
+        <p class="lead" data-reveal>Warung hanyalah data awal. Deploy backend-nya, terbitkan token per usaha, lalu ceritakan domain Anda—AI menyusun draft profil dan katalog yang tetap Anda periksa. Custom GPT dan agent harness langsung memakai token yang sama; dashboard tetap opsional.</p>
+        <span class="mode-real-badge" data-reveal><i></i> Dashboard usaha · live</span>
+
+        <div class="interview-card" data-reveal>
+          <div class="interview-head">
+            <span class="interview-mic" aria-hidden="true">●</span>
+            <span><small>Contoh sintetis · tanpa data nyata</small><strong>Wawancara singkat pemilik</strong></span>
+            <time>00:18</time>
+          </div>
+          <button class="interview-play" type="button" data-interview-play aria-controls="interview-transcript" aria-expanded="false">
+            <span data-interview-icon aria-hidden="true">▶</span>
+            <span data-interview-label>Putar simulasi wawancara</span>
+          </button>
+          <div class="interview-wave" aria-hidden="true">
+            <i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i>
+          </div>
+          <div class="interview-progress" aria-hidden="true"><i data-interview-progress></i></div>
+          <blockquote id="interview-transcript" data-interview-transcript tabindex="-1" hidden>
+            “Saya menjual sambal rumahan. Produk terlaris Sambal Cumi 150 ml, harganya Rp35.000, stok awal 18 botol.”
+          </blockquote>
+        </div>
+      </div>
+
+      <aside class="signup-preview onboarding-demo" data-reveal data-tilt aria-label="Simulasi onboarding produk dari wawancara">
+        <div class="preview-head"><div><span>Chat onboarding</span><h3>Dari cerita menjadi katalog</h3></div><b>Draft</b></div>
+        <div class="onboarding-chat" aria-live="polite">
+          <p class="chat-bubble chat-bubble--ai"><b>AI</b>Ceritakan produk yang paling sering dibeli pelanggan.</p>
+          <p class="chat-bubble chat-bubble--owner" data-interview-stage hidden><b>Pemilik</b>Sambal Cumi 150 ml, Rp35.000. Stok awal 18 botol.</p>
+        </div>
+        <section class="product-draft" data-interview-stage tabindex="-1" hidden aria-label="Draft produk hasil wawancara">
+          <div><small>AI menemukan produk</small><strong>Sambal Cumi</strong><span>150 ml · Makanan kemasan</span></div>
+          <dl><div><dt>Harga</dt><dd>Rp35.000</dd></div><div><dt>Stok awal</dt><dd>18 botol</dd></div></dl>
+          <button type="button" data-accept-draft>Benar, simpan draft <span aria-hidden="true">→</span></button>
+        </section>
+        <div class="onboarding-success" data-onboarding-success tabindex="-1" hidden>
+          <b>✓ Draft siap ditinjau</b><span>Contoh sintetis ini tidak disimpan. Setelah deploy, draft tersimpan ke Convex milik Anda sendiri dan bisa dibaca ketiga klien.</span>
+        </div>
+        <div class="onboarding-assets" aria-label="Contoh state antarmuka">
+          <img src="../assets/states/orders-empty.png" alt="State pesanan kosong">
+          <img src="../assets/states/activity-empty.png" alt="State Aktivitas AI kosong">
+          <img src="../assets/states/stock-safe.png" alt="State stok aman">
+          <img src="../assets/states/setup-unseeded.png" alt="State setup data">
+        </div>
+        <a class="primary-button" data-real-link>Daftarkan usaha Anda <span>→</span></a>
+        <p class="preview-disclaimer">Simulasi ini memakai contoh sintetis dari domain lain—bukan warung. Pemilik tetap memeriksa setiap hasil sebelum disimpan.</p>
+      </aside>
+    </section>
+
+    <footer class="deck-bottom">
+      <span><span data-current></span> / <span data-total></span></span><div class="deck-progress" data-progress></div><span class="shortcut-hint">Data awal boleh diganti · kontrak Action-nya tidak</span>
+      <nav class="deck-nav" aria-label="Navigasi slide"><a class="nav-button" data-prev aria-label="Slide sebelumnya">←</a><a class="nav-button" data-next aria-label="Slide berikutnya">→</a></nav>
+    </footer>
+  </main>
+  <aside class="speaker-note"><strong>Catatan presenter · 2:43–2:53</strong>“Contoh kasusnya boleh diganti. Tekan putar: wawancara sintetis dari domain lain berubah menjadi chat, lalu AI menyusun draft produk. Yang tidak berubah adalah polanya—satu Convex, satu kontrak Action, token per usaha, dan tiga klien yang boleh memanggilnya.”</aside>
+</body>
+</html>

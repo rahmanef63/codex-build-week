@@ -1,0 +1,29 @@
+{
+  "slug": "demo-dashboard",
+  "version": "1.0.0",
+  "files": {
+    "barrel": "index.ts",
+    "types": "types.ts",
+    "components": [
+      "components/dashboard.tsx",
+      "components/today-panel.tsx",
+      "components/orders-panel.tsx",
+      "components/activity-panel.tsx",
+      "components/loading-dashboard.tsx",
+      "components/unseeded-dashboard.tsx",
+      "components/status-badge.tsx",
+      "components/product-image.tsx",
+      "components/empty-state.tsx"
+    ],
+    "api": [
+      "api/view.ts",
+      "api/card.tsx",
+      "api/today-view.tsx",
+      "api/orders-view.tsx",
+      "api/activity-view.tsx",
+      "api/empty-states.tsx",
+      "api/colors.ts"
+    ],
+    "tests": ["__tests__/dashboard-card.test.ts"]
+  }
+}

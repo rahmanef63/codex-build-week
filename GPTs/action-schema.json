@@ -1,0 +1,784 @@
+{
+  "openapi": "3.1.0",
+  "info": {
+    "title": "Asisten Pribadi AI — Demo Actions API",
+    "version": "0.1.0",
+    "description": "DEMO-ONLY API dari reference build Asisten Pribadi AI. Satu deployment Convex melayani tiga klien atas data yang sama: Custom GPT (schema ini), agent harness seperti Claude Code, dan dashboard web yang sifatnya opsional — backend tetap bekerja headless tanpa dashboard. Keenam Action di bawah terkunci ke tenant demo sintetis Warung Nasi Bu Sari; warung itu satu contoh use case, bukan produknya. Mode Real memakai rute token-scoped di bawah prefix /api/agent/ dengan schema terpisah dari Agent Setup, bukan Action ini. Klien lain dapat menulis ke data yang sama di antara giliran percakapan, jadi baca ulang sebelum menyatakan status. Tidak memproses pembayaran."
+  },
+  "servers": [
+    {
+      "url": "https://utmost-snake-682.convex.site",
+      "description": "Convex HTTP Actions — tenant demo sintetis Warung Nasi Bu Sari, dipakai bersama oleh GPT, agent harness, dan dashboard"
+    }
+  ],
+  "security": [
+    {
+      "ApiKeyAuth": []
+    }
+  ],
+  "tags": [
+    {
+      "name": "Pesanan",
+      "description": "Demo-only: pesanan sintetis Warung Nasi Bu Sari."
+    },
+    {
+      "name": "Inventaris",
+      "description": "Demo-only: stok sintetis Warung Nasi Bu Sari."
+    },
+    {
+      "name": "Ringkasan",
+      "description": "Demo-only: ringkasan harian dan kartu dashboard sintetis."
+    }
+  ],
+  "paths": {
+    "/api/orders": {
+      "get": {
+        "operationId": "list_pending_orders",
+        "summary": "Daftar pesanan berstatus PENDING",
+        "description": "Demo-only: membaca pesanan PENDING sintetis Warung Nasi Bu Sari.",
+        "tags": ["Pesanan"],
+        "x-openai-isConsequential": false,
+        "responses": {
+          "200": {
+            "description": "Daftar pesanan",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "orders": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Order"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "pesananPending": {
+                    "summary": "Satu pesanan PENDING milik Bu Rina",
+                    "value": {
+                      "orders": [
+                        {
+                          "_id": "orders:k17ord001demo",
+                          "customerName": "Bu Rina",
+                          "items": [
+                            { "product": "Nasi Ayam", "quantity": 3, "price": 15000 },
+                            { "product": "Es Teh Manis", "quantity": 3, "price": 5000 }
+                          ],
+                          "total": 60000,
+                          "paymentStatus": "UNPAID",
+                          "fulfillmentStatus": "PENDING",
+                          "pickupTime": "2026-07-18T12:30:00+07:00"
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      },
+      "post": {
+        "operationId": "create_order",
+        "summary": "Buat pesanan, kurangi stok, dan tulis AI Activity secara atomik",
+        "description": "Demo-only: setelah konfirmasi pengguna, membuat pesanan sintetis dan memperbarui stok Warung Nasi Bu Sari.",
+        "tags": ["Pesanan"],
+        "x-openai-isConsequential": true,
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CreateOrderRequest"
+              },
+              "examples": {
+                "pesananBuRina": {
+                  "summary": "Pesanan demo Bu Rina, ambil 12.30 WIB",
+                  "value": {
+                    "requestId": "5f2c1d3e-8a4b-4c6d-9e0f-1a2b3c4d5e6f",
+                    "customerName": "Bu Rina",
+                    "items": [
+                      { "product": "Nasi Ayam", "quantity": 3 },
+                      { "product": "Es Teh Manis", "quantity": 3 }
+                    ],
+                    "pickupTime": "2026-07-18T12:30:00+07:00",
+                    "paymentStatus": "UNPAID",
+                    "notes": "Sambal dipisah"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Pesanan baru dibuat",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateOrderResponse"
+                },
+                "examples": {
+                  "pesananBaru": {
+                    "summary": "Pesanan dibuat dan stok berkurang",
+                    "value": {
+                      "order": {
+                        "_id": "orders:k17ord001demo",
+                        "customerName": "Bu Rina",
+                        "items": [
+                          { "product": "Nasi Ayam", "quantity": 3, "price": 15000 },
+                          { "product": "Es Teh Manis", "quantity": 3, "price": 5000 }
+                        ],
+                        "total": 60000,
+                        "paymentStatus": "UNPAID",
+                        "fulfillmentStatus": "PENDING",
+                        "pickupTime": "2026-07-18T12:30:00+07:00"
+                      },
+                      "inventoryUpdates": [
+                        { "product": "Nasi Ayam", "previousStock": 7, "newStock": 4 },
+                        { "product": "Es Teh Manis", "previousStock": 12, "newStock": 9 }
+                      ],
+                      "aiActionLog": {
+                        "_id": "aiActionLogs:k17log001demo",
+                        "action": "create_order",
+                        "inputSummary": "Pesanan Bu Rina: 3x Nasi Ayam, 3x Es Teh Manis, ambil 12.30 WIB",
+                        "outputSummary": "Pesanan dibuat, total Rp60.000, stok diperbarui",
+                        "requiresVerification": false,
+                        "createdAt": 1784350800000
+                      },
+                      "idempotent": false
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Replay idempotent mengembalikan pesanan lama",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CreateOrderResponse"
+                },
+                "examples": {
+                  "replayIdempotent": {
+                    "summary": "requestId sama dikirim ulang; tidak ada perubahan stok",
+                    "value": {
+                      "order": {
+                        "_id": "orders:k17ord001demo",
+                        "customerName": "Bu Rina",
+                        "items": [
+                          { "product": "Nasi Ayam", "quantity": 3, "price": 15000 },
+                          { "product": "Es Teh Manis", "quantity": 3, "price": 5000 }
+                        ],
+                        "total": 60000,
+                        "paymentStatus": "UNPAID",
+                        "fulfillmentStatus": "PENDING",
+                        "pickupTime": "2026-07-18T12:30:00+07:00"
+                      },
+                      "inventoryUpdates": [],
+                      "aiActionLog": null,
+                      "idempotent": true
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          },
+          "409": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/api/orders/{id}": {
+      "patch": {
+        "operationId": "update_order",
+        "summary": "Ubah status pemenuhan atau pembayaran",
+        "description": "Demo-only: setelah konfirmasi pengguna, mengubah status pesanan sintetis Warung Nasi Bu Sari.",
+        "tags": ["Pesanan"],
+        "x-openai-isConsequential": true,
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "description": "ID pesanan sintetis yang akan diubah",
+            "schema": {
+              "type": "string",
+              "minLength": 1
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "minProperties": 1,
+                "additionalProperties": false,
+                "properties": {
+                  "fulfillmentStatus": {
+                    "type": "string",
+                    "enum": ["PENDING", "COMPLETED"],
+                    "description": "Status pemenuhan pesanan"
+                  },
+                  "paymentStatus": {
+                    "type": "string",
+                    "enum": ["UNPAID", "PAID", "PARTIAL"],
+                    "description": "Status pembayaran pesanan"
+                  }
+                }
+              },
+              "examples": {
+                "selesaikanPesanan": {
+                  "summary": "Tandai pesanan sudah diambil",
+                  "value": { "fulfillmentStatus": "COMPLETED" }
+                },
+                "tandaiLunas": {
+                  "summary": "Tandai pesanan sudah dibayar penuh",
+                  "value": { "paymentStatus": "PAID" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Pesanan diperbarui",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "order": {
+                      "$ref": "#/components/schemas/Order"
+                    },
+                    "aiActionLog": {
+                      "$ref": "#/components/schemas/AIActionLog"
+                    }
+                  }
+                },
+                "examples": {
+                  "pesananSelesai": {
+                    "summary": "Pesanan Bu Rina ditandai COMPLETED dan PAID",
+                    "value": {
+                      "order": {
+                        "_id": "orders:k17ord001demo",
+                        "customerName": "Bu Rina",
+                        "items": [
+                          { "product": "Nasi Ayam", "quantity": 3, "price": 15000 },
+                          { "product": "Es Teh Manis", "quantity": 3, "price": 5000 }
+                        ],
+                        "total": 60000,
+                        "paymentStatus": "PAID",
+                        "fulfillmentStatus": "COMPLETED",
+                        "pickupTime": "2026-07-18T12:30:00+07:00"
+                      },
+                      "aiActionLog": {
+                        "_id": "aiActionLogs:k17log002demo",
+                        "action": "update_order",
+                        "inputSummary": "Ubah pesanan Bu Rina: fulfillmentStatus=COMPLETED, paymentStatus=PAID",
+                        "outputSummary": "Pesanan Rp60.000 selesai dan lunas",
+                        "requiresVerification": false,
+                        "createdAt": 1784352600000
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "404": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/api/inventory/low-stock": {
+      "get": {
+        "operationId": "get_low_stock_items",
+        "summary": "Daftar produk dengan stok pada atau di bawah ambang",
+        "description": "Demo-only: membaca stok rendah sintetis Warung Nasi Bu Sari.",
+        "tags": ["Inventaris"],
+        "x-openai-isConsequential": false,
+        "responses": {
+          "200": {
+            "description": "Produk stok rendah",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "items": {
+                      "type": "array",
+                      "items": {
+                        "$ref": "#/components/schemas/Product"
+                      }
+                    }
+                  }
+                },
+                "examples": {
+                  "stokRendah": {
+                    "summary": "Nasi Ayam menyentuh ambang stok rendah",
+                    "value": {
+                      "items": [
+                        {
+                          "_id": "products:k17prod001demo",
+                          "slug": "nasi-ayam",
+                          "name": "Nasi Ayam",
+                          "price": 15000,
+                          "stock": 4,
+                          "lowStockThreshold": 5
+                        }
+                      ]
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/api/summary/today": {
+      "get": {
+        "operationId": "get_daily_summary",
+        "summary": "Ringkasan hari ini dalam zona Asia/Jakarta",
+        "description": "Demo-only: membaca ringkasan harian dari data sintetis Warung Nasi Bu Sari.",
+        "tags": ["Ringkasan"],
+        "x-openai-isConsequential": false,
+        "responses": {
+          "200": {
+            "description": "Ringkasan harian",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Summary"
+                },
+                "examples": {
+                  "ringkasanHariIni": {
+                    "summary": "Ringkasan demo 18 Juli 2026 (WIB)",
+                    "value": {
+                      "date": "2026-07-18",
+                      "orderCount": 12,
+                      "recordedRevenue": 540000,
+                      "unpaidOrderCount": 3,
+                      "pendingOrderCount": 4,
+                      "lowStockCount": 2
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    },
+    "/api/dashboard-card": {
+      "get": {
+        "operationId": "get_dashboard_card_image",
+        "summary": "Ambil URL gambar kartu dashboard publik",
+        "description": "Demo-only: mengembalikan metadata gambar agregat sintetis Warung Nasi Bu Sari untuk best-effort Markdown rendering.",
+        "tags": ["Ringkasan"],
+        "x-openai-isConsequential": false,
+        "parameters": [
+          {
+            "name": "view",
+            "in": "query",
+            "required": false,
+            "description": "Tampilan kartu yang diminta",
+            "schema": {
+              "type": "string",
+              "enum": ["today", "orders", "activity"],
+              "default": "today"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Metadata dan URL gambar kartu dashboard",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DashboardCardResponse"
+                },
+                "examples": {
+                  "kartuHariIni": {
+                    "summary": "Kartu ringkasan hari ini",
+                    "value": {
+                      "view": "today",
+                      "imageUrl": "https://utmost-snake-682.convex.site/api/dashboard-card/image?view=today",
+                      "altText": "Kartu ringkasan hari ini Warung Nasi Bu Sari: 12 pesanan, omzet tercatat Rp540.000",
+                      "generatedAt": "2026-07-18T12:00:00+07:00"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "$ref": "#/components/responses/Error"
+          },
+          "401": {
+            "$ref": "#/components/responses/Error"
+          },
+          "503": {
+            "$ref": "#/components/responses/Error"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "securitySchemes": {
+      "ApiKeyAuth": {
+        "type": "apiKey",
+        "in": "header",
+        "name": "X-Action-API-Key"
+      }
+    },
+    "responses": {
+      "Error": {
+        "description": "Respons gagal yang aman",
+        "content": {
+          "application/json": {
+            "schema": {
+              "$ref": "#/components/schemas/ErrorResponse"
+            },
+            "examples": {
+              "unauthorized": {
+                "summary": "API key hilang atau salah",
+                "value": {
+                  "error": {
+                    "code": "UNAUTHORIZED",
+                    "message": "Header X-Action-API-Key tidak valid atau hilang."
+                  }
+                }
+              },
+              "validasiGagal": {
+                "summary": "Field wajib tidak lengkap",
+                "value": {
+                  "error": {
+                    "code": "VALIDATION_ERROR",
+                    "message": "Field wajib hilang atau tidak valid.",
+                    "fields": ["pickupTime"]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "schemas": {
+      "ErrorResponse": {
+        "type": "object",
+        "required": ["error"],
+        "properties": {
+          "error": {
+            "type": "object",
+            "required": ["code", "message"],
+            "properties": {
+              "code": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Kode error mesin, mis. UNAUTHORIZED atau VALIDATION_ERROR"
+              },
+              "message": {
+                "type": "string",
+                "minLength": 1,
+                "description": "Pesan error aman untuk ditampilkan ke pengguna"
+              },
+              "fields": {
+                "type": "array",
+                "items": {
+                  "type": "string"
+                },
+                "description": "Daftar nama field yang gagal validasi (opsional)"
+              }
+            }
+          }
+        }
+      },
+      "CreateOrderRequest": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": ["requestId", "customerName", "items", "pickupTime", "paymentStatus"],
+        "properties": {
+          "requestId": {
+            "type": "string",
+            "format": "uuid",
+            "minLength": 8,
+            "description": "UUID unik untuk mencegah order ganda",
+            "example": "5f2c1d3e-8a4b-4c6d-9e0f-1a2b3c4d5e6f"
+          },
+          "customerName": {
+            "type": "string",
+            "minLength": 1,
+            "description": "Nama pelanggan sintetis",
+            "example": "Bu Rina"
+          },
+          "items": {
+            "type": "array",
+            "minItems": 1,
+            "description": "Daftar item pesanan; minimal satu item",
+            "items": {
+              "type": "object",
+              "additionalProperties": false,
+              "required": ["product", "quantity"],
+              "properties": {
+                "product": {
+                  "type": "string",
+                  "minLength": 1,
+                  "description": "Nama persis atau slug produk",
+                  "example": "Nasi Ayam"
+                },
+                "quantity": {
+                  "type": "integer",
+                  "minimum": 1,
+                  "description": "Jumlah unit yang dipesan",
+                  "example": 3
+                }
+              }
+            }
+          },
+          "pickupTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Waktu pengambilan dalam ISO 8601 dengan offset WIB (+07:00)",
+            "example": "2026-07-18T12:30:00+07:00"
+          },
+          "paymentStatus": {
+            "type": "string",
+            "enum": ["UNPAID", "PAID", "PARTIAL"],
+            "description": "Status pembayaran awal pesanan"
+          },
+          "notes": {
+            "type": "string",
+            "description": "Catatan opsional untuk pesanan",
+            "example": "Sambal dipisah"
+          }
+        }
+      },
+      "CreateOrderResponse": {
+        "type": "object",
+        "properties": {
+          "order": {
+            "$ref": "#/components/schemas/Order"
+          },
+          "inventoryUpdates": {
+            "type": "array",
+            "description": "Perubahan stok yang terjadi bersama pembuatan pesanan",
+            "items": {
+              "type": "object"
+            }
+          },
+          "aiActionLog": {
+            "description": "Log AI Activity; null saat replay idempotent",
+            "anyOf": [
+              {
+                "$ref": "#/components/schemas/AIActionLog"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "idempotent": {
+            "type": "boolean",
+            "description": "true bila requestId sudah pernah diproses"
+          }
+        }
+      },
+      "Order": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID dokumen pesanan sintetis"
+          },
+          "customerName": {
+            "type": "string",
+            "description": "Nama pelanggan sintetis"
+          },
+          "items": {
+            "type": "array",
+            "description": "Item pesanan",
+            "items": {
+              "type": "object"
+            }
+          },
+          "total": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Total pesanan dalam rupiah (bilangan bulat)"
+          },
+          "paymentStatus": {
+            "type": "string",
+            "enum": ["UNPAID", "PAID", "PARTIAL"],
+            "description": "Status pembayaran"
+          },
+          "fulfillmentStatus": {
+            "type": "string",
+            "enum": ["PENDING", "COMPLETED"],
+            "description": "Status pemenuhan"
+          },
+          "pickupTime": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Waktu pengambilan ISO 8601 (WIB)"
+          }
+        }
+      },
+      "Product": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID dokumen produk sintetis"
+          },
+          "slug": {
+            "type": "string",
+            "description": "Slug produk"
+          },
+          "name": {
+            "type": "string",
+            "description": "Nama produk"
+          },
+          "price": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Harga satuan dalam rupiah"
+          },
+          "stock": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Stok tersisa"
+          },
+          "lowStockThreshold": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Ambang stok rendah"
+          }
+        }
+      },
+      "AIActionLog": {
+        "type": "object",
+        "properties": {
+          "_id": {
+            "type": "string",
+            "description": "ID dokumen log"
+          },
+          "action": {
+            "type": "string",
+            "description": "Nama aksi, mis. create_order atau update_order"
+          },
+          "inputSummary": {
+            "type": "string",
+            "description": "Ringkasan input aksi"
+          },
+          "outputSummary": {
+            "type": "string",
+            "description": "Ringkasan hasil aksi"
+          },
+          "requiresVerification": {
+            "type": "boolean",
+            "description": "true bila pemilik usaha perlu memverifikasi"
+          },
+          "createdAt": {
+            "type": "number",
+            "description": "Epoch milidetik saat log dibuat"
+          }
+        }
+      },
+      "Summary": {
+        "type": "object",
+        "properties": {
+          "date": {
+            "type": "string",
+            "format": "date",
+            "description": "Tanggal hari ini dalam zona Asia/Jakarta"
+          },
+          "orderCount": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Jumlah pesanan hari ini"
+          },
+          "recordedRevenue": {
+            "type": "number",
+            "minimum": 0,
+            "description": "Omzet tercatat dalam rupiah"
+          },
+          "unpaidOrderCount": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Jumlah pesanan belum dibayar"
+          },
+          "pendingOrderCount": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Jumlah pesanan belum dipenuhi"
+          },
+          "lowStockCount": {
+            "type": "integer",
+            "minimum": 0,
+            "description": "Jumlah produk stok rendah"
+          }
+        }
+      },
+      "DashboardCardResponse": {
+        "type": "object",
+        "required": ["view", "imageUrl", "altText", "generatedAt"],
+        "properties": {
+          "view": {
+            "type": "string",
+            "enum": ["today", "orders", "activity"],
+            "description": "Tampilan kartu yang dikembalikan"
+          },
+          "imageUrl": {
+            "type": "string",
+            "format": "uri",
+            "description": "URL publik gambar kartu dashboard"
+          },
+          "altText": {
+            "type": "string",
+            "description": "Teks alternatif deskriptif untuk gambar"
+          },
+          "generatedAt": {
+            "type": "string",
+            "format": "date-time",
+            "description": "Waktu pembuatan gambar ISO 8601 (WIB)"
+          }
+        }
+      }
+    }
+  }
+}

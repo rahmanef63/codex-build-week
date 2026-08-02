@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Presentasi Asisten Pribadi AI — reference build: satu backend Convex, satu set Action, tiga klien (Custom GPT, agent harness, dashboard)">
+  <title>Asisten Pribadi AI — Presentasi</title>
+  <link rel="stylesheet" href="deck.css">
+  <script defer src="deck-nav.js"></script>
+  <script defer src="deck-order-demo.js"></script>
+  <script defer src="deck-onboarding-demo.js"></script>
+</head>
+<body data-slide="0">
+  <a class="skip-link" href="#slide-content">Lewati ke isi slide</a>
+  <main class="slide">
+    <div class="orb orb--lime"></div>
+    <div class="orb orb--orange"></div>
+    <header class="deck-top">
+      <a class="mini-brand" href="/" aria-label="Kembali ke beranda"><img src="../assets/brand/mark.svg" alt=""><span>Asisten Pribadi AI</span></a>
+      <span class="section-label">Build Week · 2026</span>
+    </header>
+
+    <section class="slide-body cover-grid" id="slide-content">
+      <div class="cover-copy">
+        <p class="kicker" data-reveal>Reference build · GPTs sebagai agent Anda</p>
+        <h1 data-reveal><span>Custom GPT</span><span>jadi agent <em class="script">nyata</em></span></h1>
+        <p class="lead" data-reveal>Satu backend Convex, satu set Action. Custom GPT, agent harness (Claude Code), atau dashboard—ketiganya menggerakkan data yang sama. Warung di panel sebelah hanyalah contoh kasusnya.</p>
+        <div class="cover-actions" data-reveal>
+          <a class="primary-button" data-next>Mulai presentasi <span aria-hidden="true">→</span></a>
+        </div>
+        <div class="qr-pair" data-reveal>
+          <div class="qr-card" data-qr-card hidden>
+            <span class="qr-image"><img src="vercel-demo-qr.svg" alt="QR code untuk membuka dashboard contoh Asisten Pribadi AI"></span>
+            <span class="qr-copy"><small>Klien 3 · Dashboard</small><strong>Buka dashboard contoh</strong><em data-qr-domain></em></span>
+            <span class="qr-actions">
+              <button class="qr-open" type="button" data-qr-open>Perbesar QR</button>
+              <a class="qr-demo-link" data-demo-link>Buka demo ↗</a>
+            </span>
+          </div>
+          <div class="qr-card qr-card--gpt" data-gpt-card hidden>
+            <span class="qr-image"><img src="chatgpt-gpt-qr.svg" alt="QR code untuk membuka Custom GPT Asisten Pribadi AI"></span>
+            <span class="qr-copy"><small>Klien 1 · Custom GPT</small><strong>Chat dengan agent contoh</strong><em data-gpt-domain></em></span>
+            <span class="qr-actions">
+              <button class="qr-open" type="button" data-gpt-open>Perbesar QR</button>
+              <a class="qr-demo-link" data-gpt-link>Buka GPT ↗</a>
+            </span>
+          </div>
+        </div>
+        <p class="cover-meta" data-reveal>Contoh kasus: Warung Nasi Bu Sari · Bahasa Indonesia · data sintetis</p>
+      </div>
+
+      <div class="hero-frame hero-arch" data-reveal>
+        <p class="arch-panel-label">Satu backend · tiga klien</p>
+        <div class="arch-clients">
+          <span class="arch-client"><small>Klien 1</small>Custom GPT</span>
+          <span class="arch-client"><small>Klien 2</small>Agent harness</span>
+          <span class="arch-client arch-client--optional"><small>Klien 3 · opsional</small>Dashboard</span>
+        </div>
+        <span class="arch-join" aria-hidden="true"></span>
+        <p class="arch-gateway"><code>/api/agent/*</code><small>token-scoped · validasi · idempotent</small></p>
+        <span class="arch-join" aria-hidden="true"></span>
+        <div class="arch-store">
+          <strong>Convex deployment</strong>
+          <span class="arch-tables"><b>orders</b><b>inventory</b><b>activity log</b></span>
+        </div>
+        <div class="arch-example">
+          <p class="arch-example-label">Contoh kasus</p>
+          <p class="arch-request">“Catat pesanan Bu Rina, 3 Nasi Ayam dan 2 Es Teh, ambil jam 12.30.”</p>
+          <div class="arch-metrics">
+            <div><b>Rp55.000</b><small>total dari data</small></div>
+            <div><b>−5 item</b><small>stok berkurang</small></div>
+            <div><b>Tercatat</b><small>activity log</small></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer class="deck-bottom">
+      <span><span data-current>01</span> / <span data-total>09</span></span>
+      <div class="deck-progress" data-progress aria-hidden="true"></div>
+      <span class="shortcut-hint">← → navigasi · P catatan · F layar penuh</span>
+      <nav class="deck-nav" aria-label="Navigasi slide"><a class="nav-button" data-prev aria-label="Slide sebelumnya">←</a><a class="nav-button" data-next aria-label="Slide berikutnya">→</a></nav>
+    </footer>
+  </main>
+  <dialog class="qr-dialog" data-qr-dialog aria-labelledby="qr-dialog-title">
+    <button class="qr-dialog-close" type="button" data-qr-close aria-label="Tutup QR code">×</button>
+    <img src="vercel-demo-qr.svg" alt="QR code menuju dashboard contoh Asisten Pribadi AI">
+    <div><span class="kicker">Klien 3 · dashboard opsional</span><h2 id="qr-dialog-title">Scan untuk mencoba</h2><p>Gunakan kamera ponsel, lalu buka dashboard contoh dengan data sintetis. Backend-nya tetap jalan tanpa dashboard ini.</p></div>
+    <a class="primary-button" data-demo-link>Buka demo di browser <span>↗</span></a>
+  </dialog>
+  <dialog class="qr-dialog" data-gpt-dialog aria-labelledby="gpt-dialog-title">
+    <button class="qr-dialog-close" type="button" data-gpt-close aria-label="Tutup QR code GPT">×</button>
+    <img src="chatgpt-gpt-qr.svg" alt="QR code menuju Custom GPT Asisten Pribadi AI">
+    <div><span class="kicker">Klien 1 · Custom GPT</span><h2 id="gpt-dialog-title">Chat dengan agent contoh</h2><p>Scan dengan kamera ponsel, lalu jalankan Action yang sama dari ChatGPT.</p></div>
+    <a class="primary-button" data-gpt-link>Buka GPT di ChatGPT <span>↗</span></a>
+  </dialog>
+  <aside class="speaker-note"><strong>Catatan presenter · 0:00–0:15</strong>“Ini reference build: cara memakai GPT sebagai agent Anda. Satu backend Convex, satu set Action, tiga klien yang memanggilnya—Custom GPT, agent harness, dan dashboard yang sifatnya opsional. Warung Bu Sari kami pakai sebagai contoh kasus, bukan sebagai produknya.”</aside>
+</body>
+</html>

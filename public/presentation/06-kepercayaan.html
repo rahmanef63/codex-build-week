@@ -1,0 +1,51 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Setiap write dari klien mana pun menghasilkan receipt yang bisa diaudit pemilik data">
+  <title>Tulis yang bisa diaudit — Asisten Pribadi AI</title>
+  <link rel="stylesheet" href="deck.css">
+  <script defer src="deck-nav.js"></script>
+  <script defer src="deck-order-demo.js"></script>
+  <script defer src="deck-onboarding-demo.js"></script>
+</head>
+<body data-slide="6">
+  <a class="skip-link" href="#slide-content">Lewati ke isi slide</a>
+  <main class="slide">
+    <header class="deck-top">
+      <a class="mini-brand" href="/" aria-label="Kembali ke beranda"><img src="../assets/brand/mark.svg" alt=""><span>Asisten Pribadi AI</span></a>
+      <span class="section-label">Jejak yang bisa diaudit</span>
+    </header>
+
+    <section class="slide-body trust-grid" id="slide-content">
+      <div>
+        <p class="kicker" data-reveal>Bukan sekadar disclaimer</p>
+        <h2 data-reveal>Kepercayaan dibangun <span class="highlight">per write.</span></h2>
+        <p class="lead" data-reveal>Aturan ini melekat di backend, bukan di satu klien. Dipanggil dari Custom GPT, dari agent harness, atau lewat dashboard—write-nya tetap menghasilkan receipt yang sama.</p>
+        <div class="trust-principles">
+          <article class="principle" data-reveal><b>1</b><div><h3>Konfirmasi sebelum write</h3><p>Order dan perubahan status tidak berjalan tanpa “ya, simpan”—termasuk dari harness.</p></div></article>
+          <article class="principle" data-reveal><b>2</b><div><h3>Angka dari Action</h3><p>Harga, stok, total, dan ringkasan datang dari data, tidak boleh ditebak model.</p></div></article>
+          <article class="principle" data-reveal><b>3</b><div><h3>Jalur koreksi manusia</h3><p>Setiap write—dan setiap read—masuk activity log dan bisa diperiksa pemilik.</p></div></article>
+        </div>
+      </div>
+
+      <article class="receipt" data-reveal data-tilt>
+        <p class="kicker">AI Action Receipt · contoh kasus</p>
+        <h3>Transparansi yang konkret</h3>
+        <div class="receipt-line"><strong>Apa yang saya pahami</strong><span>Bu Rina memesan 3 Nasi Ayam + 2 Es Teh, 12.30 WIB, belum bayar.</span></div>
+        <div class="receipt-line"><strong>Apa yang saya lakukan</strong><span>Membuat order pending dan memperbarui stok.</span></div>
+        <div class="receipt-line"><strong>Data yang digunakan</strong><span>Produk, jumlah, waktu, status bayar, total Rp55.000.</span></div>
+        <div class="receipt-line"><strong>Yang harus diperiksa</strong><span>Jumlah, harga, status pembayaran, Aktivitas AI.</span></div>
+        <div class="receipt-line"><strong>Instruksi lebih jelas</strong><span>Sebutkan pelanggan, produk, jumlah, waktu, dan pembayaran.</span></div>
+      </article>
+    </section>
+
+    <footer class="deck-bottom">
+      <span><span data-current></span> / <span data-total></span></span><div class="deck-progress" data-progress></div><span class="shortcut-hint">Receipt yang sama, dari klien mana pun</span>
+      <nav class="deck-nav" aria-label="Navigasi slide"><a class="nav-button" data-prev aria-label="Slide sebelumnya">←</a><a class="nav-button" data-next aria-label="Slide berikutnya">→</a></nav>
+    </footer>
+  </main>
+  <aside class="speaker-note"><strong>Catatan presenter · 2:25–2:43</strong>“Karena aturannya ada di backend, bukan di prompt satu klien, setiap write menghasilkan receipt lima baris yang sama: apa yang dipahami, apa yang dilakukan, data yang dipakai, yang perlu dicek, dan cara memberi instruksi lebih baik. Contoh di layar memakai warung.”</aside>
+</body>
+</html>

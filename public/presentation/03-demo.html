@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Contoh terpandu: Custom GPT sebagai klien pertama yang memanggil Action Asisten Pribadi AI">
+  <title>Contoh: Custom GPT — Asisten Pribadi AI</title>
+  <link rel="stylesheet" href="deck.css">
+  <script defer src="deck-nav.js"></script>
+  <script defer src="deck-order-demo.js"></script>
+  <script defer src="deck-onboarding-demo.js"></script>
+</head>
+<body data-slide="3">
+  <a class="skip-link" href="#slide-content">Lewati ke isi slide</a>
+  <main class="slide slide--dark">
+    <header class="deck-top">
+      <a class="mini-brand" href="/" aria-label="Kembali ke beranda"><img src="../assets/brand/mark-inverse.svg" alt=""><span>Asisten Pribadi AI</span></a>
+      <span class="section-label">Klien 1 dari 3 · Custom GPT</span>
+    </header>
+
+    <section class="slide-body demo-experience" id="slide-content">
+      <div class="demo-intro">
+        <div>
+          <p class="kicker" data-reveal>Percakapan → Action → bukti</p>
+          <h2 data-reveal>Klik chat. Lihat data <span class="highlight">bergerak.</span></h2>
+        </div>
+        <p class="demo-instruction" data-reveal><span>1</span> Klik pesan &nbsp;→&nbsp; <span>2</span> Konfirmasi &nbsp;→&nbsp; <span>3</span> Pantau proses</p>
+        <p class="cover-meta" data-reveal>Simulasi terpandu untuk panggung — bukan panggilan API langsung. Contoh kasus: Warung Nasi Bu Sari. Agent harness dan dashboard memanggil Action yang sama.</p>
+      </div>
+
+      <div class="interactive-demo" data-demo-shell>
+        <section class="chat-workspace" aria-label="Percakapan Custom GPT">
+          <div class="chat-head chat-head--large">
+            <div class="chat-person"><img src="../assets/brand/mark-inverse.svg" alt=""><div><strong>Asisten Pribadi AI</strong><small>Contoh kasus · Warung Nasi Bu Sari</small></div></div>
+            <span class="realtime">online</span>
+          </div>
+
+          <div class="chat-log chat-log--interactive" aria-live="polite">
+            <p class="chat-hint">Klik pesan berikut untuk mengirim</p>
+            <button class="bubble bubble--user chat-trigger" type="button" data-chat-send>
+              Catat pesanan Bu Rina, 3 Nasi Ayam dan 2 Es Teh, ambil jam 12.30, belum bayar.
+              <span>Klik untuk kirim <b>↗</b></span>
+            </button>
+
+            <div class="bubble bubble--ai demo-hidden" data-ai-typing>
+              <span class="typing" aria-label="AI sedang mengetik"><i></i><i></i><i></i></span>
+            </div>
+
+            <article class="reply-card demo-hidden" data-confirm-card>
+              <div class="reply-label"><span>✦</span> Saya memahami pesanan ini</div>
+              <div class="order-summary-card">
+                <div class="order-line"><img src="../assets/products/nasi-ayam.png" alt="Nasi Ayam"><div><strong>Nasi Ayam</strong><small>3 × Rp15.000</small></div><b>Rp45.000</b></div>
+                <div class="order-line"><img src="../assets/products/es-teh.png" alt="Es Teh"><div><strong>Es Teh</strong><small>2 × Rp5.000</small></div><b>Rp10.000</b></div>
+                <dl class="order-meta"><div><dt>Pelanggan</dt><dd>Bu Rina</dd></div><div><dt>Waktu ambil</dt><dd>12.30 WIB</dd></div><div><dt>Pembayaran</dt><dd>Belum bayar</dd></div><div><dt>Total</dt><dd>Rp55.000</dd></div></dl>
+              </div>
+              <p>Simpan pesanan ini?</p>
+              <div class="reply-actions">
+                <button class="confirm-button" type="button" data-confirm-order>Ya, simpan <span>→</span></button>
+                <button class="cancel-button" type="button" data-cancel-order>Batal</button>
+              </div>
+            </article>
+
+            <div class="bubble bubble--user demo-hidden" data-confirm-bubble>Ya, simpan pesanan ini.</div>
+
+            <article class="reply-card reply-card--success demo-hidden" data-success-card>
+              <div class="success-mark">✓</div>
+              <div><strong>Pesanan Bu Rina berhasil dicatat</strong><p>Order pending · total Rp55.000 · stok dan activity log sudah diperbarui—sama persis kalau dipanggil dari harness.</p></div>
+              <div class="reply-actions">
+                <button class="confirm-button" type="button" data-show-activity>Lihat Aktivitas AI</button>
+                <button class="cancel-button" type="button" data-reset-demo>Ulangi</button>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="live-workspace" data-live-workspace aria-hidden="true" aria-label="Dashboard dan proses pesanan">
+          <article class="dashboard-mock dashboard-mock--live">
+            <div class="dash-head"><div class="dash-brand"><img src="../assets/brand/mark-inverse.svg" alt="">Dashboard (opsional)</div><span class="realtime">Live</span></div>
+            <div class="metrics metrics--compact">
+              <div class="metric"><span>Pesanan hari ini</span><strong data-before="2" data-after="3">2</strong></div>
+              <div class="metric"><span>Omzet tercatat</span><strong data-before="Rp37rb" data-after="Rp92rb">Rp37rb</strong></div>
+              <div class="metric"><span>Masih pending</span><strong data-before="1" data-after="2">1</strong></div>
+              <div class="metric"><span>Belum dibayar</span><strong data-before="1" data-after="2">1</strong></div>
+            </div>
+            <div class="recent-order demo-hidden" data-recent-order>
+              <img src="../assets/products/nasi-ayam.png" alt="">
+              <div><small>Order baru</small><strong>Bu Rina · Rp55.000</strong></div>
+              <span>Pending</span>
+            </div>
+            <div class="stock-panel stock-panel--compact">
+              <div class="stock-title"><h3>Stok</h3><small>Berubah otomatis</small></div>
+              <div class="stock-row"><span>Nasi Ayam</span><span class="stock-track"><i data-stock-bar style="--stock:80%"></i></span><b data-before="12" data-after="9">12</b></div>
+              <div class="stock-row"><span>Es Teh</span><span class="stock-track"><i data-stock-bar style="--stock:90%"></i></span><b data-before="18" data-after="16">18</b></div>
+            </div>
+          </article>
+
+          <article class="order-process" data-order-process tabindex="-1">
+            <div class="process-head">
+              <div><span class="process-eyebrow">create_order</span><h3>Pesanan sedang diproses</h3></div>
+              <span class="process-state" data-process-state>Menunggu konfirmasi</span>
+            </div>
+            <div class="process-track" aria-hidden="true"><i data-process-bar></i></div>
+            <ol class="process-list">
+              <li data-process-step><span class="process-dot">1</span><div><strong>Validasi input</strong><small>Pelanggan, item, waktu, pembayaran</small></div><em>Menunggu</em></li>
+              <li data-process-step><span class="process-dot">2</span><div><strong>Cek ketersediaan stok</strong><small>Nasi Ayam dan Es Teh cukup</small></div><em>Menunggu</em></li>
+              <li data-process-step><span class="process-dot">3</span><div><strong>Buat pesanan</strong><small>Total dihitung dari harga di Convex</small></div><em>Menunggu</em></li>
+              <li data-process-step><span class="process-dot">4</span><div><strong>Perbarui stok</strong><small>Nasi Ayam −3 · Es Teh −2</small></div><em>Menunggu</em></li>
+              <li data-process-step><span class="process-dot">5</span><div><strong>Catat Aktivitas AI</strong><small>Setiap write dari klien mana pun tercatat</small></div><em>Menunggu</em></li>
+            </ol>
+            <div class="activity-log demo-hidden" data-activity-log>
+              <span>AI</span><div><strong>create_order · berhasil</strong><small>Bu Rina: 3 Nasi Ayam, 2 Es Teh → Rp55.000</small></div><b>Perlu diperiksa</b>
+            </div>
+          </article>
+        </section>
+      </div>
+    </section>
+
+    <footer class="deck-bottom">
+      <span><span data-current></span> / <span data-total></span></span><div class="deck-progress" data-progress></div><span class="shortcut-hint">Contoh kasus warung · klik bubble chat untuk memulai</span>
+      <nav class="deck-nav" aria-label="Navigasi slide"><a class="nav-button" data-prev aria-label="Slide sebelumnya">←</a><a class="nav-button" data-next aria-label="Slide berikutnya">→</a></nav>
+    </footer>
+  </main>
+  <aside class="speaker-note"><strong>Catatan presenter · 0:55–1:45</strong>Klik bubble pengguna, lalu “Ya, simpan”. Panel kanan menunjukkan lima tahap mutation: validasi, cek stok, membuat order, memperbarui stok, lalu menulis activity log. Tekankan: ini klien pertama dari tiga—harness dan dashboard menyentuh data yang sama.</aside>
+</body>
+</html>

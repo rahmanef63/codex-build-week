@@ -1,0 +1,19 @@
+{
+  "slug": "real-dashboard",
+  "version": "1.2.0",
+  "description": "Mode Real live dashboard \u2014 Convex Auth sign-up/sign-in, business onboarding, and a per-user realtime dashboard on /dashboard. Optional client: the same Convex deployment and /api/agent/* Actions also serve a Custom GPT and an agent harness headlessly, so the backend works without this slice. Data isolated from Demo via businessId = userId (owner sign-off 2026-07-18 in AGENTS.md).",
+  "owner": "frontend",
+  "contract": {
+    "reads": [
+      "api.real.dashboard"
+    ],
+    "writes": [
+      "api.real.createBusiness"
+    ],
+    "auth": "@convex-dev/auth Password provider via shared ConvexClientProvider",
+    "externalApis": [],
+    "routes": [
+      "/dashboard"
+    ]
+  }
+}

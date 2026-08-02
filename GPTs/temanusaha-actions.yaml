@@ -1,0 +1,234 @@
+openapi: 3.1.0
+info:
+  title: Asisten Pribadi AI — Demo Actions API
+  version: 0.1.0
+  description: >-
+    DEMO-ONLY API dari reference build Asisten Pribadi AI. Satu deployment Convex melayani tiga klien
+    atas data yang sama: Custom GPT (schema ini), agent harness seperti Claude Code, dan dashboard web
+    yang sifatnya opsional — backend tetap bekerja headless tanpa dashboard.
+    Keenam Action di bawah terkunci ke tenant demo sintetis Warung Nasi Bu Sari; warung itu satu contoh
+    use case, bukan produknya. Mode Real memakai rute token-scoped di bawah prefix /api/agent/ dengan
+    schema terpisah dari Agent Setup, bukan Action ini.
+    Klien lain dapat menulis ke data yang sama di antara giliran percakapan, jadi baca ulang sebelum
+    menyatakan status. Tidak memproses pembayaran.
+servers:
+  - url: https://utmost-snake-682.convex.site
+security:
+  - ApiKeyAuth: []
+paths:
+  /api/orders:
+    get:
+      operationId: list_pending_orders
+      summary: Daftar pesanan berstatus PENDING
+      description: "Demo-only: membaca pesanan PENDING sintetis Warung Nasi Bu Sari."
+      responses:
+        "200":
+          description: Daftar pesanan
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  orders: { type: array, items: { $ref: "#/components/schemas/Order" } }
+        "401": { $ref: "#/components/responses/Error" }
+    post:
+      operationId: create_order
+      summary: Buat pesanan, kurangi stok, dan tulis AI Activity secara atomik
+      description: "Demo-only: setelah konfirmasi pengguna, membuat pesanan sintetis dan memperbarui stok Warung Nasi Bu Sari."
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema: { $ref: "#/components/schemas/CreateOrderRequest" }
+      responses:
+        "201":
+          description: Pesanan baru dibuat
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CreateOrderResponse" }
+        "200":
+          description: Replay idempotent mengembalikan pesanan lama
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/CreateOrderResponse" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+        "409": { $ref: "#/components/responses/Error" }
+  /api/orders/{id}:
+    patch:
+      operationId: update_order
+      summary: Ubah status pemenuhan atau pembayaran
+      description: "Demo-only: setelah konfirmasi pengguna, mengubah status pesanan sintetis Warung Nasi Bu Sari."
+      parameters:
+        - name: id
+          in: path
+          required: true
+          schema: { type: string }
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              minProperties: 1
+              additionalProperties: false
+              properties:
+                fulfillmentStatus: { type: string, enum: [PENDING, COMPLETED] }
+                paymentStatus: { type: string, enum: [UNPAID, PAID, PARTIAL] }
+      responses:
+        "200":
+          description: Pesanan diperbarui
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  order: { $ref: "#/components/schemas/Order" }
+                  aiActionLog: { $ref: "#/components/schemas/AIActionLog" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "404": { $ref: "#/components/responses/Error" }
+  /api/inventory/low-stock:
+    get:
+      operationId: get_low_stock_items
+      summary: Daftar produk dengan stok pada atau di bawah ambang
+      description: "Demo-only: membaca stok rendah sintetis Warung Nasi Bu Sari."
+      responses:
+        "200":
+          description: Produk stok rendah
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  items: { type: array, items: { $ref: "#/components/schemas/Product" } }
+        "401": { $ref: "#/components/responses/Error" }
+  /api/summary/today:
+    get:
+      operationId: get_daily_summary
+      summary: Ringkasan hari ini dalam zona Asia/Jakarta
+      description: "Demo-only: membaca ringkasan harian dari data sintetis Warung Nasi Bu Sari."
+      responses:
+        "200":
+          description: Ringkasan harian
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/Summary" }
+        "401": { $ref: "#/components/responses/Error" }
+  /api/dashboard-card:
+    get:
+      operationId: get_dashboard_card_image
+      summary: Ambil URL gambar kartu dashboard publik
+      description: "Demo-only: mengembalikan metadata gambar agregat sintetis Warung Nasi Bu Sari untuk best-effort Markdown rendering."
+      parameters:
+        - name: view
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: [today, orders, activity]
+            default: today
+      responses:
+        "200":
+          description: Metadata dan URL gambar kartu dashboard
+          content:
+            application/json:
+              schema: { $ref: "#/components/schemas/DashboardCardResponse" }
+        "400": { $ref: "#/components/responses/Error" }
+        "401": { $ref: "#/components/responses/Error" }
+        "503": { $ref: "#/components/responses/Error" }
+components:
+  securitySchemes:
+    ApiKeyAuth:
+      type: apiKey
+      in: header
+      name: X-Action-API-Key
+  responses:
+    Error:
+      description: Respons gagal yang aman
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              error:
+                type: object
+                required: [code, message]
+                properties:
+                  code: { type: string }
+                  message: { type: string }
+                  fields: { type: array, items: { type: string } }
+  schemas:
+    CreateOrderRequest:
+      type: object
+      additionalProperties: false
+      required: [requestId, customerName, items, pickupTime, paymentStatus]
+      properties:
+        requestId: { type: string, description: UUID unik untuk mencegah order ganda }
+        customerName: { type: string, example: Bu Rina }
+        items:
+          type: array
+          minItems: 1
+          items:
+            type: object
+            additionalProperties: false
+            required: [product, quantity]
+            properties:
+              product: { type: string, description: Nama persis atau slug produk, example: Nasi Ayam }
+              quantity: { type: integer, minimum: 1, example: 3 }
+        pickupTime: { type: string, format: date-time, example: "2026-07-18T12:30:00+07:00" }
+        paymentStatus: { type: string, enum: [UNPAID, PAID, PARTIAL] }
+        notes: { type: string }
+    CreateOrderResponse:
+      type: object
+      properties:
+        order: { $ref: "#/components/schemas/Order" }
+        inventoryUpdates: { type: array, items: { type: object } }
+        aiActionLog: { anyOf: [{ $ref: "#/components/schemas/AIActionLog" }, { type: "null" }] }
+        idempotent: { type: boolean }
+    Order:
+      type: object
+      properties:
+        _id: { type: string }
+        customerName: { type: string }
+        items: { type: array, items: { type: object } }
+        total: { type: number }
+        paymentStatus: { type: string, enum: [UNPAID, PAID, PARTIAL] }
+        fulfillmentStatus: { type: string, enum: [PENDING, COMPLETED] }
+        pickupTime: { type: string, format: date-time }
+    Product:
+      type: object
+      properties:
+        _id: { type: string }
+        slug: { type: string }
+        name: { type: string }
+        price: { type: number }
+        stock: { type: integer }
+        lowStockThreshold: { type: integer }
+    AIActionLog:
+      type: object
+      properties:
+        _id: { type: string }
+        action: { type: string }
+        inputSummary: { type: string }
+        outputSummary: { type: string }
+        requiresVerification: { type: boolean }
+        createdAt: { type: number }
+    Summary:
+      type: object
+      properties:
+        date: { type: string, format: date }
+        orderCount: { type: integer }
+        recordedRevenue: { type: number }
+        unpaidOrderCount: { type: integer }
+        pendingOrderCount: { type: integer }
+        lowStockCount: { type: integer }
+    DashboardCardResponse:
+      type: object
+      required: [view, imageUrl, altText, generatedAt]
+      properties:
+        view: { type: string, enum: [today, orders, activity] }
+        imageUrl: { type: string, format: uri }
+        altText: { type: string }
+        generatedAt: { type: string, format: date-time }

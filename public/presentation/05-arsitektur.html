@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Arsitektur Asisten Pribadi AI: tiga klien, satu kontrak Action, satu jalur tulis ke Convex">
+  <title>Arsitektur — Asisten Pribadi AI</title>
+  <link rel="stylesheet" href="deck.css">
+  <script defer src="deck-nav.js"></script>
+  <script defer src="deck-order-demo.js"></script>
+  <script defer src="deck-onboarding-demo.js"></script>
+</head>
+<body data-slide="5">
+  <a class="skip-link" href="#slide-content">Lewati ke isi slide</a>
+  <main class="slide slide--dark">
+    <header class="deck-top">
+      <a class="mini-brand" href="/" aria-label="Kembali ke beranda"><img src="../assets/brand/mark-inverse.svg" alt=""><span>Asisten Pribadi AI</span></a>
+      <span class="section-label">Arsitektur</span>
+    </header>
+
+    <section class="slide-body" id="slide-content">
+      <div>
+        <p class="kicker" data-reveal>Sederhana karena satu sumber kebenaran</p>
+        <h2 data-reveal>Tiga klien.<br>Satu <span class="highlight">jalur tulis.</span></h2>
+        <p class="lead" data-reveal>Klik tiap lapisan untuk melihat perannya.</p>
+      </div>
+
+      <div class="architecture" data-reveal>
+        <button class="arch-node is-active" type="button" data-arch data-detail="Custom GPT untuk pemilik, agent harness (Claude Code) untuk otomasi dan pengujian, dashboard Next.js sebagai lapisan lihat yang boleh tidak dipakai sama sekali.">
+          <span class="node-index">01</span><h3>Tiga klien</h3><p>Custom GPT · agent harness · dashboard (opsional).</p>
+        </button>
+        <button class="arch-node" type="button" data-arch data-detail="Satu skema OpenAPI, satu daftar operation ID. GPT memilih Action lalu meminta konfirmasi; harness memanggil operation yang sama dari terminal. Keduanya menembus endpoint identik.">
+          <span class="node-index">02</span><h3>Kontrak Action</h3><p>Operation ID yang sama untuk setiap klien.</p>
+        </button>
+        <button class="arch-node" type="button" data-arch data-detail="Convex HTTP Actions memverifikasi token, menurunkan tenant dari token itu (bukan dari body), memvalidasi input, menolak replay lewat requestId, dan menjaga stok tidak negatif.">
+          <span class="node-index">03</span><h3>/api/agent/*</h3><p>Trust boundary: token-scoped, tervalidasi, idempotent.</p>
+        </button>
+        <button class="arch-node" type="button" data-arch data-detail="Convex menyimpan orders, inventory, dan activity log. Dashboard hanya membaca data yang sama secara realtime—backend tetap berjalan headless tanpanya.">
+          <span class="node-index">04</span><h3>Convex</h3><p>orders · inventory · activity log. Satu sumber kebenaran.</p>
+        </button>
+      </div>
+      <div class="arch-detail" data-arch-detail>Custom GPT untuk pemilik, agent harness (Claude Code) untuk otomasi dan pengujian, dashboard Next.js sebagai lapisan lihat yang boleh tidak dipakai sama sekali.</div>
+      <div class="guard-row" data-reveal><span class="guard">X-Action-API-Key</span><span class="guard">tenant dari token, bukan body</span><span class="guard">requestId idempotent</span><span class="guard">stok tidak boleh negatif</span><span class="guard">setiap write dilog</span></div>
+    </section>
+
+    <footer class="deck-bottom">
+      <span><span data-current></span> / <span data-total></span></span><div class="deck-progress" data-progress></div><span class="shortcut-hint">Klik kartu arsitektur untuk detail</span>
+      <nav class="deck-nav" aria-label="Navigasi slide"><a class="nav-button" data-prev aria-label="Slide sebelumnya">←</a><a class="nav-button" data-next aria-label="Slide berikutnya">→</a></nav>
+    </footer>
+  </main>
+  <aside class="speaker-note"><strong>Catatan presenter · 2:05–2:25</strong>“Tidak ada gateway kedua dan tidak ada backend per klien. Ketiganya menembus /api/agent/*; tenancy diturunkan dari token, bukan dari body; Convex satu-satunya sumber kebenaran; dashboard hanya lapisan visibilitas yang opsional.”</aside>
+</body>
+</html>

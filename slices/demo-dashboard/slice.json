@@ -1,0 +1,13 @@
+{
+  "slug": "demo-dashboard",
+  "version": "1.0.0",
+  "description": "Mode Demo dashboard — one of the three clients that drive the same Convex backend (Custom GPT, agent harness, dashboard). Runs on the synthetic Warung Nasi Bu Sari dataset, which is the example use case rather than the product. No auth. Renders the /demo dashboard UI and the OG dashboard-card image route.",
+  "owner": "frontend",
+  "contract": {
+    "reads": ["api.business.dashboard"],
+    "writes": [],
+    "auth": "none",
+    "externalApis": [],
+    "routes": ["/demo", "/demo/[view]", "/api/dashboard-card-image"]
+  }
+}

@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Kontrak Action Asisten Pribadi AI: enam operation ID stabil yang dipanggil ketiga klien">
+  <title>Kontrak Action — Asisten Pribadi AI</title>
+  <link rel="stylesheet" href="deck.css">
+  <script defer src="deck-nav.js"></script>
+  <script defer src="deck-order-demo.js"></script>
+  <script defer src="deck-onboarding-demo.js"></script>
+</head>
+<body data-slide="4">
+  <a class="skip-link" href="#slide-content">Lewati ke isi slide</a>
+  <main class="slide">
+    <header class="deck-top">
+      <a class="mini-brand" href="/" aria-label="Kembali ke beranda"><img src="../assets/brand/mark.svg" alt=""><span>Asisten Pribadi AI</span></a>
+      <span class="section-label">Kontrak Action</span>
+    </header>
+
+    <section class="slide-body proof-layout" id="slide-content">
+      <article class="result-hero" data-reveal data-tilt>
+        <p class="kicker">Contoh kasus · skenario uji</p>
+        <strong>55.000</strong>
+        <span>rupiah—dihitung dari harga di Convex, bukan tebakan model. Sama lewat GPT, harness, atau dashboard.</span>
+        <div class="menu-filmstrip" aria-label="Lima menu pada contoh kasus Warung Nasi Bu Sari">
+          <img src="../assets/products/nasi-ayam.png" alt="Nasi Ayam">
+          <img src="../assets/products/es-teh.png" alt="Es Teh">
+          <img src="../assets/products/ayam-goreng.png" alt="Ayam Goreng">
+          <img src="../assets/products/nasi-putih.png" alt="Nasi Putih">
+          <img src="../assets/products/sambal-extra.png" alt="Sambal Extra">
+        </div>
+        <div class="equation"><b>3 × 15rb</b><i>+</i><b>2 × 5rb</b><i>=</i><b>55rb</b></div>
+      </article>
+
+      <div>
+        <p class="kicker" data-reveal>Enam Action ID · satu kontrak untuk tiga klien</p>
+        <h2 data-reveal>Satu kontrak.<br>Tiga <span class="highlight">pemanggil.</span></h2>
+        <div class="action-grid">
+          <article class="card action-card" data-reveal><code class="action-id">create_order</code><h3>Buat order atomik</h3><p>Order, stok, dan log berubah bersama—atau tidak sama sekali.</p></article>
+          <article class="card action-card" data-reveal><code class="action-id">list_pending_orders</code><h3>Lihat antrean</h3><p>Daftar order yang masih perlu diselesaikan.</p></article>
+          <article class="card action-card" data-reveal><code class="action-id">update_order</code><h3>Ubah status</h3><p>Pemenuhan dan pembayaran, setelah konfirmasi.</p></article>
+          <article class="card action-card" data-reveal><code class="action-id">get_low_stock_items</code><h3>Deteksi stok rendah</h3><p>Item pada atau di bawah ambang tersimpan.</p></article>
+          <article class="card action-card" data-reveal><code class="action-id">get_daily_summary</code><h3>Satu pertanyaan: “Bagaimana kondisi warung hari ini?”</h3><p>Order, omzet tercatat, pending, belum bayar, dan stok menipis dari data aktual.</p></article>
+          <article class="card action-card" data-reveal><code class="action-id">get_dashboard_card_image</code><h3>Kartu dashboard visual</h3><p>Snapshot visual yang aman untuk dibagikan kembali di percakapan.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <footer class="deck-bottom">
+      <span><span data-current></span> / <span data-total></span></span><div class="deck-progress" data-progress></div><span class="shortcut-hint">Operation ID sama, apa pun kliennya · Real memakai /api/agent/*</span>
+      <nav class="deck-nav" aria-label="Navigasi slide"><a class="nav-button" data-prev aria-label="Slide sebelumnya">←</a><a class="nav-button" data-next aria-label="Slide berikutnya">→</a></nav>
+    </footer>
+  </main>
+  <aside class="speaker-note"><strong>Catatan presenter · 1:45–2:05</strong>“Enam operation ID ini adalah kontraknya. Custom GPT memanggilnya lewat OpenAPI, agent harness memanggil endpoint yang sama lewat token, dashboard membaca database yang sama. Scope sempit; loop-nya lengkap: baca kondisi, buat pesanan, koreksi status, tunjukkan hasilnya.”</aside>
+</body>
+</html>

@@ -1,0 +1,49 @@
+{
+  "$schema": "https://rahmanef63.github.io/resource-site/rr.schema.json",
+  "version": 1,
+  "framework": "next-16",
+  "style": "shadcn-new-york",
+  "rsc": true,
+  "tailwind": {
+    "config": "",
+    "css": "app/globals.css"
+  },
+  "aliases": {
+    "shared": "@/shared",
+    "slices": "@/slices",
+    "convex": "@/convex"
+  },
+  "layout": {
+    "kind": "app-router",
+    "publicRoute": "app",
+    "adminRoute": "app/dashboard"
+  },
+  "template": {
+    "slug": "convex-starter",
+    "version": "main"
+  },
+  "features": [],
+  "slices": [
+    {
+      "slug": "demo-dashboard",
+      "version": "1.0.0"
+    },
+    {
+      "slug": "real-dashboard",
+      "version": "1.2.0"
+    },
+    {
+      "slug": "theme-presets",
+      "version": "0.4.0",
+      "category": "ui",
+      "addedAt": "2026-07-22"
+    }
+  ],
+  "skills": [],
+  "auth": {
+    "provider": "convex-auth"
+  },
+  "convex": {
+    "self_hosted": false
+  }
+}

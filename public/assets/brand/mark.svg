@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" color="#17211b">
+  <!--
+    Asisten Pribadi AI mark — portable copy for non-React consumers (the
+    presentation deck). Geometry and construction notes live in app/icon.svg.
+
+    Deliberately NOT wired to prefers-color-scheme: the deck pins
+    `color-scheme: light` on :root, so an OS-driven flip would paint the mark
+    near-white on a cream slide. The `color` attribute below is the light-surface
+    value; use mark-inverse.svg on the deck's dark-slide class. Fill stays
+    currentColor so a
+    consumer that inlines this file, or uses it as a CSS mask-image, still tracks
+    the surrounding text colour.
+  -->
+  <path fill="currentColor" fill-rule="evenodd" d="M8.6 8.6A7.4 7.4 0 0 1 23.4 8.6A7.4 7.4 0 0 1 23.4 23.4A7.4 7.4 0 0 1 8.6 23.4A7.4 7.4 0 0 1 8.6 8.6ZM16 6.2Q17.6 14.4 25.8 16Q17.6 17.6 16 25.8Q14.4 17.6 6.2 16Q14.4 14.4 16 6.2Z"/>
+</svg>

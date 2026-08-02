@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="32" height="32" color="#fafafa">
+  <!--
+    Same mark as mark.svg, light-on-dark. For deck slides that carry the
+    dark-slide modifier class (08-penutup's .end-mark and mini-brand), where the
+    ink-coloured mark.svg would sit near-invisible on the dark ground.
+
+    Note: an XML comment may not contain two consecutive hyphens, so the BEM
+    class name is spelled out rather than quoted literally here.
+  -->
+  <path fill="currentColor" fill-rule="evenodd" d="M8.6 8.6A7.4 7.4 0 0 1 23.4 8.6A7.4 7.4 0 0 1 23.4 23.4A7.4 7.4 0 0 1 8.6 23.4A7.4 7.4 0 0 1 8.6 8.6ZM16 6.2Q17.6 14.4 25.8 16Q17.6 17.6 16 25.8Q14.4 17.6 6.2 16Q14.4 14.4 16 6.2Z"/>
+</svg>

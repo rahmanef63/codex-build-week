@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="id">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Pola Asisten Pribadi AI: satu backend Convex, satu set Action, tiga klien yang memanggilnya">
+  <title>Pola — Asisten Pribadi AI</title>
+  <link rel="stylesheet" href="deck.css">
+  <script defer src="deck-nav.js"></script>
+  <script defer src="deck-order-demo.js"></script>
+  <script defer src="deck-onboarding-demo.js"></script>
+</head>
+<body data-slide="2">
+  <a class="skip-link" href="#slide-content">Lewati ke isi slide</a>
+  <main class="slide slide--dark">
+    <div class="orb orb--lime"></div>
+    <header class="deck-top">
+      <a class="mini-brand" href="/" aria-label="Kembali ke beranda"><img src="../assets/brand/mark-inverse.svg" alt=""><span>Asisten Pribadi AI</span></a>
+      <span class="section-label">Pola</span>
+    </header>
+
+    <section class="slide-body solution-layout" id="slide-content">
+      <div>
+        <p class="kicker" data-reveal>Pola intinya</p>
+        <h2 data-reveal>Satu backend. <span class="highlight">Tiga klien.</span></h2>
+      </div>
+
+      <div class="flow-lane">
+        <article class="card flow-card" data-reveal>
+          <div><span class="card-icon">1</span><span class="big-icon" aria-hidden="true">“</span></div>
+          <div><h3>Custom GPT</h3><small>Pemilik mengetik di ChatGPT. GPT memilih satu Action, merangkum interpretasinya, lalu meminta konfirmasi.</small></div>
+        </article>
+        <article class="card flow-card" data-reveal>
+          <div><span class="card-icon">2</span><span class="big-icon" aria-hidden="true">⚡</span></div>
+          <div><h3>Agent harness</h3><small>Claude Code lewat skill <code>asisten-pribadi</code>—Action yang sama dari terminal, untuk otomasi dan pengujian.</small></div>
+        </article>
+        <article class="card flow-card" data-reveal>
+          <div><span class="card-icon">3</span><span class="big-icon" aria-hidden="true">✓</span></div>
+          <div><h3>Dashboard <em>(opsional)</em></h3><small>Next.js hanya lapisan lihat. Backend tetap berjalan headless kalau dashboard tidak dipakai.</small></div>
+        </article>
+      </div>
+
+      <div class="scope-strip" data-reveal aria-label="Enam Action pada contoh kasus warung">
+        <span class="scope-chip">Buat pesanan</span><span class="scope-chip">Pesanan pending</span><span class="scope-chip">Ubah status</span><span class="scope-chip">Stok menipis</span><span class="scope-chip">Ringkasan hari ini</span><span class="scope-chip">Kartu dashboard visual</span>
+      </div>
+    </section>
+
+    <footer class="deck-bottom">
+      <span><span data-current></span> / <span data-total></span></span><div class="deck-progress" data-progress></div><span class="shortcut-hint">Satu kontrak Action. Tiga cara memanggilnya.</span>
+      <nav class="deck-nav" aria-label="Navigasi slide"><a class="nav-button" data-prev aria-label="Slide sebelumnya">←</a><a class="nav-button" data-next aria-label="Slide berikutnya">→</a></nav>
+    </footer>
+  </main>
+  <aside class="speaker-note"><strong>Catatan presenter · 0:35–0:55</strong>“Intinya satu: backend-nya satu, kontrak Action-nya satu, kliennya tiga. Custom GPT untuk pemilik, agent harness untuk otomasi dan uji, dashboard sebagai lapisan opsional. Chip di bawah adalah Action pada contoh kasus warung.”</aside>
+</body>
+</html>
