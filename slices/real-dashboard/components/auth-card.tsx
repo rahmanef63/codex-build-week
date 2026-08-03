@@ -4,6 +4,7 @@ import { useAuthActions } from "@convex-dev/auth/react";
 import { useQuery } from "convex/react";
 import { Eye, EyeOff, ShieldCheck } from "lucide-react";
 import Link from "next/link";
+import { useSearchParams } from "next/navigation";
 import { useState } from "react";
 
 import { Button } from "@/components/ui/button";
@@ -14,9 +15,10 @@ type Flow = "signIn" | "signUp" | "reset" | "resetVerification" | "verification"
 
 export function AuthCard() {
   const { text } = useDashboardLocale();
+  const searchParams = useSearchParams();
   const { signIn } = useAuthActions();
   const capabilities = useQuery(api.real.authCapabilities);
-  const [flow, setFlow] = useState<Flow>("signUp");
+  const [flow, setFlow] = useState<Flow>(searchParams.get("auth") === "sign-in" ? "signIn" : "signUp");
   const [email, setEmail] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [error, setError] = useState<string | null>(null);
@@ -31,7 +33,7 @@ export function AuthCard() {
   };
 
   return (
-    <div className="mx-auto grid min-h-[calc(100vh-80px)] w-full max-w-4xl items-start gap-8 py-4 md:grid-cols-[1fr_420px] md:items-center md:py-8">
+    <div className="mx-auto grid min-h-full w-full max-w-4xl items-start gap-8 py-4 md:grid-cols-[1fr_420px] md:items-center md:py-8">
       <section className="hidden space-y-6 md:block">
         <span className="dash-eyebrow">{text("Private workspace", "Ruang kerja pribadi")}</span>
         <h1 className="max-w-lg text-4xl font-semibold tracking-tight">{text("Organized records, even before you connect a GPT.", "Catatan rapi, bahkan sebelum GPT dihubungkan.")}</h1>
@@ -80,7 +82,7 @@ export function AuthCard() {
           <Button className="dash-btn-primary h-auto" disabled={busy} type="submit" variant="ghost">{busy ? text("Processing…", "Memproses…") : flow === "signUp" ? text("Create account", "Buat akun") : flow === "signIn" ? text("Sign in to dashboard", "Masuk ke dashboard") : flow === "reset" ? text("Send code", "Kirim kode") : text("Verify", "Verifikasi")}</Button>
         </form>
         <div className="flex w-full flex-wrap items-center justify-between gap-3">
-          <Button className="dash-link h-auto min-h-11" onClick={() => setFlow(flow === "signUp" ? "signIn" : "signUp")} type="button" variant="link">{flow === "signUp" ? text("Already have an account? Sign in", "Sudah punya akun? Masuk") : text("Back to sign in", "Kembali ke masuk")}</Button>
+          <Button className="dash-link h-auto min-h-11" onClick={() => setFlow(flow === "signUp" ? "signIn" : flow === "signIn" ? "signUp" : "signIn")} type="button" variant="link">{flow === "signUp" ? text("Already have an account? Sign in", "Sudah punya akun? Masuk") : flow === "signIn" ? text("Need an account? Sign up", "Belum punya akun? Daftar") : text("Back to sign in", "Kembali ke masuk")}</Button>
           {flow === "signIn" && capabilities?.emailVerification ? <Button className="dash-link h-auto min-h-11" onClick={() => setFlow("reset")} type="button" variant="link">{text("Forgot password?", "Lupa kata sandi?")}</Button> : null}
         </div>
         <p className="text-xs leading-relaxed text-muted-foreground">{text("By continuing, you agree to the", "Dengan melanjutkan, Anda menyetujui")} <Link className="underline" href="/terms">{text("Terms", "Ketentuan")}</Link> {text("and", "dan")} <Link className="underline" href="/privacy">{text("Privacy Policy", "Privasi")}</Link>.</p>

@@ -41,6 +41,7 @@ export const landingCopy = {
     demoCta: "Coba demo",
     dashboardCta: "Buka dashboard",
     deployCta: "Deploy sendiri",
+    docsCta: "Dokumentasi & onboarding",
     separation: "Data demo dan data Anda berada di tenant terpisah.",
     architectureLabel: "Tiga klien, satu backend",
     clients: [
@@ -72,6 +73,7 @@ export const landingCopy = {
     demoCta: "Try the demo",
     dashboardCta: "Open dashboard",
     deployCta: "Deploy your own",
+    docsCta: "Docs & onboarding",
     separation: "Demo data and your own data live in separate tenants.",
     architectureLabel: "Three clients, one backend",
     clients: [
@@ -103,6 +105,7 @@ export const landingCopy = {
     demoCta: "Essayer la démo",
     dashboardCta: "Ouvrir le tableau de bord",
     deployCta: "Déployer votre version",
+    docsCta: "Documentation et onboarding",
     separation: "Les données de démo et les vôtres vivent dans des tenants distincts.",
     architectureLabel: "Trois clients, un seul backend",
     clients: [
@@ -134,6 +137,7 @@ export const landingCopy = {
     demoCta: "デモを試す",
     dashboardCta: "ダッシュボードを開く",
     deployCta: "自分用にデプロイ",
+    docsCta: "ドキュメントとオンボーディング",
     separation: "デモのデータとご自身のデータは、別々のテナントに保存されます。",
     architectureLabel: "3つのクライアント、ひとつのバックエンド",
     clients: [

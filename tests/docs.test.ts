@@ -17,14 +17,16 @@ test("docs provide a distinct guide for every onboarding background", () => {
 
 test("web and repository documentation default to polished English", () => {
   const content = [
-    read("app", "(public)", "docs", "page.tsx"),
-    read("app", "(public)", "docs", "docs-explorer.tsx"),
     read("docs", "README.md"),
     ...guides.map((guide) => read("docs", guide)),
   ].join("\n");
 
-  expect(content).toContain("One backend. A learning path that fits you.");
-  expect(content).toContain("What is your coding background?");
+  const copy = read("app", "(public)", "docs", "docs-copy.ts");
+  const explorer = read("app", "(public)", "docs", "docs-explorer.tsx");
+  expect(copy).toContain("One backend. A learning path that fits you.");
+  expect(copy).toContain("Satu backend. Jalur belajar yang sesuai untuk Anda.");
+  expect(explorer).toContain("What is your coding background?");
+  expect(explorer).toContain("Apa latar belakang coding Anda?");
   expect(content).not.toMatch(/\b(?:Anda|Baca|Buka|Jalur|Mulai|Panduan|Pilih|Tanpa)\b/);
 });
 
@@ -49,7 +51,17 @@ test("interactive docs expose a three-step wizard and clickable endpoint contrac
 });
 
 test("docs are discoverable from public navigation and sitemap", () => {
-  expect(read("app", "(public)", "page.tsx")).toMatch(/href="\/docs"/);
+  expect(read("app", "(public)", "page.tsx")).toMatch(/href=\{`\/docs\?lang=\$\{locale\}`\}/);
   expect(read("app", "(public)", "setup", "page.tsx")).toMatch(/href="\/docs"/);
   expect(read("app", "sitemap.ts")).toMatch(/\$\{base\}\/docs/);
+});
+
+test("docs expose a persistent English/Indonesian language menu", () => {
+  const page = read("app", "(public)", "docs", "page.tsx");
+  const menu = read("app", "(public)", "language-menu.tsx");
+  expect(page).toMatch(/docsLocales = \["en", "id"\]/);
+  expect(page).toMatch(/LOCALE_COOKIE/);
+  expect(page).toMatch(/localeFromCountry/);
+  expect(page).toMatch(/<LanguageMenu/);
+  expect(menu).toMatch(/\?lang=\$\{item\}/);
 });

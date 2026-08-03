@@ -47,9 +47,9 @@ function DashboardContent({ requestLocation }: { requestLocation?: RequestLocati
 
 function WithModeNav({ children, label, locale }: { children: ReactNode; label: string; locale: DashboardLocale }) {
   return (
-    <>
+    <div className="dash-entry-shell">
       <ModeNavBar label={label} locale={locale} variant="dash" />
-      {children}
-    </>
+      <div className="dash-entry-scroll">{children}</div>
+    </div>
   );
 }

@@ -22,7 +22,8 @@ import { BrandMark } from "@/shared/components/brand-mark";
 import { HtmlLang } from "@/shared/components/html-lang";
 import { IMPLICIT_LOCALE_HEADER } from "@/shared/lib/geo-locale";
 import { ThemePresetSwitcher } from "@/slices/theme-presets";
-import { agentRoutePath, defaultLocale, getLocale, landingCopy, languageNames, locales, productName } from "./landing-copy";
+import { agentRoutePath, defaultLocale, getLocale, landingCopy, locales, productName } from "./landing-copy";
+import { LanguageMenu } from "./language-menu";
 
 const benefitIcons = [Bot, KeyRound, ScrollText] as const;
 const factIcons = [CheckCircle2, Package, ShieldCheck] as const;
@@ -68,40 +69,10 @@ export default async function Home({ searchParams }: HomeProps) {
             <span className="truncate text-sm font-semibold tracking-tight">{productName}</span>
           </Link>
           <div className="flex shrink-0 items-center gap-1 sm:gap-2">
-            <Link className="hidden min-h-11 items-center rounded-md px-3 text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:inline-flex" href="/dashboard">
+            <Link className="hidden min-h-11 items-center rounded-md px-3 text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring sm:inline-flex" href={`/dashboard?auth=sign-in&lang=${locale}`}>
               {copy.signIn}
             </Link>
-            <details className="group relative">
-              <summary
-                aria-label={copy.language}
-                className="grid size-11 cursor-pointer list-none place-items-center rounded-md border border-border bg-card text-xs font-medium hover:bg-muted focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-              >
-                {locale.toUpperCase()}
-              </summary>
-              {/* `top-full` pins the menu to the trigger's bottom edge instead of
-                  relying on the static position, and `right-0` keeps it inside the
-                  viewport at 320px (the trigger sits ~2.75rem from the right gutter). */}
-              <div className="absolute right-0 top-full z-20 mt-2 grid min-w-40 gap-1 rounded-md border border-border bg-popover p-1 shadow-xl">
-                {locales.map((item) => (
-                  <Link
-                    aria-current={locale === item ? "page" : undefined}
-                    className={cn("flex min-h-11 items-center rounded-sm px-3 text-sm hover:bg-muted", locale === item && "bg-muted font-medium")}
-                    // Every entry carries an explicit `?lang=`, including "id".
-                    // proxy.ts only persists the locale cookie when it sees one,
-                    // so a bare "/" here would leave a visitor on a non-Indonesian
-                    // IP with no stored choice: the geo branch would rewrite them
-                    // straight back to their country's locale on the next load.
-                    // `canonical` still resolves to "/" for id (generateMetadata).
-                    href={`/?lang=${item}`}
-                    hrefLang={item}
-                    key={item}
-                    lang={item}
-                  >
-                    {languageNames[item]}
-                  </Link>
-                ))}
-              </div>
-            </details>
+            <LanguageMenu label={copy.language} locale={locale} locales={locales} pathname="/" />
             {/* contentClassName="dark": this page forces `dark` on <main>, but the
                 popover portals to document.body and would otherwise render light. */}
             <ThemePresetSwitcher
@@ -144,8 +115,8 @@ export default async function Home({ searchParams }: HomeProps) {
                 {copy.deployCta}
                 <Rocket aria-hidden />
               </Link>
-              <Link className={cn(buttonVariants({ size: "lg", variant: "ghost" }), ctaClass)} href="/docs">
-                Docs &amp; onboarding
+              <Link className={cn(buttonVariants({ size: "lg", variant: "ghost" }), ctaClass)} href={`/docs?lang=${locale}`}>
+                {copy.docsCta}
               </Link>
             </div>
             <p className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-muted-foreground [@media(min-width:1024px)_and_(max-height:700px)]:mt-3">

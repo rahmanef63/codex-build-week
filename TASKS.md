@@ -4,6 +4,7 @@
 
 | Agent | Role | Model | Status | Objective | Exclusive write scope | Last handoff |
 | --- | --- | --- | --- | --- | --- | --- |
+| Alpha (`Codex session`) | Localization and responsive shell audit | GPT-5 Codex | In progress | Audit every public/workspace hard-coded string, add a persistent language toggle to Docs, make localized navigation dynamic, and repair dashboard sign-in/container behavior across viewport sizes | `TASKS.md`, `app/(public)/**`, `app/(workspace)/**`, `shared/**`, `slices/real-dashboard/**`, localization/layout tests, Git, GitHub CI, Vercel | In progress |
 | Alpha (`/root`) | Orchestrator/integrator | GPT-5 Codex | Done | Add the public GPT link/QR to the presentation and redeploy | Shared docs/config, Git, cloud/deploy, final integration | PR #7 merged; paired Demo/GPT QR presentation verified on Production |
 | Beta (`/root/beta_repo_audit`) | Convex/Actions | GPT-5 Codex | Done | Mark all six canonical Actions as Demo-only without changing IDs/paths | `GPTs/temanusaha-actions.yaml`, OpenAPI checks | Descriptions-only diff; all checks passed |
 | Gamma (`/root/gamma_stack_audit`) | Next.js/UI | GPT-5 Codex | Done | Finish the visual refresh and split product routes into Demo/Real modes | `app/page.tsx`, `app/demo/**`, `app/real/**`, `app/globals.css`, `app/layout.tsx`, `components/dashboard.tsx` | Routes and responsive checks passed; no cloud/Git side effects |

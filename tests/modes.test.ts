@@ -18,9 +18,11 @@ test("Demo owns synthetic business wiring while the workspace runs its own live 
   const authCard = read("slices", "real-dashboard", "components", "auth-card.tsx");
   const convexProvider = read("shared", "components", "convex-provider.tsx");
   const modeNav = read("shared", "components", "mode-nav-bar.tsx");
+  const styles = read("app", "globals.css");
 
   expect(root).toMatch(/href="\/demo"/);
   expect(root).toMatch(/href="\/dashboard"/);
+  expect(root).toMatch(/dashboard\?auth=sign-in&lang=\$\{locale\}/);
   expect(root).toMatch(/href="\/setup"/);
   // Pin the keys, not floating strings: the default (id) locale must label the
   // demo and dashboard CTAs that the hrefs above point at.
@@ -60,6 +62,12 @@ test("Demo owns synthetic business wiring while the workspace runs its own live 
   expect(dashboardFeature).toMatch(/description: string/);
   expect(dashboardFeature).toMatch(/title: string/);
   expect(authCard).not.toMatch(/Mode Real/);
+  expect(authCard).toMatch(/searchParams\.get\("auth"\) === "sign-in"/);
+  expect(authCard).toMatch(/Need an account\? Sign up/);
+  expect(dashboardApp).toMatch(/dash-entry-shell/);
+  expect(dashboardApp).toMatch(/dash-entry-scroll/);
+  expect(styles).toMatch(/\.dash-entry-shell \{ height: 100dvh; overflow: hidden;/);
+  expect(styles).toMatch(/\.dash-entry-scroll \{ min-height: 0; flex: 1; overflow-y: auto;/);
   expect(modeNav).toMatch(/locale === "id" \? "Kembali ke beranda" : "Back to home"/);
   expect(modeNav).toMatch(/Asisten Pribadi AI/);
   expect(modeNav).not.toMatch(/← Kembali ke beranda/);
