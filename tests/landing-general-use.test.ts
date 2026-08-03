@@ -46,6 +46,8 @@ const landingSources = {
   "app/layout.tsx": read("app", "layout.tsx"),
   "app/opengraph-image.tsx": read("app", "opengraph-image.tsx"),
   "app/(public)/setup/page.tsx": read("app", "(public)", "setup", "page.tsx"),
+  "app/(public)/docs/page.tsx": read("app", "(public)", "docs", "page.tsx"),
+  "app/(public)/docs/docs-explorer.tsx": read("app", "(public)", "docs", "docs-explorer.tsx"),
   "app/(public)/privacy/page.tsx": read("app", "(public)", "privacy", "page.tsx"),
   "app/(public)/terms/page.tsx": read("app", "(public)", "terms", "page.tsx"),
 };

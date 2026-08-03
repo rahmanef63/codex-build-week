@@ -1,4 +1,3 @@
-#!/usr/bin/env node
 // Asisten Pribadi AI — headless client for the token-scoped /api/agent/* surface.
 //
 // Op names are the same operationIds the Custom GPT schema uses

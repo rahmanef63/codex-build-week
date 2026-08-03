@@ -59,15 +59,20 @@ export default function SetupPage() {
             </span>
             <span className="truncate text-sm font-semibold tracking-tight">Asisten Pribadi AI</span>
           </Link>
-          <a
-            className="inline-flex min-h-11 shrink-0 items-center gap-2 rounded-md px-3 text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
-            href={repositoryUrl}
-            rel="noreferrer"
-            target="_blank"
-          >
-            <GitFork aria-hidden className="size-4 shrink-0" />
-            Source
-          </a>
+          <div className="flex shrink-0 items-center gap-1">
+            <Link className="inline-flex min-h-11 items-center rounded-md px-3 text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" href="/docs">
+              Docs
+            </Link>
+            <a
+              className="inline-flex min-h-11 items-center gap-2 rounded-md px-3 text-sm text-muted-foreground hover:text-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring"
+              href={repositoryUrl}
+              rel="noreferrer"
+              target="_blank"
+            >
+              <GitFork aria-hidden className="size-4 shrink-0" />
+              Source
+            </a>
+          </div>
         </header>
 
         <section className="border-b border-border py-14 sm:py-20" aria-labelledby="setup-title">

@@ -14,9 +14,25 @@
 [Landing](https://codex-build-week.vercel.app/) ·
 [Interactive demo](https://codex-build-week.vercel.app/demo) ·
 [Dashboard](https://codex-build-week.vercel.app/dashboard) ·
+[Docs & onboarding](https://codex-build-week.vercel.app/docs) ·
 [Deployment setup](https://codex-build-week.vercel.app/setup) ·
 [Presentation](https://codex-build-week.vercel.app/presentation) ·
 [Custom GPT package](GPTs/alfa.md)
+
+## Five-minute local check
+
+Requirements: Node.js 22+, npm 10, and a Convex deployment. Copy
+`.env.example` to `.env.local`, fill the required values, then run:
+
+```bash
+npm ci
+npm run convex:sync
+npm run dev
+```
+
+Open `http://localhost:3000`. Run `npm run check` before submitting a change.
+See [Running locally](#running-locally) for environment details and
+[Deploy your own](#deploy-your-own) for a clean production deployment.
 
 ## What this reference build proves
 
@@ -261,10 +277,11 @@ convex/                  schema, auth, domain logic, HTTP Actions  ← product s
   http.ts                the six Demo Actions on /api/*
   agent_routes.ts        per-business Actions on /api/agent/*
 GPTs/                    Custom GPT instructions and schema
+docs/                    guides by coding background
 .claude/skills/
   asisten-pribadi/       SKILL.md + agent.mjs — agent harness client
 app/                     optional Next.js dashboard
-  (public)/              landing, Demo, legal pages
+  (public)/              landing, Demo, interactive docs, legal pages
   (workspace)/           authenticated dashboard and the /real redirect
   api/dashboard-card-image/
 components/ui/           UI primitives
@@ -485,6 +502,16 @@ To connect a Custom GPT:
 5. Test one read and one mutation operation in GPT Builder Preview.
 
 To connect an agent harness, see [Running from an agent harness](#running-from-an-agent-harness).
+
+## How Codex was used
+
+Codex with GPT-5.6 built and reviewed this project under the repository contract
+in [`AGENTS.md`](AGENTS.md). [`TASKS.md`](TASKS.md) records each objective,
+exclusive write scope, verification result, and external side effect. Codex
+accelerated the Convex Actions, Next.js clients, presentation, and release
+checks; the consequential decisions—tenant derivation, show-once token handling,
+Demo/Workspace separation, and confirmation before mutations—remain explicit in
+the contract and regression tests.
 
 ## Verification
 

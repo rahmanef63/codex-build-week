@@ -145,6 +145,9 @@ export default async function Home({ searchParams }: HomeProps) {
                 {copy.deployCta}
                 <Rocket aria-hidden />
               </Link>
+              <Link className={cn(buttonVariants({ size: "lg", variant: "ghost" }), ctaClass)} href="/docs">
+                Docs &amp; onboarding
+              </Link>
             </div>
             <p className="mt-4 flex items-start gap-2 text-xs leading-relaxed text-muted-foreground [@media(min-width:1024px)_and_(max-height:700px)]:mt-3">
               <CheckCircle2 aria-hidden className="mt-0.5 size-4 shrink-0 text-accent" />

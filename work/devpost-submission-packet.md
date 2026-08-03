@@ -1,5 +1,9 @@
 # Devpost Submission Packet — TemanUsaha AI
 
+> **Archived:** OpenAI Build Week ended after its 21 July 2026 submission
+> deadline. This packet records the historical pre-deadline state and must not
+> be used as current product copy or as an actionable submission checklist.
+
 Prepared 18 Jul 2026. Read-only observation of Devpost; nothing was written, attached, published, or submitted.
 
 - Devpost project: `https://devpost.com/software/temanusaha-ai` (project ID 1347708)
