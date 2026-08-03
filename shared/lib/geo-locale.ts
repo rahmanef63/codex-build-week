@@ -6,10 +6,7 @@
 //   - an *unmapped* country (a real visitor from somewhere we do not translate)
 //     falls back to `en`, the widest lingua franca of the four;
 //   - an *absent* country (local dev, a non-Vercel host, a private network —
-//     no geo signal at all) falls back to `defaultLocale`, i.e. the site's
-//     existing behaviour when nothing is known. Absent means "change nothing",
-//     not "guess English", which is what keeps `npm run dev` silently identical
-//     to today.
+//     no geo signal at all) falls back to `defaultLocale`, which is English.
 import { defaultLocale, type Locale } from "@/app/(public)/landing-copy";
 
 // Name of the cookie that stores an *explicit* language choice (a `?lang=`).

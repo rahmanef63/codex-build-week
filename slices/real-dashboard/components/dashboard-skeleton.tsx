@@ -1,7 +1,12 @@
+"use client";
+
+import { useDashboardLocale } from "./dashboard-locale";
+
 export function DashboardSkeleton() {
+  const { text } = useDashboardLocale();
   return (
     <div aria-busy="true" aria-live="polite" className="dash-shell">
-      <span className="sr-only">Memuat dashboard…</span>
+      <span className="sr-only">{text("Loading dashboard…", "Memuat dashboard…")}</span>
       <div className="dash-topbar">
         <div style={{ display: "grid", gap: 10 }}>
           <div className="dash-skeleton" style={{ height: 22, width: 150 }} />

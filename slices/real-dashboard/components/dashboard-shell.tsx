@@ -25,15 +25,7 @@ import {
 import { cn } from "@/lib/utils";
 import { ThemePresetSwitcher } from "@/slices/theme-presets";
 import type { DashboardView } from "../types";
-
-const navigation = [
-  { icon: LayoutDashboard, label: "Hari ini", mobileLabel: "Hari ini", view: "overview" },
-  { icon: ClipboardList, label: "Pesanan", mobileLabel: "Pesanan", view: "orders" },
-  { icon: Package, label: "Produk & stok", mobileLabel: "Produk", view: "catalog" },
-  { icon: Sparkles, label: "Aktivitas AI", mobileLabel: "Aktivitas", view: "activity" },
-  { icon: Bot, label: "Siapkan asisten", mobileLabel: "Asisten", view: "agent" },
-  { icon: Settings, label: "Pengaturan", mobileLabel: "Pengaturan", view: "settings" },
-] as const;
+import { useDashboardLocale } from "./dashboard-locale";
 
 /* z-index ladder for this route — every layer that can overlap another is listed
    here, lowest first. Nothing in the slice may invent a value outside it.
@@ -69,6 +61,15 @@ export function DashboardShell({
   view: DashboardView;
 }) {
   const [moreOpen, setMoreOpen] = useState(false);
+  const { locale, text } = useDashboardLocale();
+  const navigation = [
+    { icon: LayoutDashboard, label: text("Today", "Hari ini"), mobileLabel: text("Today", "Hari ini"), view: "overview" },
+    { icon: ClipboardList, label: text("Orders", "Pesanan"), mobileLabel: text("Orders", "Pesanan"), view: "orders" },
+    { icon: Package, label: text("Products & stock", "Produk & stok"), mobileLabel: text("Products", "Produk"), view: "catalog" },
+    { icon: Sparkles, label: text("AI activity", "Aktivitas AI"), mobileLabel: text("Activity", "Aktivitas"), view: "activity" },
+    { icon: Bot, label: text("Set up assistant", "Siapkan asisten"), mobileLabel: text("Assistant", "Asisten"), view: "agent" },
+    { icon: Settings, label: text("Settings", "Pengaturan"), mobileLabel: text("Settings", "Pengaturan"), view: "settings" },
+  ] as const;
   const primaryNavigation = navigation.slice(0, 4);
   const secondaryNavigation = navigation.slice(4);
   const secondaryActive = secondaryNavigation.some((item) => item.view === view);
@@ -105,13 +106,13 @@ export function DashboardShell({
               <BrandMark className="shrink-0" size={20} />
               <span className="truncate group-data-[collapsible=icon]:hidden">Asisten Pribadi AI</span>
             </Link>
-            <p className="truncate pt-1 text-xs text-muted-foreground group-data-[collapsible=icon]:hidden">Ruang kerja {businessName}</p>
+            <p className="truncate pt-1 text-xs text-muted-foreground group-data-[collapsible=icon]:hidden">{text("Workspace", "Ruang kerja")} {businessName}</p>
           </SidebarHeader>
           <SidebarContent>
             <SidebarGroup>
-              <SidebarGroupLabel>Menu ruang kerja</SidebarGroupLabel>
+              <SidebarGroupLabel>{text("Workspace menu", "Menu ruang kerja")}</SidebarGroupLabel>
               <SidebarGroupContent>
-                <SidebarMenu aria-label="Menu ruang kerja">
+                <SidebarMenu aria-label={text("Workspace menu", "Menu ruang kerja")}>
                   {navigation.map(({ icon: Icon, label, view: itemView }) => (
                     <SidebarMenuItem key={itemView}>
                       <SidebarMenuButton
@@ -132,9 +133,9 @@ export function DashboardShell({
           <SidebarFooter>
             <SidebarMenu>
               <SidebarMenuItem>
-                <SidebarMenuButton className="pointer-coarse:min-h-11" onClick={onSignOut} tooltip="Keluar">
+                <SidebarMenuButton className="pointer-coarse:min-h-11" onClick={onSignOut} tooltip={text("Sign out", "Keluar")}>
                   <LogOut />
-                  <span>Keluar</span>
+                  <span>{text("Sign out", "Keluar")}</span>
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
@@ -159,8 +160,15 @@ export function DashboardShell({
             <span className="min-w-0 truncate text-sm font-medium">{businessName}</span>
           </div>
           <div className="flex shrink-0 items-center gap-2">
+            <details className="relative">
+              <summary aria-label={text("Change language", "Ganti bahasa")} className="flex min-h-11 cursor-pointer list-none items-center rounded-md border border-border px-3 text-xs font-semibold uppercase">{locale}</summary>
+              <div className="absolute right-0 z-50 mt-2 grid min-w-44 rounded-md border border-border bg-popover p-1 shadow-lg">
+                <Link className="rounded-sm px-3 py-2 text-sm hover:bg-muted" href="/dashboard?lang=en" lang="en">English</Link>
+                <Link className="rounded-sm px-3 py-2 text-sm hover:bg-muted" href="/dashboard?lang=id" lang="id">Bahasa Indonesia</Link>
+              </div>
+            </details>
             <ThemePresetSwitcher />
-            <Button aria-label="Keluar" className="size-11 md:hidden" onClick={onSignOut} size="icon" variant="ghost">
+            <Button aria-label={text("Sign out", "Keluar")} className="size-11 md:hidden" onClick={onSignOut} size="icon" variant="ghost">
               <LogOut />
             </Button>
           </div>
@@ -180,7 +188,7 @@ export function DashboardShell({
       ) : null}
 
       <nav
-        aria-label="Navigasi utama"
+        aria-label={text("Main navigation", "Navigasi utama")}
         className="fixed inset-x-3 bottom-[calc(env(safe-area-inset-bottom)+0.5rem)] z-50 grid grid-cols-5 rounded-xl border border-border bg-card/95 p-1 shadow-lg backdrop-blur md:hidden"
       >
         {primaryNavigation.map(({ icon: Icon, label, mobileLabel, view: itemView }) => (
@@ -198,13 +206,13 @@ export function DashboardShell({
         <Button
           aria-controls="dock-overflow"
           aria-expanded={moreOpen}
-          aria-label="Menu lainnya"
+          aria-label={text("More menu", "Menu lainnya")}
           className={cn("h-12 min-w-0 flex-col gap-1 px-1 py-1.5 text-center text-[10px] leading-none", secondaryActive && "text-accent")}
           onClick={() => setMoreOpen((open) => !open)}
           variant={secondaryActive ? "secondary" : "ghost"}
         >
           <MoreHorizontal />
-          Lainnya
+          {text("More", "Lainnya")}
         </Button>
 
         {/* Anchored to the dock itself (bottom-full), not to a hand-tuned offset
@@ -213,7 +221,7 @@ export function DashboardShell({
             the dock. It grows upward, and it inherits the dock's z-50 context. */}
         {moreOpen ? (
           <div
-            aria-label="Menu lainnya"
+            aria-label={text("More menu", "Menu lainnya")}
             className="absolute inset-x-0 bottom-full mb-2 max-h-[50dvh] overflow-y-auto rounded-xl border border-border bg-popover p-2 shadow-xl"
             id="dock-overflow"
             role="group"

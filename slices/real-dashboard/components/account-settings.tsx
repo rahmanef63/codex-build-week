@@ -7,23 +7,24 @@ import { MapPin } from "lucide-react";
 import { api } from "@/convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import type { RequestLocation } from "../types";
+import { useDashboardLocale, type DashboardLocale } from "./dashboard-locale";
 
 // ISO 3166-1 alpha-2 → Indonesian country name, via the platform's own CLDR
 // data. No geo dependency, no lookup table to rot.
-function countryName(code: string) {
+function countryName(code: string, locale: DashboardLocale) {
   try {
-    return new Intl.DisplayNames(["id"], { type: "region" }).of(code) ?? code;
+    return new Intl.DisplayNames([locale], { type: "region" }).of(code) ?? code;
   } catch {
     return code;
   }
 }
 
-function locationRows(location: RequestLocation) {
+function locationRows(location: RequestLocation, locale: DashboardLocale, text: (english: string, indonesian: string) => string) {
   const place = [location.city, location.region].filter(Boolean).join(", ");
   return [
-    ["Negara", location.country ? `${countryName(location.country)} (${location.country})` : null],
-    ["Wilayah / kota", place || null],
-    ["Zona waktu", location.timezone ?? null],
+    [text("Country", "Negara"), location.country ? `${countryName(location.country, locale)} (${location.country})` : null],
+    [text("Region / city", "Wilayah / kota"), place || null],
+    [text("Time zone", "Zona waktu"), location.timezone ?? null],
   ] as const;
 }
 
@@ -61,17 +62,18 @@ export function AccountSettings({
   const [name, setName] = useState(businessName);
   const [saved, setSaved] = useState(false);
   const [error, setError] = useState("");
+  const { locale, text } = useDashboardLocale();
 
   const location = requestLocation ?? {};
-  const rows = locationRows(location);
+  const rows = locationRows(location, locale, text);
   const hasLocation = rows.some(([, value]) => value !== null);
 
   return (
     <div className="w-full divide-y divide-border border-y border-border">
       <Section
-        eyebrow="Profil ruang kerja"
-        intro="Nama ini tampil di dashboard dan konfigurasi GPT Anda."
-        title="Identitas dashboard"
+        eyebrow={text("Workspace profile", "Profil ruang kerja")}
+        intro={text("This name appears in your dashboard and GPT configuration.", "Nama ini tampil di dashboard dan konfigurasi GPT Anda.")}
+        title={text("Dashboard identity", "Identitas dashboard")}
       >
         <form
           className="space-y-3"
@@ -82,12 +84,12 @@ export function AccountSettings({
               await update({ name });
               setSaved(true);
             } catch {
-              setError("Profil tidak dapat disimpan. Periksa nama ruang kerja.");
+              setError(text("The profile could not be saved. Check the workspace name.", "Profil tidak dapat disimpan. Periksa nama ruang kerja."));
             }
           }}
         >
           <label className="grid gap-2 text-sm font-medium">
-            Nama ruang kerja
+            {text("Workspace name", "Nama ruang kerja")}
             <input
               className="min-h-11 w-full min-w-0 rounded-md border border-input bg-background px-3 py-2"
               onChange={(event) => {
@@ -99,8 +101,8 @@ export function AccountSettings({
               value={name}
             />
           </label>
-          <Button className="min-h-11" type="submit">Simpan perubahan</Button>
-          {saved ? <p className="text-sm text-muted-foreground">Nama ruang kerja berhasil diperbarui.</p> : null}
+          <Button className="min-h-11" type="submit">{text("Save changes", "Simpan perubahan")}</Button>
+          {saved ? <p className="text-sm text-muted-foreground">{text("Workspace name updated.", "Nama ruang kerja berhasil diperbarui.")}</p> : null}
           {error ? <p className="text-sm text-destructive" role="alert">{error}</p> : null}
         </form>
       </Section>
@@ -112,9 +114,9 @@ export function AccountSettings({
           the location itself is never written to Convex, a cookie, or the agent
           API. It is rendered here for the current request and then discarded. */}
       <Section
-        eyebrow="Sesi"
-        intro="Perkiraan lokasi permintaan Anda saat ini, dari jaringan tepi Vercel."
-        title="Lokasi permintaan"
+        eyebrow={text("Session", "Sesi")}
+        intro={text("Your current request's approximate location from Vercel's edge network.", "Perkiraan lokasi permintaan Anda saat ini, dari jaringan tepi Vercel.")}
+        title={text("Request location", "Lokasi permintaan")}
       >
         <div className="space-y-3">
           {hasLocation ? (
@@ -122,26 +124,26 @@ export function AccountSettings({
               {rows.map(([label, value]) => (
                 <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-1 px-4 py-3" key={label}>
                   <dt className="text-sm text-muted-foreground">{label}</dt>
-                  <dd className="min-w-0 break-words text-right text-sm font-medium">{value ?? "Tidak terdeteksi"}</dd>
+                  <dd className="min-w-0 break-words text-right text-sm font-medium">{value ?? text("Not detected", "Tidak terdeteksi")}</dd>
                 </div>
               ))}
             </dl>
           ) : (
             <p className="flex items-start gap-2 rounded-md border border-dashed border-border px-4 py-3 text-sm text-muted-foreground">
               <MapPin aria-hidden className="mt-0.5 size-4 shrink-0" />
-              <span>Tidak tersedia di lingkungan lokal. Header lokasi hanya dikirim saat aplikasi berjalan di Vercel.</span>
+              <span>{text("Unavailable locally. Location headers are only sent when the app runs on Vercel.", "Tidak tersedia di lingkungan lokal. Header lokasi hanya dikirim saat aplikasi berjalan di Vercel.")}</span>
             </p>
           )}
           <p className="text-xs leading-5 text-muted-foreground">
-            Perkiraan tingkat kota, hanya untuk ditampilkan. Alamat IP tidak dibaca, tidak dicatat, dan lokasi ini tidak disimpan ke database.
+            {text("City-level estimate for display only. The IP address is not read or logged, and this location is not stored in the database.", "Perkiraan tingkat kota, hanya untuk ditampilkan. Alamat IP tidak dibaca, tidak dicatat, dan lokasi ini tidak disimpan ke database.")}
           </p>
         </div>
       </Section>
 
-      <Section eyebrow="Keamanan" title="Data ruang kerja terisolasi">
+      <Section eyebrow={text("Security", "Keamanan")} title={text("Workspace data is isolated", "Data ruang kerja terisolasi")}>
         <div className="space-y-2 text-sm text-muted-foreground">
-          <p>Dashboard ini hanya menampilkan data milik akun yang sedang masuk.</p>
-          <p>Token asisten dibuat dan dirotasi dari menu Siapkan asisten; token lama otomatis tidak berlaku.</p>
+          <p>{text("This dashboard only shows data owned by the signed-in account.", "Dashboard ini hanya menampilkan data milik akun yang sedang masuk.")}</p>
+          <p>{text("Assistant tokens are created and rotated from Set up assistant; old tokens are invalidated automatically.", "Token asisten dibuat dan dirotasi dari menu Siapkan asisten; token lama otomatis tidak berlaku.")}</p>
         </div>
       </Section>
     </div>

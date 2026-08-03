@@ -8,14 +8,14 @@ export default function WorkspaceNotFound() {
     <div className="dash-root">
       <main className="dash-center">
         <section className="dash-card" style={{ maxWidth: 560, width: "100%" }}>
-          <span className="dash-eyebrow">Ruang kerja</span>
-          <h1>404 — Halaman ini tidak ada</h1>
-          <p className="dash-muted">Periksa kembali tautannya, atau kembali ke dashboard Anda.</p>
+          <span className="dash-eyebrow">Workspace</span>
+          <h1>404 — This page does not exist</h1>
+          <p className="dash-muted">Check the link or return to your dashboard.</p>
           <Link className="dash-btn-primary" href="/dashboard">
-            Ke dashboard
+            Go to dashboard
           </Link>
           <p className="dash-muted dash-small">
-            <Link aria-label="Kembali ke beranda" href="/">Beranda</Link>
+            <Link aria-label="Back to home" href="/">Home</Link>
           </p>
         </section>
       </main>

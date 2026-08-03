@@ -19,17 +19,16 @@ import {
 import { NextResponse } from "next/server";
 
 import { defaultLocale, isLocale } from "@/app/(public)/landing-copy";
-import { IMPLICIT_LOCALE_HEADER, LOCALE_COOKIE } from "@/shared/lib/geo-locale";
+import { IMPLICIT_LOCALE_HEADER, LOCALE_COOKIE, localeFromCountry } from "@/shared/lib/geo-locale";
 
 const isWorkspaceRoute = createRouteMatcher(["/dashboard(.*)", "/real(.*)"]);
 
-// Only the public landing (app/(public)/page.tsx) reads `?lang=`; /demo,
-// /presentation and the workspace are single-language, so nothing below runs
-// for them.
+// The public landing and dashboard read `?lang=`. Demo and presentation stay
+// in the worked-example language and do not consume this value.
 const LOCALIZED_PATHNAME = "/";
 
-// What the landing response actually depends on. `Cookie` carries the explicit
-// language choice; new visitors receive the English default.
+// What the landing response actually depends on. `Cookie` carries an explicit
+// choice; country selects a supported locale, with English as the fallback.
 //
 // Belt and braces, and MEASURED to be belt-only: the RSC render pipeline
 // replaces this header with its own vary list on the way out. Verified against
@@ -45,7 +44,7 @@ const LOCALIZED_PATHNAME = "/";
 // (confirmed on production). Nothing shared can store it. This header stays as
 // a correct declaration of what the response depends on, in case the pipeline
 // ever stops overwriting it — it is not the guarantee.
-const LOCALE_VARY = "Cookie";
+const LOCALE_VARY = "Cookie, x-vercel-ip-country";
 
 // An explicit choice should outlive the session; it is not sensitive.
 const LOCALE_COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
@@ -61,10 +60,6 @@ export const proxy = convexAuthNextjsMiddleware(async (request, { convexAuth }) 
     // return nextjsMiddlewareRedirect(request, "/");
   }
 
-  // Everything except the landing keeps the pre-existing behaviour: return
-  // nothing and let convexAuthNextjsMiddleware build the default
-  // NextResponse.next({ request: { headers } }) itself.
-  if (request.nextUrl.pathname !== LOCALIZED_PATHNAME) return;
   if (request.method !== "GET" && request.method !== "HEAD") return;
 
   // Forwarding request.headers is not optional: when Convex Auth refreshed the
@@ -97,9 +92,16 @@ export const proxy = convexAuthNextjsMiddleware(async (request, { convexAuth }) 
     return response;
   }
 
+  // Non-landing pages use the cookie directly in their server component. The
+  // proxy only needs to persist an explicit `?lang=` choice for them.
+  if (request.nextUrl.pathname !== LOCALIZED_PATHNAME) return;
+
   const chosen = request.cookies.get(LOCALE_COOKIE)?.value;
-  // A stored explicit choice wins. IP location never changes the default.
-  const locale = isLocale(chosen) ? chosen : defaultLocale;
+  // A stored explicit choice wins; otherwise use a supported country locale
+  // with English as the absent/unmapped fallback.
+  const locale = isLocale(chosen)
+    ? chosen
+    : localeFromCountry(request.headers.get("x-vercel-ip-country") ?? undefined);
 
   if (locale === defaultLocale) {
     return localized(NextResponse.next(forwardRefreshedAuthCookies));

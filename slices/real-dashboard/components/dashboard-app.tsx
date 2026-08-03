@@ -11,6 +11,7 @@ import type { RequestLocation } from "../types";
 import { AuthCard } from "./auth-card";
 import { ConnectedDashboard } from "./connected-dashboard";
 import { DashboardSkeleton } from "./dashboard-skeleton";
+import { DashboardLocaleProvider, type DashboardLocale, useDashboardLocale } from "./dashboard-locale";
 import { OnboardingCard } from "./onboarding-card";
 
 // Session labels. Before sign-in nothing personal is loaded — the visitor is
@@ -18,10 +19,12 @@ import { OnboardingCard } from "./onboarding-card";
 // of implying the surface belongs to them. After sign-in it switches to the
 // private wording. Indonesian is the UI language on every surrounding string, so
 // the owner's "Demo project preview guest" is rendered natively here.
-const GUEST_LABEL = "Tamu pratinjau proyek demo";
-const MEMBER_LABEL = "Ruang kerja pribadi · Data Anda";
+export function DashboardApp({ locale, requestLocation }: { locale: DashboardLocale; requestLocation?: RequestLocation }) {
+  return <DashboardLocaleProvider locale={locale}><DashboardContent requestLocation={requestLocation} /></DashboardLocaleProvider>;
+}
 
-export function DashboardApp({ requestLocation }: { requestLocation?: RequestLocation }) {
+function DashboardContent({ requestLocation }: { requestLocation?: RequestLocation }) {
+  const { locale, text } = useDashboardLocale();
   const { isAuthenticated, isLoading } = useConvexAuth();
   const { signOut } = useAuthActions();
   const data = useQuery(api.real.dashboard, isAuthenticated ? {} : "skip") as
@@ -30,8 +33,8 @@ export function DashboardApp({ requestLocation }: { requestLocation?: RequestLoc
     | undefined;
 
   if (isLoading || (isAuthenticated && data === undefined)) return <DashboardSkeleton />;
-  if (!isAuthenticated) return <WithModeNav label={GUEST_LABEL}><AuthCard /></WithModeNav>;
-  if (!data || data.business === null) return <WithModeNav label={MEMBER_LABEL}><OnboardingCard /></WithModeNav>;
+  if (!isAuthenticated) return <WithModeNav label={text("Demo project preview guest", "Tamu pratinjau proyek demo")} locale={locale}><AuthCard /></WithModeNav>;
+  if (!data || data.business === null) return <WithModeNav label={text("Private workspace · Your data", "Ruang kerja pribadi · Data Anda")} locale={locale}><OnboardingCard /></WithModeNav>;
 
   return (
     <ConnectedDashboard
@@ -42,10 +45,10 @@ export function DashboardApp({ requestLocation }: { requestLocation?: RequestLoc
   );
 }
 
-function WithModeNav({ children, label }: { children: ReactNode; label: string }) {
+function WithModeNav({ children, label, locale }: { children: ReactNode; label: string; locale: DashboardLocale }) {
   return (
     <>
-      <ModeNavBar label={label} variant="dash" />
+      <ModeNavBar label={label} locale={locale} variant="dash" />
       {children}
     </>
   );

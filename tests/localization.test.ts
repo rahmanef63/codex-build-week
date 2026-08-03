@@ -46,9 +46,17 @@ describe("public landing localization", () => {
   test("uses English for the document-level default", () => {
     const layout = readFileSync("app/layout.tsx", "utf8");
     const proxy = readFileSync("proxy.ts", "utf8");
+    const dashboard = readFileSync("app/(workspace)/dashboard/page.tsx", "utf8");
+    const dashboardApp = readFileSync("slices/real-dashboard/components/dashboard-app.tsx", "utf8");
+    const modeNav = readFileSync("shared/components/mode-nav-bar.tsx", "utf8");
     expect(layout).toMatch(/<html lang="en"/);
     expect(layout).toMatch(/locale: "en_US"/);
-    expect(proxy).toMatch(/isLocale\(chosen\) \? chosen : defaultLocale/);
-    expect(proxy).not.toMatch(/localeFromCountry/);
+    expect(proxy).toMatch(/localeFromCountry\(request\.headers\.get\("x-vercel-ip-country"\)/);
+    expect(proxy).toMatch(/LOCALE_VARY = "Cookie, x-vercel-ip-country"/);
+    expect(dashboard).toMatch(/isLocale\(requested\) \? requested : isLocale\(stored\) \? stored : localeFromCountry/);
+    expect(dashboard).toMatch(/resolved === "id" \? "id" : "en"/);
+    expect(dashboardApp).toContain('text("Demo project preview guest", "Tamu pratinjau proyek demo")');
+    expect(modeNav).toContain('href="/dashboard?lang=en"');
+    expect(modeNav).toContain('href="/dashboard?lang=id"');
   });
 });

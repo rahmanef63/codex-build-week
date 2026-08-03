@@ -44,7 +44,7 @@ test("Demo owns synthetic business wiring while the workspace runs its own live 
 
   expect(real).toMatch(/permanentRedirect\("\/dashboard"\)/);
   expect(dashboard).toMatch(/ConvexClientProvider/);
-  expect(dashboard).toMatch(/dashboard pribadi/);
+  expect(dashboard).toMatch(/private dashboard/);
   expect(dashboardApp).not.toMatch(/Bu Sari/);
   expect(dashboardApp).toMatch(/useConvexAuth/);
   expect(dashboardApp).toMatch(/api\.real\.dashboard/);
@@ -59,8 +59,8 @@ test("Demo owns synthetic business wiring while the workspace runs its own live 
   expect(dashboardFeature).toMatch(/children: ReactNode/);
   expect(dashboardFeature).toMatch(/description: string/);
   expect(dashboardFeature).toMatch(/title: string/);
-  expect(authCard).not.toMatch(/Mode Real|Workspace/);
-  expect(modeNav).toMatch(/aria-label="Kembali ke beranda"/);
+  expect(authCard).not.toMatch(/Mode Real/);
+  expect(modeNav).toMatch(/locale === "id" \? "Kembali ke beranda" : "Back to home"/);
   expect(modeNav).toMatch(/Asisten Pribadi AI/);
   expect(modeNav).not.toMatch(/← Kembali ke beranda/);
 
