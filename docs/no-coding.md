@@ -1,16 +1,16 @@
-# Jalur tanpa pengalaman coding
+# Path for people with no coding experience
 
-Tujuan jalur ini adalah memahami produk dan mencoba alur aman tanpa mengubah kode.
+This path helps you understand the product and try its safe workflow without
+changing code.
 
-1. Buka `/demo` untuk melihat contoh yang sudah berisi data sintetis.
-2. Perhatikan tiga bagian: ringkasan, daftar order, dan AI Activity.
-3. Buka `/dashboard`, buat akun, lalu lengkapi nama ruang kerja Anda.
-4. Di **Siapkan asisten AI**, terbitkan token sekali dan simpan di password manager.
-5. Ikuti paket Custom GPT di `GPTs/alfa.md`; mulai dengan operasi baca.
+1. Open `/demo` to explore the worked example with synthetic data.
+2. Review the summary, pending orders, and AI Activity sections.
+3. Open `/dashboard`, create an account, and name your workspace.
+4. In **Agent Setup**, issue a token once and store it in a password manager.
+5. Follow the Custom GPT package in `GPTs/alfa.md`, starting with a read operation.
 
-Anda tidak perlu menjalankan terminal. Hindari operasi tulis sampai asisten sudah
-mengulang perubahan yang akan dibuat dan meminta konfirmasi Anda.
+You do not need a terminal. Avoid write operations until the agent repeats the
+exact change it will make and asks for your confirmation.
 
-Lanjut ke [agent builder](agent-builder.md) jika ingin menghubungkan Custom GPT,
-atau ke [vibe coder](vibe-coder.md) jika ingin mengubah tampilan dengan bantuan AI.
-
+Continue to [Agent builder](agent-builder.md) to connect a Custom GPT, or to
+[Vibe coder](vibe-coder.md) to change the interface with AI assistance.

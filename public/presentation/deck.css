@@ -23,7 +23,8 @@ html {
 
 body {
   min-width: 320px;
-  min-height: 100dvh;
+  height: 100vh;
+  height: 100dvh;
   margin: 0;
   overflow: hidden;
   color: var(--ink);
@@ -59,7 +60,9 @@ button { color: inherit; }
   isolation: isolate;
   display: grid;
   grid-template-rows: auto minmax(0, 1fr) auto;
-  min-height: 100dvh;
+  height: 100vh;
+  height: 100dvh;
+  min-height: 0;
   padding: clamp(20px, 3vw, 42px) clamp(22px, 5vw, 76px) clamp(18px, 2.5vw, 34px);
   overflow: hidden;
   background: var(--cream);
@@ -113,6 +116,8 @@ button { color: inherit; }
   display: grid;
   align-items: center;
   padding-block: clamp(14px, 2.8vh, 34px);
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 .deck-bottom { align-self: end; color: var(--muted); font-size: .78rem; }
@@ -120,7 +125,7 @@ button { color: inherit; }
 .deck-progress { flex: 1; max-width: 290px; height: 3px; overflow: hidden; border-radius: 999px; background: rgba(16, 37, 26, .14); }
 .slide--dark .deck-progress { background: rgba(255, 255, 255, .14); }
 .deck-progress::after { display: block; width: var(--progress, 12.5%); height: 100%; content: ""; background: var(--orange); transition: width .45s ease; }
-.deck-nav { display: flex; align-items: center; gap: 8px; }
+.deck-nav { position: fixed; z-index: 80; top: 50%; right: 12px; display: flex; flex-direction: column; align-items: center; gap: 8px; transform: translateY(-50%); }
 .download-menu { position: relative; }
 .download-menu summary {
   display: grid;
@@ -139,8 +144,8 @@ button { color: inherit; }
 .download-menu summary:focus-visible { outline: 3px solid var(--orange); outline-offset: 3px; }
 .download-options {
   position: absolute;
-  right: 0;
-  bottom: calc(100% + 10px);
+  top: 0;
+  right: calc(100% + 10px);
   display: grid;
   width: 240px;
   padding: 10px;
@@ -629,8 +634,8 @@ h3 { margin-bottom: 10px; font-size: clamp(1.05rem, 1.8vw, 1.5rem); line-height:
 @keyframes interview-progress { to { width: 100%; } }
 
 @media (max-width: 1050px) {
-  body { overflow: auto; }
-  .slide { min-height: 100svh; overflow: clip; }
+  body { overflow: hidden; }
+  .slide { height: 100dvh; min-height: 0; overflow: hidden; }
   .cover-grid,
   .two-col,
   .demo-grid,
@@ -659,26 +664,27 @@ h3 { margin-bottom: 10px; font-size: clamp(1.05rem, 1.8vw, 1.5rem); line-height:
 }
 
 @media (max-width: 720px) {
-  body { overflow-x: hidden; }
-  .slide { display: block; min-height: 100svh; padding: 12px 14px calc(88px + env(safe-area-inset-bottom)); overflow: visible; }
+  body { overflow: hidden; }
+  .slide { display: grid; height: 100dvh; min-height: 0; padding: 12px 14px calc(12px + env(safe-area-inset-bottom)); overflow: hidden; }
   .deck-top { position: relative; min-height: 38px; padding-bottom: 10px; }
   .mini-brand img { width: 30px; height: 30px; }
   .section-label { font-size: .62rem; }
-  .slide-body { display: grid; min-height: auto; padding-block: 22px; }
+  .slide-body { display: grid; min-height: 0; padding: 70px 0 22px; overflow-y: auto; }
   h1 { font-size: clamp(3rem, 17vw, 5.2rem); }
   h2 { font-size: clamp(2.25rem, 12vw, 4.4rem); line-height: .98; }
   .lead { font-size: 1rem; line-height: 1.55; }
   .mini-brand span,
   .shortcut-hint { display: none; }
-  .deck-bottom { position: fixed; z-index: 70; right: 10px; bottom: calc(10px + env(safe-area-inset-bottom)); left: 10px; width: auto; min-height: 52px; padding: 7px 9px; border: 1px solid rgba(16,37,26,.14); border-radius: 18px; color: var(--muted); background: rgba(255,253,247,.9); box-shadow: 0 14px 40px rgba(16,37,26,.18); backdrop-filter: blur(16px); }
-  .slide--dark .deck-bottom { border-color: rgba(255,255,255,.14); color: #bac8bf; background: rgba(7,27,18,.9); }
+  .deck-bottom { min-height: 42px; padding-top: 8px; }
+  .deck-nav { top: 60px; right: 14px; flex-direction: row; transform: none; }
   .deck-progress { max-width: none; }
   .nav-button { width: 42px; height: 42px; }
   .download-menu summary { width: 42px; height: 42px; }
   .download-options {
     position: fixed;
+    top: 112px;
     right: 10px;
-    bottom: calc(72px + env(safe-area-inset-bottom));
+    bottom: auto;
     width: min(280px, calc(100vw - 20px));
   }
   .cover-grid { gap: 24px; }

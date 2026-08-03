@@ -8,7 +8,7 @@ import { DocsExplorer } from "./docs-explorer";
 
 export const metadata: Metadata = {
   title: "Docs — Asisten Pribadi AI",
-  description: "Panduan berdasarkan latar belakang, onboarding wizard, dan diagram endpoint interaktif Asisten Pribadi AI.",
+  description: "Background-specific guides, an onboarding wizard, and an interactive endpoint map for Asisten Pribadi AI.",
 };
 
 export default function DocsPage() {
@@ -16,7 +16,7 @@ export default function DocsPage() {
     <main className="dark min-h-dvh bg-canvas text-foreground">
       <div className="mx-auto max-w-7xl px-5 py-5 sm:px-8 sm:py-8">
         <header className="flex items-center justify-between gap-3">
-          <Link aria-label="Kembali ke beranda" className="flex min-h-11 min-w-0 items-center gap-3 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" href="/">
+          <Link aria-label="Back to home" className="flex min-h-11 min-w-0 items-center gap-3 rounded-md focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring" href="/">
             <span className="grid size-10 shrink-0 place-items-center rounded-md border border-border bg-card"><BrandMark /></span>
             <span className="truncate text-sm font-semibold tracking-tight">Asisten Pribadi AI</span>
           </Link>
@@ -25,8 +25,8 @@ export default function DocsPage() {
 
         <section className="border-b border-border py-14 sm:py-20" aria-labelledby="docs-title">
           <span className="inline-flex items-center gap-2 text-xs font-medium text-accent"><BookOpen aria-hidden className="size-4" />Documentation paths</span>
-          <h1 className="mt-5 max-w-4xl text-balance text-4xl font-semibold tracking-tight sm:text-6xl" id="docs-title">Satu backend. Jalur belajar yang sesuai dengan Anda.</h1>
-          <p className="mt-5 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">Mulai tanpa coding, lewat vibe coding, atau langsung ke kontrak endpoint dan deployment. Wizard di bawah memberi langkah pertama tanpa mengubah aturan keamanan.</p>
+          <h1 className="mt-5 max-w-4xl text-balance text-4xl font-semibold tracking-tight sm:text-6xl" id="docs-title">One backend. A learning path that fits you.</h1>
+          <p className="mt-5 max-w-2xl text-pretty text-base leading-relaxed text-muted-foreground sm:text-lg">Start without code, work through vibe coding, or go straight to endpoint contracts and deployment. The wizard recommends a first step without weakening any safety rule.</p>
         </section>
 
         <DocsExplorer />
@@ -34,4 +34,3 @@ export default function DocsPage() {
     </main>
   );
 }
-

@@ -11,14 +11,14 @@ export const languageNames: Record<Locale, string> = {
 // The locale served when nothing else resolves. Exported so proxy.ts and
 // shared/lib/geo-locale.ts fall back to the same value instead of each keeping
 // its own copy of the string "id".
-export const defaultLocale: Locale = "id";
+export const defaultLocale: Locale = "en";
 
 export function isLocale(value?: string | null): value is Locale {
   return locales.includes(value as Locale);
 }
 
 // `fallback` is additive: existing callers pass only `value` and keep today's
-// behaviour exactly (an unknown or missing `?lang=` still resolves to "id").
+// behaviour exactly (an unknown or missing `?lang=` resolves to English).
 export function getLocale(value?: string, fallback: Locale = defaultLocale): Locale {
   return isLocale(value) ? value : fallback;
 }

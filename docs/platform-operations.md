@@ -1,15 +1,14 @@
-# Jalur platform, DevOps, dan maintainer
+# Platform, DevOps, and maintainer path
 
-Gunakan deployment milik sendiri. Repository ini memperlakukan Convex sebagai
-product surface dan Vercel sebagai host dashboard opsional.
+Use deployments you own. This repository treats Convex as the product surface
+and Vercel as the host for the optional dashboard.
 
-1. Buat deployment Convex dan Vercel terpisah dari production yang sudah ada.
-2. Isi environment melalui dashboard provider, bukan file yang di-commit.
-3. Gunakan `npm run build:auto` untuk provisioning dan deploy idempotent.
-4. Jalankan `npm run check`, `npm audit --audit-level=high`, dan smoke test URL.
-5. Uji `/api/agent/*` dengan token tenant A dan pastikan token tenant B tidak dapat membaca datanya.
+1. Create Convex and Vercel deployments separate from the existing production environment.
+2. Set environment variables through provider dashboards, not committed files.
+3. Use `npm run build:auto` for idempotent provisioning and deployment.
+4. Run `npm run check`, `npm audit --audit-level=high`, and URL smoke tests.
+5. Test `/api/agent/*` with tenant A's token and confirm tenant B's data is inaccessible.
 
-Operasi reset Demo memakai `DEMO_RESET_KEY`, bersifat destruktif hanya untuk
-tenant contoh, dan tetap memerlukan persetujuan sebelum dijalankan. Jangan
-menjalankan `convex dev` watch mode terhadap deployment yang melayani production.
-
+Demo reset operations use `DEMO_RESET_KEY`, affect only the example tenant, and
+still require approval before execution. Never run `convex dev` in watch mode
+against a deployment that serves production.

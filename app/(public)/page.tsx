@@ -22,7 +22,7 @@ import { BrandMark } from "@/shared/components/brand-mark";
 import { HtmlLang } from "@/shared/components/html-lang";
 import { IMPLICIT_LOCALE_HEADER } from "@/shared/lib/geo-locale";
 import { ThemePresetSwitcher } from "@/slices/theme-presets";
-import { agentRoutePath, getLocale, landingCopy, languageNames, locales, productName } from "./landing-copy";
+import { agentRoutePath, defaultLocale, getLocale, landingCopy, languageNames, locales, productName } from "./landing-copy";
 
 const benefitIcons = [Bot, KeyRound, ScrollText] as const;
 const factIcons = [CheckCircle2, Package, ShieldCheck] as const;
@@ -44,8 +44,8 @@ export async function generateMetadata({ searchParams }: HomeProps): Promise<Met
     title: copy.title,
     description: copy.description,
     alternates: {
-      canonical: inferred || locale === "id" ? "/" : `/?lang=${locale}`,
-      languages: { id: "/", en: "/?lang=en", fr: "/?lang=fr", ja: "/?lang=ja" },
+      canonical: inferred || locale === defaultLocale ? "/" : `/?lang=${locale}`,
+      languages: { en: "/", id: "/?lang=id", fr: "/?lang=fr", ja: "/?lang=ja" },
     },
   };
 }

@@ -1,24 +1,23 @@
-# Panduan Asisten Pribadi AI
+# Asisten Pribadi AI guides
 
-Mulai dari latar belakang Anda. Semua jalur memakai backend dan endpoint yang
-sama; yang berbeda hanya alat dan kedalaman penjelasannya.
+Start with the path that matches your background. Every path uses the same
+backend and endpoints; only the tools and depth of explanation change.
 
-| Latar belakang | Mulai di |
+| Background | Start here |
 | --- | --- |
-| Belum pernah coding | [Tanpa pengalaman coding](no-coding.md) |
-| Vibe coder / nyaman memberi prompt | [Vibe coder](vibe-coder.md) |
-| Software developer | [Developer](developer.md) |
-| Builder Custom GPT atau agent | [Agent builder](agent-builder.md) |
-| Platform, DevOps, atau maintainer | [Platform dan operasi](platform-operations.md) |
+| No coding experience | [No-code path](no-coding.md) |
+| Vibe coder / comfortable prompting | [Vibe coder path](vibe-coder.md) |
+| Software developer | [Developer path](developer.md) |
+| Custom GPT or agent builder | [Agent builder path](agent-builder.md) |
+| Platform, DevOps, or maintainer | [Platform and operations path](platform-operations.md) |
 
-Gunakan halaman `/docs` pada aplikasi untuk wizard onboarding dan diagram
-endpoint interaktif. Untuk contoh data sintetis yang siap dicoba, buka `/demo`.
+Open `/docs` in the application for the onboarding wizard and interactive
+endpoint map. Open `/demo` for a ready-to-run example with synthetic data.
 
-## Aturan yang berlaku untuk semua jalur
+## Rules for every path
 
-- Jangan menaruh token di chat, screenshot, issue, atau source control.
-- Backend menentukan tenant dari token atau identitas terverifikasi, bukan dari payload.
-- Minta konfirmasi pengguna sebelum operasi tulis.
-- Gunakan `requestId` baru untuk order baru; gunakan nilai yang sama hanya saat retry payload identik.
-- Mulai dari satu operasi baca sebelum menguji operasi tulis.
-
+- Never put a token in chat, screenshots, issues, or source control.
+- The backend derives tenant scope from a token or verified identity, never from a client payload.
+- Request explicit user confirmation before any write operation.
+- Use a new `requestId` for each new order; reuse it only when retrying an identical payload.
+- Start with one read operation before testing a write.

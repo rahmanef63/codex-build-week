@@ -1,18 +1,17 @@
-# Jalur software developer
+# Software developer path
 
-Mulai dari kontrak publik, lalu ikuti aliran request sampai mutation.
+Start with the public contract, then trace a request through the mutation.
 
-1. Baca `AGENTS.md`, `README.md`, dan tabel Actions.
-2. Jalankan `npm ci` dan `npm run check` untuk baseline.
-3. Telusuri route di `convex/http.ts` dan `convex/agent_routes.ts`.
-4. Telusuri validasi bersama di `convex/_shared/http.ts` dan mutation domain terkait.
-5. Tambahkan satu regression test terkecil yang gagal tanpa perubahan Anda.
+1. Read `AGENTS.md`, `README.md`, and the Actions tables.
+2. Run `npm ci` and `npm run check` for a baseline.
+3. Trace routes in `convex/http.ts` and `convex/agent_routes.ts`.
+4. Trace shared validation in `convex/_shared/http.ts` and the relevant domain mutation.
+5. Add the smallest regression test that fails without your change.
 
-Checklist perubahan endpoint:
+Endpoint change checklist:
 
-- Input divalidasi di trust boundary.
-- `businessId` tidak diterima dari payload client.
-- Mutation menulis `aiActionLogs`.
-- Operasi order tetap idempotent dan atomik dengan perubahan stok.
-- Custom GPT, harness, dan MCP tetap memakai vocabulary operasi yang sama.
-
+- Validate input at the trust boundary.
+- Never accept `businessId` from a client payload.
+- Write an `aiActionLogs` entry for every mutation.
+- Keep order creation idempotent and atomic with stock changes.
+- Keep operation vocabulary consistent across Custom GPT, harness, and MCP clients.

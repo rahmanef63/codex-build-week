@@ -47,7 +47,7 @@ document.querySelectorAll(".deck-nav").forEach((nav) => {
   menu.addEventListener("click", (event) => {
     if (event.target.closest("a")) menu.open = false;
   });
-  nav.prepend(menu);
+  nav.append(menu);
 });
 
 const qrCard = document.querySelector("[data-qr-card]");

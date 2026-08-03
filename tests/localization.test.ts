@@ -12,7 +12,7 @@ describe("public landing localization", () => {
     expect(landingCopy.fr.eyebrow).toContain("les GPTs comme agent");
     expect(landingCopy.ja.eyebrow).toContain("エージェントとして");
     expect(new Set(locales.map((locale) => landingCopy[locale].eyebrow)).size).toBe(locales.length);
-    expect(getLocale("unknown")).toBe("id");
+    expect(getLocale("unknown")).toBe("en");
   });
 
   test("every locale carries the same keys so no locale renders an undefined slot", () => {
@@ -40,6 +40,12 @@ describe("public landing localization", () => {
     expect(page).toMatch(/<figure[^>]*aria-labelledby="architecture-label"/);
     expect(page).toMatch(/max-height:700px\)\]:p-3/);
     expect(page).toMatch(/alternates:/);
-    expect(page).toMatch(/languages:\s*\{\s*id:/);
+    expect(page).toMatch(/languages:\s*\{\s*en:/);
+  });
+
+  test("uses English for the document-level default", () => {
+    const layout = readFileSync("app/layout.tsx", "utf8");
+    expect(layout).toMatch(/<html lang="en"/);
+    expect(layout).toMatch(/locale: "en_US"/);
   });
 });

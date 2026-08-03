@@ -176,6 +176,7 @@ Before work, every agent must:
 ### Conflict protocol
 
 - Git, deploy, or external-service mutation is Alpha-only unless the registry names exactly one delegated owner and the exact mutation as its active objective.
+- **Owner rule (2026-08-03):** once in-scope work passes verification, Alpha closes its registry row, commits it, and pushes directly to `main` unless the owner explicitly says not to. Do not leave completed work or registry rows pending.
 - Never reset, restore, stash, delete, or change the shared checkout branch.
 - Never revert or rewrite another agent's work.
 - If an unexpected file changes, stop writing that file, report the path and observed state, and wait for Alpha to assign ownership.

@@ -15,11 +15,24 @@ test("docs provide a distinct guide for every onboarding background", () => {
   }
 });
 
+test("web and repository documentation default to polished English", () => {
+  const content = [
+    read("app", "(public)", "docs", "page.tsx"),
+    read("app", "(public)", "docs", "docs-explorer.tsx"),
+    read("docs", "README.md"),
+    ...guides.map((guide) => read("docs", guide)),
+  ].join("\n");
+
+  expect(content).toContain("One backend. A learning path that fits you.");
+  expect(content).toContain("What is your coding background?");
+  expect(content).not.toMatch(/\b(?:Anda|Baca|Buka|Jalur|Mulai|Panduan|Pilih|Tanpa)\b/);
+});
+
 test("interactive docs expose a three-step wizard and clickable endpoint contracts", () => {
   const explorer = read("app", "(public)", "docs", "docs-explorer.tsx");
   expect(explorer).toMatch(/^"use client"/);
   expect(explorer).toMatch(/Onboarding wizard/);
-  expect(explorer).toMatch(/Progress onboarding/);
+  expect(explorer).toMatch(/Onboarding progress/);
   expect(explorer).toMatch(/wizardStep === 3/);
   expect(explorer).toMatch(/aria-pressed=\{active\}/);
   expect(explorer).toMatch(/confirmation|konfirmasi eksplisit/i);
@@ -40,4 +53,3 @@ test("docs are discoverable from public navigation and sitemap", () => {
   expect(read("app", "(public)", "setup", "page.tsx")).toMatch(/href="\/docs"/);
   expect(read("app", "sitemap.ts")).toMatch(/\$\{base\}\/docs/);
 });
-

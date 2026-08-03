@@ -1,20 +1,19 @@
-# Jalur vibe coder
+# Vibe coder path
 
-Jalur ini cocok jika Anda nyaman menjelaskan hasil yang diinginkan kepada AI,
-tetapi tidak ingin memelihara banyak detail implementasi.
+This path is for people who are comfortable describing an outcome to AI but do
+not want to maintain every implementation detail themselves.
 
-1. Clone repository dan salin `.env.example` menjadi `.env.local`.
-2. Jalankan `npm ci`, `npm run convex:sync`, lalu `npm run dev`.
-3. Minta AI mengubah satu perilaku kecil dan sebutkan file atau halaman targetnya.
-4. Selalu jalankan `npm run check` sebelum menerima perubahan.
-5. Untuk backend, pertahankan path, operation ID, validasi, tenant derivation, dan audit log.
+1. Clone the repository and copy `.env.example` to `.env.local`.
+2. Run `npm ci`, `npm run convex:sync`, then `npm run dev`.
+3. Ask AI to change one small behavior and name the target file or page.
+4. Always run `npm run check` before accepting the change.
+5. For backend work, preserve route paths, operation IDs, validation, tenant derivation, and audit logs.
 
-Prompt yang baik menyebutkan hasil, batasan, dan cara verifikasi. Contoh:
+A useful prompt states the outcome, constraints, and verification method. For example:
 
 ```text
-Tambahkan penjelasan pada halaman /docs. Jangan mengubah endpoint atau schema.
-Pastikan mobile 320px tetap rapi dan npm run check lulus.
+Add a short explanation to /docs. Do not change any endpoint or schema.
+Keep the layout usable at 320px and make sure npm run check passes.
 ```
 
-Jangan meminta AI menempel token atau isi `.env.local` ke percakapan.
-
+Never ask AI to paste a token or `.env.local` contents into a conversation.

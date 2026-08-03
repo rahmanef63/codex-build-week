@@ -91,6 +91,10 @@ test("deck presentation is complete and locally linked", () => {
   expect(styles).toMatch(/safe-area-inset-bottom/);
   expect(styles).toMatch(/scroll-snap-type: x mandatory/);
   expect(styles).toMatch(/\.download-options/);
+  expect(styles).toMatch(/height: 100dvh/);
+  expect(styles).toMatch(/\.slide-body[\s\S]*overflow-y: auto/);
+  expect(styles).toMatch(/\.deck-nav[^{]*\{[^}]*position: fixed/);
+  expect(script).toMatch(/nav\.append\(menu\)/);
 
   for (const name of [
     "00-cover", "01-masalah", "02-solusi", "03-demo", "04-bukti",

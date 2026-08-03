@@ -18,18 +18,18 @@ export const metadata: Metadata = {
     default: "Asisten Pribadi AI",
     template: "%s | Asisten Pribadi AI",
   },
-  description: "Reference build: cara memakai GPTs sebagai agent. Satu backend Convex digerakkan Custom GPT, agent harness, atau dashboard.",
+  description: "Reference build for using GPTs as your agent. One Convex backend powers a Custom GPT, agent harness, or dashboard.",
   openGraph: {
     title: "Asisten Pribadi AI",
-    description: "Reference build: cara memakai GPTs sebagai agent. Satu backend Convex digerakkan Custom GPT, agent harness, atau dashboard.",
+    description: "Reference build for using GPTs as your agent. One Convex backend powers a Custom GPT, agent harness, or dashboard.",
     type: "website",
-    locale: "id_ID",
+    locale: "en_US",
   },
 };
 
 export default function RootLayout({ children }: Readonly<{ children: ReactNode }>) {
   return (
-    <html lang="id" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
+    <html lang="en" suppressHydrationWarning className={cn("font-sans", geist.variable)}>
       <body>
         <ThemeProviders>
           <TooltipProvider>
