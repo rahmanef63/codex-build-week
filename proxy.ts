@@ -19,7 +19,7 @@ import {
 import { NextResponse } from "next/server";
 
 import { defaultLocale, isLocale } from "@/app/(public)/landing-copy";
-import { IMPLICIT_LOCALE_HEADER, LOCALE_COOKIE, localeFromCountry } from "@/shared/lib/geo-locale";
+import { IMPLICIT_LOCALE_HEADER, LOCALE_COOKIE } from "@/shared/lib/geo-locale";
 
 const isWorkspaceRoute = createRouteMatcher(["/dashboard(.*)", "/real(.*)"]);
 
@@ -29,11 +29,7 @@ const isWorkspaceRoute = createRouteMatcher(["/dashboard(.*)", "/real(.*)"]);
 const LOCALIZED_PATHNAME = "/";
 
 // What the landing response actually depends on. `Cookie` carries the explicit
-// choice, `x-vercel-ip-country` carries the geo guess, and `Accept-Language` is
-// declared because it is the next signal this route should negotiate on.
-// Listing the geo header matters most: a shared cache that keys only on the URL
-// would store the first visitor's language at `/` and replay it to every
-// country after them.
+// language choice; new visitors receive the English default.
 //
 // Belt and braces, and MEASURED to be belt-only: the RSC render pipeline
 // replaces this header with its own vary list on the way out. Verified against
@@ -49,7 +45,7 @@ const LOCALIZED_PATHNAME = "/";
 // (confirmed on production). Nothing shared can store it. This header stays as
 // a correct declaration of what the response depends on, in case the pipeline
 // ever stops overwriting it — it is not the guarantee.
-const LOCALE_VARY = "Accept-Language, Cookie, x-vercel-ip-country";
+const LOCALE_VARY = "Cookie";
 
 // An explicit choice should outlive the session; it is not sensitive.
 const LOCALE_COOKIE_MAX_AGE = 60 * 60 * 24 * 365;
@@ -102,14 +98,8 @@ export const proxy = convexAuthNextjsMiddleware(async (request, { convexAuth }) 
   }
 
   const chosen = request.cookies.get(LOCALE_COOKIE)?.value;
-  // Geo is consulted only when the visitor has never chosen: a stored choice
-  // outranks the IP every time, so nobody gets pinned to a language by where
-  // they happen to be. With no `x-vercel-ip-country` (local dev, non-Vercel
-  // host) localeFromCountry returns defaultLocale and this falls through to the
-  // untouched response below — silently, as today.
-  const locale = isLocale(chosen)
-    ? chosen
-    : localeFromCountry(request.headers.get("x-vercel-ip-country") ?? undefined);
+  // A stored explicit choice wins. IP location never changes the default.
+  const locale = isLocale(chosen) ? chosen : defaultLocale;
 
   if (locale === defaultLocale) {
     return localized(NextResponse.next(forwardRefreshedAuthCookies));

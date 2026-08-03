@@ -36,9 +36,8 @@ type HomeProps = { searchParams: Promise<{ lang?: string }> };
 export async function generateMetadata({ searchParams }: HomeProps): Promise<Metadata> {
   const locale = getLocale((await searchParams).lang);
   const copy = landingCopy[locale];
-  // A geo-inferred locale stays self-canonical at `/`. Without this, a crawler
-  // in the US and one in France both fetch `/` and get two different canonical
-  // URLs from the same address — the classic geo-personalisation SEO trap.
+  // A locale restored from the explicit-choice cookie stays self-canonical at
+  // `/`; explicit query-string variants keep their own alternate URL.
   const inferred = (await headers()).get(IMPLICIT_LOCALE_HEADER) === "1";
   return {
     title: copy.title,

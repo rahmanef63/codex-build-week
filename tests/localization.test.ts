@@ -45,7 +45,10 @@ describe("public landing localization", () => {
 
   test("uses English for the document-level default", () => {
     const layout = readFileSync("app/layout.tsx", "utf8");
+    const proxy = readFileSync("proxy.ts", "utf8");
     expect(layout).toMatch(/<html lang="en"/);
     expect(layout).toMatch(/locale: "en_US"/);
+    expect(proxy).toMatch(/isLocale\(chosen\) \? chosen : defaultLocale/);
+    expect(proxy).not.toMatch(/localeFromCountry/);
   });
 });
